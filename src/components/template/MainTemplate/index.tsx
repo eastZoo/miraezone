@@ -12,6 +12,7 @@ interface MainTemplateProps {
   mobileHeader?: React.ReactNode;
   webHeader?: React.ReactNode;
   commonUi?: React.ReactNode;
+  transparentHeader?: boolean;
 }
 
 const MainTemplate = ({
@@ -19,13 +20,26 @@ const MainTemplate = ({
   mobileHeader,
   webHeader,
   commonUi = true,
+  transparentHeader = false,
 }: MainTemplateProps) => {
   const isMobile = useMediaQuery({ maxWidth: 768 });
+
+  const renderHeader = () => {
+    if (isMobile) {
+      return mobileHeader ?? <HeaderMobile />;
+    }
+
+    if (webHeader) {
+      return webHeader;
+    }
+
+    return <Header isTransparent={transparentHeader} />;
+  };
 
   return (
     <S.Wrapper>
       {/* 헤더 */}
-      {isMobile ? mobileHeader ?? <HeaderMobile /> : webHeader ?? <Header />}
+      {renderHeader()}
       {/* /pages 폴더의 페이지들이 위치할 컨테이너 */}
       <S.ContainerWrapper>{children}</S.ContainerWrapper>
 

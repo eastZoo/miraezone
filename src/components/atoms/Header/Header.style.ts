@@ -2,8 +2,11 @@ import { Container, device } from "@/styles/GlobalStyle";
 import styled from "styled-components";
 
 /* ========== Wrapper ========== */
-export const HeaderWrapper = styled.div`
-  position: relative;
+export const HeaderWrapper = styled.div<{ $transparent?: boolean }>`
+  position: ${({ $transparent }) => ($transparent ? "absolute" : "relative")};
+  top: ${({ $transparent }) => ($transparent ? 0 : "auto")};
+  left: 0;
+  width: 100%;
   overflow: visible;
   z-index: 1001;
 `;
@@ -60,11 +63,19 @@ export const TopUtilityList = styled.div`
 `;
 
 /* ========== 메인 헤더 ========== */
-export const MainHeader = styled.div`
-  background: linear-gradient(to bottom, #1a1a2e 0%, #16213e 100%);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border-bottom: 1px solid rgba(229, 229, 229, 0.3);
+export const MainHeader = styled.div<{ $transparent?: boolean }>`
+  background: ${({ $transparent }) =>
+    $transparent
+      ? "transparent"
+      : "linear-gradient(to bottom, #1a1a2e 0%, #16213e 100%)"};
+  backdrop-filter: ${({ $transparent }) =>
+    $transparent ? "none" : "blur(20px)"};
+  -webkit-backdrop-filter: ${({ $transparent }) =>
+    $transparent ? "none" : "blur(20px)"};
+  border-bottom: ${({ $transparent }) =>
+    $transparent
+      ? "1px solid rgba(255, 255, 255, 0.2)"
+      : "1px solid rgba(229, 229, 229, 0.3)"};
   position: relative;
   z-index: 1001;
   transition: all 0.3s ease;
@@ -77,7 +88,10 @@ export const MainHeader = styled.div`
     right: 0;
     z-index: 1000;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-    background: linear-gradient(to bottom, #1a1a2e 0%, #16213e 100%);
+    background: ${({ $transparent }) =>
+      $transparent
+        ? "linear-gradient(to bottom, rgba(10, 10, 10, 0.85) 0%, rgba(10, 10, 10, 0.65) 100%)"
+        : "linear-gradient(to bottom, #1a1a2e 0%, #16213e 100%)"};
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     border-bottom: 1px solid rgba(229, 229, 229, 0.5);

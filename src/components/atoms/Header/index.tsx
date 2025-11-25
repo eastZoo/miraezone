@@ -70,7 +70,11 @@ const menuItems = [
   },
 ];
 
-const Header: React.FC = () => {
+interface HeaderProps {
+  isTransparent?: boolean;
+}
+
+const Header: React.FC<HeaderProps> = ({ isTransparent = false }) => {
   const [isFixed, setIsFixed] = useState(false);
   const [activeMenuIndex, setActiveMenuIndex] = useState<number | null>(null);
   const headerRef = useRef<HTMLDivElement | null>(null);
@@ -95,7 +99,7 @@ const Header: React.FC = () => {
   // const toggleAllCategory = () => setIsMenuOpen((prev) => !prev);
 
   return (
-    <S.HeaderWrapper ref={headerRef} id="header">
+    <S.HeaderWrapper ref={headerRef} id="header" $transparent={isTransparent}>
       {/* 상단 유틸리티 바 */}
       {/* <S.TopUtilityBar>
         <S.TopUtilityInner>
@@ -117,7 +121,11 @@ const Header: React.FC = () => {
       </S.TopUtilityBar> */}
 
       {/* 메인 헤더 - 로고와 메뉴가 같은 row */}
-      <S.MainHeader ref={gnbRef} className={isFixed ? "fixed" : ""}>
+      <S.MainHeader
+        ref={gnbRef}
+        className={isFixed ? "fixed" : ""}
+        $transparent={isTransparent}
+      >
         <S.HeaderInner>
           {/* 로고 영역 */}
           <S.LogoWrapper>

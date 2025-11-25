@@ -13,8 +13,8 @@ const fadeIn = keyframes`
 export const HomeContainer = styled.div`
   position: relative;
   width: 100vw;
-  height: 100vh;
-  min-height: 700px;
+  height: 90vh;
+  min-height: 500px;
   overflow: hidden;
   margin-left: calc(-50vw + 50%);
   margin-right: calc(-50vw + 50%);
