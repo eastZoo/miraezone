@@ -7,7 +7,7 @@ export const FooterWrapper = styled.div`
   background: linear-gradient(to bottom, #1a1a2e 0%, #16213e 100%);
   width: 100%;
   display: flex;
-  padding: 80px 0 50px;
+  padding: 60px 0 50px;
   border-top: 1px solid rgba(255, 255, 255, 0.1);
 `;
 

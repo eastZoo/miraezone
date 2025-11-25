@@ -118,11 +118,10 @@ export default function HomePage() {
             </S.WeeklyMessageImage>
             <S.WeeklyMessageContent>
               <S.WeeklyMessageDate>2025-11-23</S.WeeklyMessageDate>
-              <S.WeeklyMessageTitle>
-                "그리스도인들은 지금 어디에 있습니까?"
-              </S.WeeklyMessageTitle>
+              <S.WeeklyMessageTitle>"준비중입니다..."</S.WeeklyMessageTitle>
               <S.WeeklyMessageInfo>
-                야고보서 4:13 - 5:6 나영호 담임목사
+                준비중입니다...
+                {/* 야고보서 4:13 - 5:6 나영호 담임목사 */}
               </S.WeeklyMessageInfo>
               <S.WeeklyMessageButton>
                 <HiPlay />

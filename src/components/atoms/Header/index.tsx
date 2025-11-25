@@ -12,8 +12,6 @@ const menuItems = [
     path: "/",
     subMenu: [
       { title: "교회 소개", path: "/" },
-      { title: "교회 비전", path: "/" },
-      { title: "교회 연혁", path: "/" },
       { title: "교회 조직", path: "/" },
       { title: "오시는 길", path: "/" },
     ],
@@ -24,7 +22,6 @@ const menuItems = [
     subMenu: [
       { title: "공지사항", path: "/" },
       { title: "교회 소식", path: "/" },
-      { title: "행사 안내", path: "/" },
       { title: "주보", path: "/" },
     ],
   },
@@ -34,18 +31,6 @@ const menuItems = [
     subMenu: [
       { title: "예배 안내", path: "/" },
       { title: "설교 영상", path: "/" },
-      { title: "찬양 영상", path: "/" },
-      { title: "예배 말씀", path: "/" },
-    ],
-  },
-  {
-    title: "사역/양육",
-    path: "/",
-    subMenu: [
-      { title: "사역 소개", path: "/" },
-      { title: "양육 프로그램", path: "/" },
-      { title: "제자 훈련", path: "/" },
-      { title: "선교 사역", path: "/" },
     ],
   },
   {
@@ -62,9 +47,7 @@ const menuItems = [
     title: "자료실",
     path: "/",
     subMenu: [
-      { title: "설교 자료", path: "/" },
       { title: "찬양 자료", path: "/" },
-      { title: "교육 자료", path: "/" },
       { title: "다운로드", path: "/" },
     ],
   },

@@ -472,12 +472,12 @@ export const MenuItem = styled.li`
       transform: translateX(-50%) scaleX(0);
       width: 60%;
       height: 3px;
-      background: #a44945;
+      background: white;
       transition: transform 0.3s ease;
     }
 
     &:hover {
-      color: #a44945;
+      color: white;
 
       &::after {
         transform: translateX(-50%) scaleX(1);
@@ -495,7 +495,7 @@ export const MenuItem = styled.li`
 
 export const SubMenu = styled.ul`
   position: absolute;
-  top: 90%;
+  top: 85%;
   left: 50%;
   transform: translateX(-50%);
   min-width: 200px;
