@@ -10,22 +10,40 @@ const fadeIn = keyframes`
   }
 `;
 
+export const BackgroundCanvas = styled.div`
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100vw;
+  height: calc(100vh + 900px);
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+
+  @media ${device.mobile} {
+    height: calc(100vh + 700px);
+  }
+`;
+
 export const HomeContainer = styled.div`
   position: relative;
   width: 100vw;
-  height: 90vh;
-  min-height: 500px;
+  height: 75vh;
+  min-height: 520px;
   overflow: hidden;
   margin-left: calc(-50vw + 50%);
   margin-right: calc(-50vw + 50%);
-  padding: 0;
+  padding: 0 0 80px;
   display: flex;
   align-items: center;
   justify-content: center;
+  z-index: 1;
 
   @media ${device.mobile} {
-    height: 85vh;
-    min-height: 500px;
+    height: 70vh;
+    min-height: 480px;
+    padding-bottom: 70px;
     margin-left: calc(-50vw + 50%);
     margin-right: calc(-50vw + 50%);
   }
@@ -34,7 +52,79 @@ export const HomeContainer = styled.div`
 export const ContentSection = styled.div`
   position: relative;
   width: 100%;
-  background: white;
+  background: transparent;
+  padding-bottom: 30px;
+  z-index: 1;
+`;
+
+export const SectionBackground = styled.div<{
+  $variant?: "weekly" | "content";
+}>`
+  width: 100vw;
+  margin-left: calc(-50vw + 50%);
+  background: #ffffff;
+  position: relative;
+  z-index: ${({ $variant }) => ($variant === "weekly" ? 1 : 0)};
+  padding: ${({ $variant }) =>
+    $variant === "weekly" ? "220px 0 160px" : "120px 0 280px"};
+  margin-top: ${({ $variant }) =>
+    $variant === "weekly" ? "-220px" : "-120px"};
+  box-shadow: ${({ $variant }) =>
+    $variant === "weekly"
+      ? "0 -20px 60px rgba(6, 12, 24, 0.18)"
+      : "0 30px 80px rgba(6, 12, 24, 0.12)"};
+`;
+
+export const SectionInner = styled.div`
+  width: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 40px;
+
+  @media ${device.mobile} {
+    padding: 0 20px;
+  }
+`;
+
+export const SectionDivider = styled.div<{ $flip?: boolean }>`
+  width: 100vw;
+  height: 150px;
+  margin-left: calc(-50vw + 50%);
+  margin-right: calc(-50vw + 50%);
+  transform: ${({ $flip }) => ($flip ? "scaleY(-1)" : "none")};
+  position: relative;
+  z-index: 1;
+  margin-top: -50px;
+  pointer-events: none;
+
+  @media ${device.mobile} {
+    height: 110px;
+    margin-top: -40px;
+  }
+`;
+
+export const SectionSurface = styled.div<{ $hasBackground?: boolean }>`
+  position: relative;
+  z-index: 2;
+  padding: 0 10px;
+  margin: ${({ $hasBackground }) =>
+    $hasBackground ? "-80px auto 50px" : "50px auto"};
+  width: ${({ $hasBackground }) => ($hasBackground ? "100vw" : "100%")};
+  max-width: ${({ $hasBackground }) => ($hasBackground ? "none" : "1280px")};
+  margin-left: ${({ $hasBackground }) =>
+    $hasBackground ? "calc(-50vw + 50%)" : "auto"};
+  margin-right: ${({ $hasBackground }) =>
+    $hasBackground ? "calc(-50vw + 50%)" : "auto"};
+  background: ${({ $hasBackground }) =>
+    $hasBackground ? "#ffffff" : "transparent"};
+  padding: ${({ $hasBackground }) => ($hasBackground ? "40px 20px" : "0 20px")};
+
+  @media ${device.mobile} {
+    padding: ${({ $hasBackground }) =>
+      $hasBackground ? "30px 16px" : "0 16px"};
+    margin: ${({ $hasBackground }) =>
+      $hasBackground ? "-40px auto 40px" : "40px auto"};
+  }
 `;
 
 export const BackgroundSlide = styled.div`
@@ -76,7 +166,7 @@ export const BackgroundImage = styled.img<{ $isActive: boolean }>`
 
 export const OverlayText = styled.div<{ $opacity: number }>`
   position: absolute;
-  top: 50%;
+  top: calc(45% + 10px);
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 1;
@@ -93,6 +183,7 @@ export const OverlayText = styled.div<{ $opacity: number }>`
 
   @media ${device.mobile} {
     padding: 20px 15px;
+    top: calc(50% + 10px);
   }
 `;
 
@@ -107,8 +198,44 @@ const letterFadeIn = keyframes`
   }
 `;
 
+const sparkleAnimation = keyframes`
+  0%, 100% {
+    opacity: 1;
+    text-shadow: 3px 3px 8px rgba(0, 0, 0, 0.6), 0 0 20px rgba(0, 0, 0, 0.3);
+  }
+  50% {
+    opacity: 0.6;
+    text-shadow: 3px 3px 8px rgba(0, 0, 0, 0.6), 0 0 20px rgba(0, 0, 0, 0.3),
+      0 0 30px rgba(255, 255, 255, 0.8), 0 0 40px rgba(255, 255, 255, 0.6);
+  }
+`;
+
+const sparkleAnimation2 = keyframes`
+  0%, 100% {
+    opacity: 1;
+    text-shadow: 3px 3px 8px rgba(0, 0, 0, 0.6), 0 0 20px rgba(0, 0, 0, 0.3);
+  }
+  50% {
+    opacity: 0.7;
+    text-shadow: 3px 3px 8px rgba(0, 0, 0, 0.6), 0 0 20px rgba(0, 0, 0, 0.3),
+      0 0 25px rgba(255, 255, 255, 0.7), 0 0 35px rgba(255, 255, 255, 0.5);
+  }
+`;
+
+const sparkleAnimation3 = keyframes`
+  0%, 100% {
+    opacity: 1;
+    text-shadow: 3px 3px 8px rgba(0, 0, 0, 0.6), 0 0 20px rgba(0, 0, 0, 0.3);
+  }
+  50% {
+    opacity: 0.65;
+    text-shadow: 3px 3px 8px rgba(0, 0, 0, 0.6), 0 0 20px rgba(0, 0, 0, 0.3),
+      0 0 35px rgba(255, 255, 255, 0.9), 0 0 45px rgba(255, 255, 255, 0.7);
+  }
+`;
+
 export const MainTitle = styled.h1`
-  font-size: 5.8rem;
+  font-size: 4.8rem;
   font-weight: 700;
   margin-bottom: 25px;
   line-height: 1.15;
@@ -127,7 +254,7 @@ export const MainTitle = styled.h1`
 `;
 
 export const SubTitle = styled.h2`
-  font-size: 4.8rem;
+  font-size: 3.8rem;
   font-weight: 600;
   line-height: 1.2;
   letter-spacing: -0.02em;
@@ -142,17 +269,26 @@ export const SubTitle = styled.h2`
   }
 `;
 
-export const LetterSpan = styled.span<{ $delay: number }>`
+export const LetterSpan = styled.span<{ $delay: number; $index?: number }>`
   display: inline-block;
   opacity: 0;
   transform: translateY(30px) rotateX(90deg);
-  animation: ${letterFadeIn} 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-  animation-delay: ${(props) => props.$delay}s;
+  animation: ${letterFadeIn} 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards,
+    ${(props) => {
+        const animIndex = (props.$index || 0) % 3;
+        if (animIndex === 0) return sparkleAnimation;
+        if (animIndex === 1) return sparkleAnimation2;
+        return sparkleAnimation3;
+      }}
+      2s ease-in-out infinite;
+  animation-delay: ${(props) => props.$delay}s,
+    ${(props) => props.$delay + 0.8 + (props.$index || 0) * 0.15}s;
   transition: all 0.3s ease;
 
   &:hover {
     transform: translateY(-3px) scale(1.05);
     text-shadow: 0 5px 20px rgba(255, 255, 255, 0.6);
+    animation-play-state: paused;
   }
 `;
 
@@ -401,8 +537,9 @@ export const SermonButton = styled.button`
 
 export const WeeklyMessageSection = styled.div`
   display: flex;
-  max-width: 1200px;
-  margin: 80px auto;
+  width: calc(100% - 40px);
+  max-width: 1240px;
+  margin: -120px auto 50px;
   background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
   border-radius: 16px;
   overflow: hidden;
@@ -411,6 +548,8 @@ export const WeeklyMessageSection = styled.div`
   transform: translateY(50px);
   transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1),
     transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  z-index: 2;
 
   &.visible {
     opacity: 1;
@@ -419,7 +558,8 @@ export const WeeklyMessageSection = styled.div`
 
   @media ${device.mobile} {
     flex-direction: column;
-    margin: 50px 16px;
+    width: 100%;
+    margin: 20px 16px 30px;
     border-radius: 12px;
   }
 `;
@@ -544,7 +684,7 @@ export const WeeklyMessageButton = styled.button`
 
 export const QuickNavSection = styled.section`
   max-width: 1200px;
-  margin: 80px auto;
+  margin: 50px auto;
   padding: 0 20px;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -552,7 +692,7 @@ export const QuickNavSection = styled.section`
 
   @media ${device.mobile} {
     grid-template-columns: 1fr;
-    margin: 50px auto;
+    margin: 40px auto;
     padding: 0 16px;
     gap: 20px;
   }
@@ -749,14 +889,21 @@ export const SectionTitle = styled.h2`
 `;
 
 export const NextGenerationSection = styled.section`
+  width: 100%;
   max-width: 1200px;
-  margin: 100px auto;
-  padding: 80px 20px;
-  background: white;
+  margin: 0 auto 70px;
+  padding: 70px 40px;
+  background: rgba(255, 255, 255, 0.97);
+  border-radius: 32px;
+  box-shadow: 0 25px 60px rgba(5, 11, 20, 0.12),
+    0 10px 30px rgba(5, 11, 20, 0.08);
+  position: relative;
+  overflow: hidden;
 
   @media ${device.mobile} {
-    margin: 60px auto;
-    padding: 50px 16px;
+    padding: 40px 20px;
+    margin-bottom: 50px;
+    border-radius: 20px;
   }
 `;
 
@@ -900,13 +1047,20 @@ export const NextGenLabel = styled.div`
 `;
 
 export const PhotoGallerySection = styled.section`
+  width: 100%;
   max-width: 1200px;
-  margin: 100px auto;
-  padding: 80px 20px;
+  margin: 0 auto 70px;
+  padding: 70px 40px;
+  background: rgba(255, 255, 255, 0.97);
+  border-radius: 32px;
+  box-shadow: 0 25px 60px rgba(5, 11, 20, 0.1),
+    0 10px 30px rgba(5, 11, 20, 0.08);
+  position: relative;
 
   @media ${device.mobile} {
-    margin: 60px auto;
-    padding: 50px 16px;
+    padding: 40px 20px;
+    margin-bottom: 50px;
+    border-radius: 20px;
   }
 `;
 

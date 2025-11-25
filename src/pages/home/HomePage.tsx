@@ -73,24 +73,33 @@ export default function HomePage() {
   return (
     <>
       <MainTemplate transparentHeader>
-        <S.HomeContainer>
+        <S.BackgroundCanvas>
           <S.BackgroundSlide>
             {images.map((image, index) => (
               <S.BackgroundImage
-                key={index}
+                key={`bg-${index}`}
                 src={image}
                 alt={`배경 이미지 ${index + 1}`}
                 $isActive={index === currentIndex}
               />
             ))}
           </S.BackgroundSlide>
+        </S.BackgroundCanvas>
+
+        <S.HomeContainer>
           <S.OverlayText $opacity={1}>
             <S.MainTitle>
-              {"오늘 보다 내일이 더 좋은 교회".split("").map((char, index) => (
-                <S.LetterSpan key={index} $delay={index * 0.05}>
-                  {char === " " ? "\u00A0" : char}
-                </S.LetterSpan>
-              ))}
+              {'"오늘 보다 내일이 더 좋은 교회"'
+                .split("")
+                .map((char, index) => (
+                  <S.LetterSpan
+                    key={index}
+                    $delay={index * 0.05}
+                    $index={index}
+                  >
+                    {char === " " ? "\u00A0" : char}
+                  </S.LetterSpan>
+                ))}
             </S.MainTitle>
             <S.SubTitle>
               {"미래존교회".split("").map((char, index) => (
@@ -102,7 +111,7 @@ export default function HomePage() {
           </S.OverlayText>
         </S.HomeContainer>
 
-        <S.ContentSection>
+        <S.SectionSurface $hasBackground>
           <S.WeeklyMessageSection ref={weeklyMessageRef}>
             <S.WeeklyMessageImage>
               <S.BibleImage />
@@ -113,7 +122,7 @@ export default function HomePage() {
                 "그리스도인들은 지금 어디에 있습니까?"
               </S.WeeklyMessageTitle>
               <S.WeeklyMessageInfo>
-                야고보서 4:13 - 5:6 황외석 담임목사
+                야고보서 4:13 - 5:6 나영호 담임목사
               </S.WeeklyMessageInfo>
               <S.WeeklyMessageButton>
                 <HiPlay />
@@ -121,38 +130,48 @@ export default function HomePage() {
               </S.WeeklyMessageButton>
             </S.WeeklyMessageContent>
           </S.WeeklyMessageSection>
+        </S.SectionSurface>
 
-          <S.QuickNavSection>
-            {[
-              {
-                bgImage: "church",
-                title: "교회소개",
-                subtitle: "Church Introduce",
-              },
-              {
-                bgImage: "worship",
-                title: "예배시간",
-                subtitle: "Worship Time",
-              },
-              { bgImage: "location", title: "오시는길", subtitle: "Location" },
-              { bgImage: "news", title: "교회소식", subtitle: "News" },
-            ].map((item, index) => (
-              <S.QuickNavCard
-                key={index}
-                ref={(el) => {
-                  quickNavRefs.current[index] = el;
-                }}
-              >
-                <S.QuickNavImage $bgImage={item.bgImage}>
-                  <S.QuickNavOverlay>
-                    <S.QuickNavTitle>{item.title}</S.QuickNavTitle>
-                    <S.QuickNavSubtitle>{item.subtitle}</S.QuickNavSubtitle>
-                  </S.QuickNavOverlay>
-                </S.QuickNavImage>
-              </S.QuickNavCard>
-            ))}
-          </S.QuickNavSection>
+        <S.SectionSurface>
+          <S.ContentSection>
+            <S.QuickNavSection>
+              {[
+                {
+                  bgImage: "church",
+                  title: "교회소개",
+                  subtitle: "Church Introduce",
+                },
+                {
+                  bgImage: "worship",
+                  title: "예배시간",
+                  subtitle: "Worship Time",
+                },
+                {
+                  bgImage: "location",
+                  title: "오시는길",
+                  subtitle: "Location",
+                },
+                { bgImage: "news", title: "교회소식", subtitle: "News" },
+              ].map((item, index) => (
+                <S.QuickNavCard
+                  key={index}
+                  ref={(el) => {
+                    quickNavRefs.current[index] = el;
+                  }}
+                >
+                  <S.QuickNavImage $bgImage={item.bgImage}>
+                    <S.QuickNavOverlay>
+                      <S.QuickNavTitle>{item.title}</S.QuickNavTitle>
+                      <S.QuickNavSubtitle>{item.subtitle}</S.QuickNavSubtitle>
+                    </S.QuickNavOverlay>
+                  </S.QuickNavImage>
+                </S.QuickNavCard>
+              ))}
+            </S.QuickNavSection>
+          </S.ContentSection>
+        </S.SectionSurface>
 
+        <S.SectionSurface>
           <S.NextGenerationSection>
             <S.SectionHeader ref={nextGenSectionHeaderRef}>
               <S.SectionSubtitle>CHURCH SCHOOL</S.SectionSubtitle>
@@ -183,7 +202,9 @@ export default function HomePage() {
               ))}
             </S.NextGenerationGrid>
           </S.NextGenerationSection>
+        </S.SectionSurface>
 
+        <S.SectionSurface>
           <S.PhotoGallerySection>
             <S.SectionHeader ref={photoSectionHeaderRef}>
               <S.SectionSubtitle>PHOTO GALLERY</S.SectionSubtitle>
@@ -202,7 +223,7 @@ export default function HomePage() {
               ))}
             </S.PhotoGrid>
           </S.PhotoGallerySection>
-        </S.ContentSection>
+        </S.SectionSurface>
       </MainTemplate>
     </>
   );

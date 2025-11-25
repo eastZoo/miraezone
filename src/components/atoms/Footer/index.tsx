@@ -11,8 +11,8 @@ export const Footer = () => {
           <Link to="/">
             <S.FooterLogoImage src={logo} alt="교회 로고" />
             <S.FooterLogoText>
-              <S.FooterLogoSubtitle>기독교대한성결교회</S.FooterLogoSubtitle>
-              <S.FooterLogoTitle>미래존교회</S.FooterLogoTitle>
+              <S.FooterLogoSubtitle>담임목사</S.FooterLogoSubtitle>
+              <S.FooterLogoTitle>나영호</S.FooterLogoTitle>
             </S.FooterLogoText>
           </Link>
         </S.FooterLogoSection>
@@ -30,7 +30,8 @@ export const Footer = () => {
 
         {/* 저작권 정보 */}
         <S.FooterCopyright>
-          Copyright © 2025 미래존교회 All rights reserved. Designed by eastZoo
+          Copyright © 2025 미래존교회 All rights reserved. Designed by
+          미래존교회
         </S.FooterCopyright>
       </S.FooterInner>
     </S.FooterWrapper>

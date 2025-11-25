@@ -498,22 +498,38 @@ export const SubMenu = styled.ul`
   top: 90%;
   left: 50%;
   transform: translateX(-50%);
-  min-width: 180px;
-  background: white;
-  border: 1px solid rgba(229, 229, 229, 0.8);
-  border-radius: 8px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12), 0 2px 8px rgba(0, 0, 0, 0.08);
-  padding: 12px 0;
-  margin-top: 8px;
+  min-width: 200px;
+  background: linear-gradient(
+    145deg,
+    rgba(8, 17, 32, 0.95) 0%,
+    rgba(12, 26, 49, 0.92) 60%,
+    rgba(21, 43, 72, 0.9) 100%
+  );
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 18px;
+  box-shadow: 0 20px 45px rgba(3, 10, 24, 0.65);
+  padding: 16px 0;
+  margin-top: 12px;
   list-style: none;
   z-index: 1002;
   opacity: 0;
   visibility: hidden;
-  transform: translateX(-50%) translateY(-10px);
-  transition: opacity 0.3s ease, visibility 0.3s ease,
-    transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  backdrop-filter: blur(22px);
+  -webkit-backdrop-filter: blur(22px);
+  transform: translateX(-50%) translateY(-16px);
+  transition: opacity 0.35s ease, visibility 0.35s ease,
+    transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
   pointer-events: none;
-  overflow: visible;
+  overflow: hidden;
+
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 18px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    pointer-events: none;
+  }
 
   ${MenuItem}:hover & {
     opacity: 1;
@@ -533,32 +549,47 @@ export const SubMenuItem = styled.li`
 
   a {
     display: block;
-    padding: 12px 24px;
+    padding: 14px 28px;
     height: auto;
-    line-height: 1.5;
+    line-height: 1.4;
     font-size: 1.5rem;
     font-weight: 400;
-    color: #333;
+    color: rgba(255, 255, 255, 0.85);
     text-decoration: none;
-    transition: all 0.2s ease;
+    transition: all 0.25s ease;
     white-space: nowrap;
+    letter-spacing: 0.02em;
+    position: relative;
 
     &::after {
-      display: none;
+      content: "";
+      position: absolute;
+      left: 20px;
+      top: 50%;
+      transform: translateY(-50%) scaleX(0);
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #f6c77b;
+      transition: transform 0.25s ease;
     }
 
     &:hover {
-      background: rgba(164, 73, 69, 0.08);
-      color: #a44945;
-      padding-left: 28px;
+      background: rgba(255, 255, 255, 0.08);
+      color: #ffffff;
+      padding-left: 34px;
+
+      &::after {
+        transform: translateY(-50%) scaleX(1);
+      }
     }
 
     @media ${device.mobile} {
-      padding: 10px 20px;
+      padding: 12px 22px;
       font-size: 1.4rem;
 
       &:hover {
-        padding-left: 24px;
+        padding-left: 28px;
       }
     }
   }
