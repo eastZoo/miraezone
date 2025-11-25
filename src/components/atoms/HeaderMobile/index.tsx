@@ -4,7 +4,6 @@ import { Link } from "react-router-dom";
 
 import HamMenu from "../HamMenu";
 import logo from "@/styles/assets/images/church_logo.png";
-import { HiMenu, HiX } from "react-icons/hi";
 
 // 서브 메뉴 데이터 (Header와 동일)
 const menuItems = [

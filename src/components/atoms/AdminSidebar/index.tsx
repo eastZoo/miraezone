@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import * as S from "./AdminSidebar.style";
-import { adminSidebarMenu, type AdminMenuGroup } from "@/lib/data/dummy";
+
 import { HiMiniChevronUp } from "react-icons/hi2";
 
 interface AdminSidebarProps {
-  activeMenu: string;
+  activeMenu?: string;
 }
 
-const AdminSidebar: React.FC<AdminSidebarProps> = ({ activeMenu }) => {
-  const menuGroups = adminSidebarMenu[activeMenu] || [];
+const AdminSidebar: React.FC<AdminSidebarProps> = () => {
+  const menuGroups: any[] = [];
 
   // // 첫 번째 그룹을 제외한 모든 그룹을 초기 상태에서 접힌 상태로 설정
   // const [collapsedGroups, setCollapsedGroups] = useState<Set<string>>(
@@ -25,7 +25,10 @@ const AdminSidebar: React.FC<AdminSidebarProps> = ({ activeMenu }) => {
   // 현재 경로가 속한 그룹을 찾는 함수
   const findActiveGroup = () => {
     for (const group of menuGroups) {
-      if (group.isCollapsible && group.items.some(item => item.path === location.pathname)) {
+      if (
+        group.isCollapsible &&
+        group.items.some((item: any) => item.path === location.pathname)
+      ) {
         return group.id;
       }
     }
@@ -36,16 +39,14 @@ const AdminSidebar: React.FC<AdminSidebarProps> = ({ activeMenu }) => {
   const [collapsedGroups, setCollapsedGroups] = useState<Set<string>>(() => {
     const activeGroupId = findActiveGroup();
     const collapsed = new Set(
-      menuGroups
-        .filter((g) => g.isCollapsible)
-        .map((g) => g.id)
+      menuGroups.filter((g) => g.isCollapsible).map((g) => g.id)
     );
-    
+
     // 활성화된 그룹은 열어둠
     if (activeGroupId) {
       collapsed.delete(activeGroupId);
     }
-    
+
     return collapsed;
   });
 
@@ -77,15 +78,9 @@ const AdminSidebar: React.FC<AdminSidebarProps> = ({ activeMenu }) => {
     return location.pathname === path;
   };
 
-  // 그룹이 현재 활성화된 메뉴를 포함하는지 확인
-  const hasActiveItem = (group: AdminMenuGroup) => {
-    return group.items.some(item => item.path === location.pathname);
-  };
-
-
   return (
     <S.Sidebar>
-      {menuGroups.map((group: AdminMenuGroup) => (
+      {menuGroups.map((group: any) => (
         <S.MenuGroup key={group.id}>
           {group.isCollapsible ? (
             <>
@@ -95,12 +90,12 @@ const AdminSidebar: React.FC<AdminSidebarProps> = ({ activeMenu }) => {
               >
                 <S.GroupTitle>{group.title}</S.GroupTitle>
                 <S.CollapseIcon $isCollapsed={collapsedGroups.has(group.id)}>
-                  <HiMiniChevronUp/>
+                  <HiMiniChevronUp />
                 </S.CollapseIcon>
               </S.GroupHeader>
               {!collapsedGroups.has(group.id) && (
                 <S.MenuList>
-                  {group.items.map((item) => (
+                  {group.items.map((item: any) => (
                     <S.MenuItem key={item.id}>
                       <S.MenuLink
                         as={Link}
@@ -120,7 +115,7 @@ const AdminSidebar: React.FC<AdminSidebarProps> = ({ activeMenu }) => {
                 <S.GroupTitle>{group.title}</S.GroupTitle>
               </S.GroupHeaderStatic>
               <S.MenuList>
-                {group.items.map((item) => (
+                {group.items.map((item: any) => (
                   <S.MenuItem key={item.id}>
                     <S.MenuLink
                       as={Link}

@@ -2,7 +2,6 @@ import React from "react";
 import * as S from "./RecentProductsSidebar.style";
 import { FaTimes } from "react-icons/fa";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
-import type { Product } from "@/lib/types/product";
 
 // interface RecentProduct {
 //   id: number;
@@ -14,13 +13,12 @@ import type { Product } from "@/lib/types/product";
 interface RecentProductsSidebarProps {
   isOpen: boolean;
   onClose: () => void;
-  products?: Product[];
+  products?: any[];
 }
 
 const RecentProductsSidebar: React.FC<RecentProductsSidebarProps> = ({
   isOpen,
   onClose,
-  products = [],
 }) => {
   return (
     <>
@@ -34,7 +32,7 @@ const RecentProductsSidebar: React.FC<RecentProductsSidebarProps> = ({
         </S.SidebarHeader>
 
         <S.ProductsList>
-          {products.map((product) => (
+          {[].map((product: any) => (
             <S.ProductItem key={product.id}>
               <S.ProductImage>
                 <img src={product.imageUrl} alt={product.title} />

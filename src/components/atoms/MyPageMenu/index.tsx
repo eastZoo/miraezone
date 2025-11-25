@@ -1,4 +1,3 @@
-import { menuGroups } from "@/lib/data/dummy";
 import * as S from "./MyPageMenu.style";
 import { Link, NavLink } from "react-router-dom";
 
@@ -13,13 +12,18 @@ export const MyPageMenu = () => {
       </S.MyPageMenuTitle>
 
       {/* 메뉴 그룹 */}
-      {menuGroups.map((group) => (
+      {[].map((group: any) => (
         <S.MyPageMenuBox key={group.title}>
           <S.MyPageMenuListTitle>{group.title}</S.MyPageMenuListTitle>
           <S.MyPageMenuList>
-            {group.items.map((item) => (
+            {group.items.map((item: any) => (
               <li key={item.path}>
-                <NavLink to={item.path} className={({ isActive }) => (isActive ? "active" : undefined)}>
+                <NavLink
+                  to={item.path}
+                  className={({ isActive }) =>
+                    isActive ? "active" : undefined
+                  }
+                >
                   {item.label}
                 </NavLink>
               </li>
