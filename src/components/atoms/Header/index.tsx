@@ -1,0 +1,219 @@
+import React, { useEffect, useRef, useState } from "react";
+import * as S from "./Header.style";
+/** 아이콘 임포트 */
+import logo from "@/styles/assets/images/church_logo.png";
+
+import { Link } from "react-router-dom";
+
+const Header: React.FC = () => {
+  // const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isFixed, setIsFixed] = useState(false);
+  const headerRef = useRef<HTMLDivElement | null>(null);
+  const gnbRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (!headerRef.current || !gnbRef.current) return;
+
+      const topUtilityHeight = 40; // TopUtilityBar 높이
+      const mainHeaderHeight = 80; // MainHeader 높이
+      const offsetTop = topUtilityHeight + mainHeaderHeight;
+
+      setIsFixed(window.scrollY > offsetTop);
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    handleScroll();
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  // const toggleAllCategory = () => setIsMenuOpen((prev) => !prev);
+
+  return (
+    <S.HeaderWrapper ref={headerRef} id="header">
+      {/* 상단 유틸리티 바 */}
+      {/* <S.TopUtilityBar>
+        <S.TopUtilityInner>
+          <S.TopUtilityList>
+            <Link to="/auth/login">
+              <div>로그인</div>
+            </Link>
+            <Link to="/auth/register/welcome">
+              <div>회원가입</div>
+            </Link>
+            <Link to="/mypage">
+              <div>마이페이지</div>
+            </Link>
+            <Link to="/shop/orderinquiryview">
+              <div>주문확인</div>
+            </Link>
+          </S.TopUtilityList>
+        </S.TopUtilityInner>
+      </S.TopUtilityBar> */}
+
+      {/* 메인 헤더 - 로고와 메뉴가 같은 row */}
+      <S.MainHeader ref={gnbRef} className={isFixed ? "fixed" : ""}>
+        <S.HeaderInner>
+          {/* 로고 영역 */}
+          <S.LogoWrapper>
+            <Link to="/">
+              <img src={logo} alt="교회 로고" />
+            </Link>
+          </S.LogoWrapper>
+
+          {/* 네비게이션 메뉴 영역 */}
+          <S.NavSection>
+            {/* 전체카테고리 */}
+            {/* <S.AllCategory>
+              <S.AllCategoryBtn
+                onClick={toggleAllCategory}
+                aria-expanded={isMenuOpen}
+              >
+                {isMenuOpen ? <HiX /> : <HiMenu />}
+                전체카테고리
+              </S.AllCategoryBtn>
+
+              {isMenuOpen && (
+                <S.CategoryDropdown>
+                  <S.CategoryGrid>
+                    <S.CategoryColumn>
+                      <S.CategoryTitle>한우</S.CategoryTitle>
+                      <S.CategoryList>
+                        <li>
+                          <a href="/shop/typeList?cate_type=admin&ca_id=001001">
+                            한우암소
+                          </a>
+                        </li>
+                        <li>
+                          <a href="/shop/typeList?cate_type=admin&ca_id=001002">
+                            한우거세
+                          </a>
+                        </li>
+                      </S.CategoryList>
+                    </S.CategoryColumn>
+                    <S.CategoryColumn>
+                      <S.CategoryTitle>한돈</S.CategoryTitle>
+                      <S.CategoryList>
+                        <li>
+                          <a href="/shop/typeList?cate_type=admin&ca_id=002001">
+                            목살
+                          </a>
+                        </li>
+                        <li>
+                          <a href="/shop/typeList?cate_type=admin&ca_id=002002">
+                            앞다리
+                          </a>
+                        </li>
+                        <li>
+                          <a href="/shop/typeList?cate_type=admin&ca_id=002003">
+                            뒷다리
+                          </a>
+                        </li>
+                      </S.CategoryList>
+                    </S.CategoryColumn>
+                    <S.CategoryColumn>
+                      <S.CategoryTitle>수입우육</S.CategoryTitle>
+                      <S.CategoryList>
+                        <li>
+                          <a href="/shop/typeList?cate_type=admin&ca_id=003005">
+                            미국
+                          </a>
+                        </li>
+                        <li>
+                          <a href="/shop/typeList?cate_type=admin&ca_id=003011">
+                            멕시코
+                          </a>
+                        </li>
+                        <li>
+                          <a href="/shop/typeList?cate_type=admin&ca_id=003013">
+                            뉴질랜드
+                          </a>
+                        </li>
+                        <li>
+                          <a href="/shop/typeList?cate_type=admin&ca_id=003014">
+                            캐나다
+                          </a>
+                        </li>
+                        <li>
+                          <a href="/shop/typeList?cate_type=admin&ca_id=003016">
+                            호주
+                          </a>
+                        </li>
+                      </S.CategoryList>
+                    </S.CategoryColumn>
+                    <S.CategoryColumn>
+                      <S.CategoryTitle>수입돈육</S.CategoryTitle>
+                      <S.CategoryList>
+                        <li>
+                          <a href="/shop/typeList?cate_type=admin&ca_id=004002">
+                            네덜란드
+                          </a>
+                        </li>
+                        <li>
+                          <a href="/shop/typeList?cate_type=admin&ca_id=004003">
+                            독일
+                          </a>
+                        </li>
+                        <li>
+                          <a href="/shop/typeList?cate_type=admin&ca_id=004004">
+                            프랑스
+                          </a>
+                        </li>
+                        <li>
+                          <a href="/shop/typeList?cate_type=admin&ca_id=004005">
+                            스페인
+                          </a>
+                        </li>
+                      </S.CategoryList>
+                    </S.CategoryColumn>
+                    <S.CategoryColumn>
+                      <S.CategoryTitle>닭·오리</S.CategoryTitle>
+                      <S.CategoryList>
+                        <li>
+                          <a href="/shop/typeList?cate_type=admin&ca_id=006001">
+                            닭
+                          </a>
+                        </li>
+                        <li>
+                          <a href="/shop/typeList?cate_type=admin&ca_id=006002">
+                            오리
+                          </a>
+                        </li>
+                      </S.CategoryList>
+                    </S.CategoryColumn>
+                  </S.CategoryGrid>
+                </S.CategoryDropdown>
+              )}
+            </S.AllCategory> */}
+
+            {/* 메인 메뉴 */}
+            <S.MainMenu>
+              <S.MenuList>
+                <li>
+                  <Link to="/">교회소개</Link>
+                </li>
+                <li>
+                  <Link to="/">안내/소식</Link>
+                </li>
+                <li>
+                  <Link to="/">예배/찬양</Link>
+                </li>
+                <li>
+                  <Link to="/">사역/양육</Link>
+                </li>
+                <li>
+                  <Link to="/">다음세대</Link>
+                </li>
+                <li>
+                  <Link to="/">자료실</Link>
+                </li>
+              </S.MenuList>
+            </S.MainMenu>
+          </S.NavSection>
+        </S.HeaderInner>
+      </S.MainHeader>
+    </S.HeaderWrapper>
+  );
+};
+
+export default Header;
