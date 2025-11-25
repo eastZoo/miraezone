@@ -61,7 +61,7 @@ export const TopUtilityList = styled.div`
 
 /* ========== 메인 헤더 ========== */
 export const MainHeader = styled.div`
-  background: rgba(255, 255, 255, 0.85);
+  background: linear-gradient(to bottom, #1a1a2e 0%, #16213e 100%);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border-bottom: 1px solid rgba(229, 229, 229, 0.3);
@@ -77,7 +77,7 @@ export const MainHeader = styled.div`
     right: 0;
     z-index: 1000;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-    background: rgba(255, 255, 255, 0.95);
+    background: linear-gradient(to bottom, #1a1a2e 0%, #16213e 100%);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     border-bottom: 1px solid rgba(229, 229, 229, 0.5);
@@ -444,7 +444,7 @@ export const MenuItem = styled.li`
     line-height: 100px;
     font-size: 1.8rem;
     font-weight: 500;
-    color: #333;
+    color: white;
     text-decoration: none;
     transition: all 0.3s ease;
     white-space: nowrap;

@@ -1,4 +1,4 @@
-# Bumin Web V2 Boilerplate
+# 미래존 교회 V2 Boilerplate
 
 React + TypeScript + Vite 기반으로 구성된 스타터 템플릿입니다.  
 React Query, Recoil, Styled-Components, React Router, Axios 토큰 갱신 로직 등을 기본 제공해 팀 내 공통 보일러플레이트로 활용할 수 있습니다.
