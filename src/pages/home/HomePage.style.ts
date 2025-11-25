@@ -12,16 +12,22 @@ const fadeIn = keyframes`
 
 export const HomeContainer = styled.div`
   position: relative;
-  width: 100%;
+  width: 100vw;
   height: 100vh;
-  min-height: 600px;
+  min-height: 700px;
   overflow: hidden;
-  margin: 0;
+  margin-left: calc(-50vw + 50%);
+  margin-right: calc(-50vw + 50%);
   padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
   @media ${device.mobile} {
-    height: 80vh;
-    min-height: 400px;
+    height: 85vh;
+    min-height: 500px;
+    margin-left: calc(-50vw + 50%);
+    margin-right: calc(-50vw + 50%);
   }
 `;
 
@@ -47,9 +53,25 @@ export const BackgroundImage = styled.img<{ $isActive: boolean }>`
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: center;
   opacity: ${(props) => (props.$isActive ? 1 : 0)};
-  transition: opacity 1.5s ease-in-out;
-  animation: ${(props) => props.$isActive && fadeIn} 1.5s ease-in-out;
+  transition: opacity 2s ease-in-out;
+  animation: ${(props) => props.$isActive && fadeIn} 2s ease-in-out;
+  filter: brightness(0.7) contrast(1.1);
+
+  &::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0.2) 0%,
+      rgba(0, 0, 0, 0.1) 100%
+    );
+  }
 `;
 
 export const OverlayText = styled.div<{ $opacity: number }>`
@@ -60,17 +82,17 @@ export const OverlayText = styled.div<{ $opacity: number }>`
   z-index: 1;
   text-align: center;
   color: white;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-  padding: 20px;
+  text-shadow: 3px 3px 8px rgba(0, 0, 0, 0.6), 0 0 20px rgba(0, 0, 0, 0.3);
+  padding: 20px 20px;
   width: 100%;
   max-width: 1200px;
   box-sizing: border-box;
   opacity: ${(props) => props.$opacity};
-  transition: opacity 0.3s ease-out;
+  transition: opacity 0.4s ease-out;
   pointer-events: ${(props) => (props.$opacity > 0 ? "auto" : "none")};
 
   @media ${device.mobile} {
-    padding: 15px;
+    padding: 20px 15px;
   }
 `;
 
@@ -86,36 +108,37 @@ const letterFadeIn = keyframes`
 `;
 
 export const MainTitle = styled.h1`
-  font-size: 5.5rem;
+  font-size: 5.8rem;
   font-weight: 700;
-  margin-bottom: 20px;
-  line-height: 1.2;
-  letter-spacing: -0.02em;
+  margin-bottom: 25px;
+  line-height: 1.15;
+  letter-spacing: -0.03em;
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
-  gap: 2px;
+  gap: 3px;
 
   @media ${device.mobile} {
-    font-size: 3rem;
-    margin-bottom: 15px;
-    gap: 1px;
+    font-size: 3.2rem;
+    margin-bottom: 18px;
+    gap: 2px;
+    line-height: 1.2;
   }
 `;
 
 export const SubTitle = styled.h2`
-  font-size: 4.5rem;
+  font-size: 4.8rem;
   font-weight: 600;
   line-height: 1.2;
   letter-spacing: -0.02em;
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
-  gap: 2px;
+  gap: 3px;
 
   @media ${device.mobile} {
-    font-size: 2.5rem;
-    gap: 1px;
+    font-size: 2.6rem;
+    gap: 2px;
   }
 `;
 
@@ -123,24 +146,13 @@ export const LetterSpan = styled.span<{ $delay: number }>`
   display: inline-block;
   opacity: 0;
   transform: translateY(30px) rotateX(90deg);
-  animation: ${letterFadeIn} 0.6s ease-out forwards;
+  animation: ${letterFadeIn} 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
   animation-delay: ${(props) => props.$delay}s;
   transition: all 0.3s ease;
 
   &:hover {
-    transform: translateY(-5px) scale(1.1);
-    text-shadow: 0 5px 15px rgba(255, 255, 255, 0.5);
-  }
-`;
-
-const slideUp = keyframes`
-  from {
-    opacity: 0;
-    transform: translateY(50px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
+    transform: translateY(-3px) scale(1.05);
+    text-shadow: 0 5px 20px rgba(255, 255, 255, 0.6);
   }
 `;
 
@@ -390,14 +402,15 @@ export const SermonButton = styled.button`
 export const WeeklyMessageSection = styled.div`
   display: flex;
   max-width: 1200px;
-  margin: 60px auto;
-  background: #1a1a2e;
-  border-radius: 12px;
+  margin: 80px auto;
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+  border-radius: 16px;
   overflow: hidden;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25), 0 2px 8px rgba(0, 0, 0, 0.15);
   opacity: 0;
   transform: translateY(50px);
-  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+  transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1),
+    transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
 
   &.visible {
     opacity: 1;
@@ -406,8 +419,8 @@ export const WeeklyMessageSection = styled.div`
 
   @media ${device.mobile} {
     flex-direction: column;
-    margin: 40px 16px;
-    border-radius: 8px;
+    margin: 50px 16px;
+    border-radius: 12px;
   }
 `;
 
@@ -547,16 +560,16 @@ export const QuickNavSection = styled.section`
 
 export const QuickNavCard = styled.div`
   position: relative;
-  height: 280px;
-  border-radius: 12px;
+  height: 300px;
+  border-radius: 16px;
   overflow: hidden;
   cursor: pointer;
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.12), 0 2px 8px rgba(0, 0, 0, 0.08);
   opacity: 0;
   transform: translateY(50px);
-  transition: opacity 0.8s ease-out, transform 0.8s ease-out,
-    box-shadow 0.4s ease;
+  transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1),
+    transform 0.8s cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 
   &.visible {
     opacity: 1;
@@ -590,15 +603,15 @@ export const QuickNavCard = styled.div`
   }
 
   &:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
+    transform: translateY(-10px);
+    box-shadow: 0 16px 48px rgba(0, 0, 0, 0.25), 0 4px 16px rgba(0, 0, 0, 0.15);
 
     div:first-child {
-      transform: scale(1.1);
+      transform: scale(1.08);
     }
 
     div:last-child {
-      background: rgba(0, 0, 0, 0.6);
+      background: rgba(0, 0, 0, 0.65);
     }
   }
 
@@ -658,12 +671,16 @@ export const QuickNavOverlay = styled.div`
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.4);
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.3) 0%,
+    rgba(0, 0, 0, 0.5) 100%
+  );
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  transition: background 0.4s ease;
+  transition: background 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   padding: 20px;
 `;
 
@@ -694,10 +711,11 @@ export const QuickNavSubtitle = styled.p`
 
 export const SectionHeader = styled.div`
   text-align: center;
-  margin-bottom: 40px;
+  margin-bottom: 50px;
   opacity: 0;
   transform: translateY(30px);
-  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+  transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1),
+    transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
 
   &.visible {
     opacity: 1;
@@ -706,25 +724,27 @@ export const SectionHeader = styled.div`
 `;
 
 export const SectionSubtitle = styled.div`
-  font-size: 1.4rem;
-  color: #4a90e2;
+  font-size: 1.5rem;
+  color: #a44945;
   font-weight: 600;
-  letter-spacing: 0.1em;
-  margin-bottom: 10px;
+  letter-spacing: 0.15em;
+  margin-bottom: 12px;
+  text-transform: uppercase;
 
   @media ${device.mobile} {
-    font-size: 1.2rem;
+    font-size: 1.3rem;
   }
 `;
 
 export const SectionTitle = styled.h2`
-  font-size: 3.5rem;
+  font-size: 3.8rem;
   font-weight: 700;
-  color: #333;
+  color: #1a1a2e;
   margin: 0;
+  line-height: 1.2;
 
   @media ${device.mobile} {
-    font-size: 2.5rem;
+    font-size: 2.6rem;
   }
 `;
 
@@ -815,17 +835,24 @@ export const NextGenItem = styled.div`
 `;
 
 export const NextGenCircle = styled.div`
-  width: 150px;
-  height: 150px;
+  width: 160px;
+  height: 160px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #a44945 0%, #8a3a37 100%);
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
-  transition: all 0.3s ease;
+  box-shadow: 0 10px 30px rgba(164, 73, 69, 0.35),
+    0 4px 12px rgba(164, 73, 69, 0.2);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
   overflow: hidden;
+
+  &:hover {
+    transform: scale(1.05);
+    box-shadow: 0 12px 36px rgba(164, 73, 69, 0.4),
+      0 6px 16px rgba(164, 73, 69, 0.25);
+  }
 
   &::before {
     content: "";
@@ -876,7 +903,6 @@ export const PhotoGallerySection = styled.section`
   max-width: 1200px;
   margin: 100px auto;
   padding: 80px 20px;
-  background: #f8f8f8;
 
   @media ${device.mobile} {
     margin: 60px auto;

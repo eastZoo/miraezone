@@ -5,9 +5,74 @@ import logo from "@/styles/assets/images/church_logo.png";
 
 import { Link } from "react-router-dom";
 
+// 서브 메뉴 데이터
+const menuItems = [
+  {
+    title: "교회소개",
+    path: "/",
+    subMenu: [
+      { title: "교회 소개", path: "/" },
+      { title: "교회 비전", path: "/" },
+      { title: "교회 연혁", path: "/" },
+      { title: "교회 조직", path: "/" },
+      { title: "오시는 길", path: "/" },
+    ],
+  },
+  {
+    title: "안내/소식",
+    path: "/",
+    subMenu: [
+      { title: "공지사항", path: "/" },
+      { title: "교회 소식", path: "/" },
+      { title: "행사 안내", path: "/" },
+      { title: "주보", path: "/" },
+    ],
+  },
+  {
+    title: "예배/찬양",
+    path: "/",
+    subMenu: [
+      { title: "예배 안내", path: "/" },
+      { title: "설교 영상", path: "/" },
+      { title: "찬양 영상", path: "/" },
+      { title: "예배 말씀", path: "/" },
+    ],
+  },
+  {
+    title: "사역/양육",
+    path: "/",
+    subMenu: [
+      { title: "사역 소개", path: "/" },
+      { title: "양육 프로그램", path: "/" },
+      { title: "제자 훈련", path: "/" },
+      { title: "선교 사역", path: "/" },
+    ],
+  },
+  {
+    title: "다음세대",
+    path: "/",
+    subMenu: [
+      { title: "유초등부", path: "/" },
+      { title: "중고등부", path: "/" },
+      { title: "청년부", path: "/" },
+      { title: "다음세대 소식", path: "/" },
+    ],
+  },
+  {
+    title: "자료실",
+    path: "/",
+    subMenu: [
+      { title: "설교 자료", path: "/" },
+      { title: "찬양 자료", path: "/" },
+      { title: "교육 자료", path: "/" },
+      { title: "다운로드", path: "/" },
+    ],
+  },
+];
+
 const Header: React.FC = () => {
-  // const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isFixed, setIsFixed] = useState(false);
+  const [activeMenuIndex, setActiveMenuIndex] = useState<number | null>(null);
   const headerRef = useRef<HTMLDivElement | null>(null);
   const gnbRef = useRef<HTMLDivElement | null>(null);
 
@@ -189,24 +254,24 @@ const Header: React.FC = () => {
             {/* 메인 메뉴 */}
             <S.MainMenu>
               <S.MenuList>
-                <li>
-                  <Link to="/">교회소개</Link>
-                </li>
-                <li>
-                  <Link to="/">안내/소식</Link>
-                </li>
-                <li>
-                  <Link to="/">예배/찬양</Link>
-                </li>
-                <li>
-                  <Link to="/">사역/양육</Link>
-                </li>
-                <li>
-                  <Link to="/">다음세대</Link>
-                </li>
-                <li>
-                  <Link to="/">자료실</Link>
-                </li>
+                {menuItems.map((item, index) => (
+                  <S.MenuItem
+                    key={index}
+                    onMouseEnter={() => setActiveMenuIndex(index)}
+                    onMouseLeave={() => setActiveMenuIndex(null)}
+                  >
+                    <Link to={item.path}>{item.title}</Link>
+                    {activeMenuIndex === index && (
+                      <S.SubMenu>
+                        {item.subMenu.map((subItem, subIndex) => (
+                          <S.SubMenuItem key={subIndex}>
+                            <Link to={subItem.path}>{subItem.title}</Link>
+                          </S.SubMenuItem>
+                        ))}
+                      </S.SubMenu>
+                    )}
+                  </S.MenuItem>
+                ))}
               </S.MenuList>
             </S.MainMenu>
           </S.NavSection>

@@ -4,10 +4,11 @@ import styled from "styled-components";
 /* ========== Wrapper ========== */
 export const FooterWrapper = styled.div`
   position: relative;
-  background: #1a1a2e;
+  background: linear-gradient(to bottom, #1a1a2e 0%, #16213e 100%);
   width: 100%;
   display: flex;
-  padding: 60px 0 40px;
+  padding: 80px 0 50px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
 `;
 
 export const FooterInner = styled(Container)`
@@ -15,7 +16,8 @@ export const FooterInner = styled(Container)`
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 30px;
+  gap: 40px;
+  padding: 0 20px;
 `;
 
 export const FooterLogoSection = styled.div`
@@ -74,14 +76,15 @@ export const FooterContactInfo = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 15px;
+  gap: 20px;
   flex-wrap: wrap;
-  color: white;
-  font-size: 1.5rem;
+  color: rgba(255, 255, 255, 0.95);
+  font-size: 1.6rem;
+  line-height: 1.6;
 
   @media ${device.mobile} {
-    font-size: 1.3rem;
-    gap: 10px;
+    font-size: 1.4rem;
+    gap: 12px;
     flex-direction: column;
   }
 `;
@@ -101,13 +104,14 @@ export const ContactDivider = styled.span`
 `;
 
 export const FooterCopyright = styled.div`
-  color: white;
-  font-size: 1.4rem;
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 1.5rem;
   text-align: center;
   font-weight: 300;
+  line-height: 1.6;
 
   @media ${device.mobile} {
-    font-size: 1.2rem;
+    font-size: 1.3rem;
     padding: 0 20px;
   }
 `;

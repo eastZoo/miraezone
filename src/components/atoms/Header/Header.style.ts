@@ -4,6 +4,8 @@ import styled from "styled-components";
 /* ========== Wrapper ========== */
 export const HeaderWrapper = styled.div`
   position: relative;
+  overflow: visible;
+  z-index: 1001;
 `;
 
 /* ========== 상단 유틸리티 바 ========== */
@@ -59,12 +61,14 @@ export const TopUtilityList = styled.div`
 
 /* ========== 메인 헤더 ========== */
 export const MainHeader = styled.div`
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border-bottom: 1px solid rgba(229, 229, 229, 0.1);
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(229, 229, 229, 0.3);
   position: relative;
   z-index: 1001;
+  transition: all 0.3s ease;
+  overflow: visible;
 
   &.fixed {
     position: fixed;
@@ -72,10 +76,12 @@ export const MainHeader = styled.div`
     left: 0;
     right: 0;
     z-index: 1000;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(229, 229, 229, 0.5);
+    overflow: visible;
   }
 `;
 
@@ -85,6 +91,9 @@ export const HeaderInner = styled(Container)`
   justify-content: space-between;
   height: 100px;
   min-width: 1200px;
+  padding: 0 40px;
+  overflow: visible;
+  position: relative;
 
   @media ${device.mobile} {
     height: 60px;
@@ -98,15 +107,26 @@ export const LogoWrapper = styled.div`
   display: flex;
   align-items: center;
   flex-shrink: 0;
+  transition: transform 0.3s ease;
+
+  &:hover {
+    transform: scale(1.02);
+  }
+
+  a {
+    display: flex;
+    align-items: center;
+  }
 
   img {
-    height: 60px;
+    height: 65px;
     width: auto;
-    max-width: 300px;
+    max-width: 280px;
     object-fit: contain;
+    transition: opacity 0.3s ease;
 
     @media ${device.mobile} {
-      height: 40px;
+      height: 45px;
       max-width: 150px;
     }
   }
@@ -118,6 +138,8 @@ export const NavSection = styled.div`
   align-items: center;
   flex-shrink: 0;
   gap: 20px;
+  overflow: visible;
+  position: relative;
 `;
 
 /* 로고 섹션 */
@@ -381,6 +403,8 @@ export const CategoryList = styled.ul`
 /* 메인 메뉴 */
 export const MainMenu = styled.div`
   flex-shrink: 0;
+  overflow: visible;
+  position: relative;
 `;
 
 export const MenuList = styled.ul`
@@ -391,41 +415,137 @@ export const MenuList = styled.ul`
   margin: 0;
   padding: 0;
   flex-wrap: nowrap; /* 줄바꿈 방지 */
-  overflow-x: auto; /* 가로 스크롤 허용 */
-  scrollbar-width: none; /* Firefox */
-  -ms-overflow-style: none; /* IE/Edge */
+  overflow: visible; /* 서브 메뉴가 보이도록 */
+  position: relative;
 
-  &::-webkit-scrollbar {
-    display: none; /* Chrome/Safari */
-  }
+  @media ${device.mobile} {
+    justify-content: space-between;
+    font-size: 1.4rem;
+    gap: 16px;
+    overflow-x: auto; /* 모바일에서만 가로 스크롤 허용 */
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE/Edge */
 
-  li {
-    position: relative;
-    flex-shrink: 0; /* 축소 방지 */
+    &::-webkit-scrollbar {
+      display: none; /* Chrome/Safari */
+    }
   }
+`;
+
+export const MenuItem = styled.li`
+  position: relative;
+  flex-shrink: 0;
 
   a,
   a:visited {
     display: block;
-    padding: 0 30px;
-    height: 80px;
-    line-height: 80px;
-    font-size: 1.9rem;
+    padding: 0 35px;
+    height: 100px;
+    line-height: 100px;
+    font-size: 1.8rem;
     font-weight: 500;
-    color: white;
+    color: #333;
     text-decoration: none;
-    transition: color 0.2s ease;
+    transition: all 0.3s ease;
     white-space: nowrap;
+    position: relative;
+
+    &::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%) scaleX(0);
+      width: 60%;
+      height: 3px;
+      background: #a44945;
+      transition: transform 0.3s ease;
+    }
 
     &:hover {
       color: #a44945;
+
+      &::after {
+        transform: translateX(-50%) scaleX(1);
+      }
     }
 
     @media ${device.mobile} {
       height: 60px;
       line-height: 60px;
-      padding: 0 10px;
-      font-size: 1.5rem;
+      padding: 0 12px;
+      font-size: 1.4rem;
+    }
+  }
+`;
+
+export const SubMenu = styled.ul`
+  position: absolute;
+  top: 90%;
+  left: 50%;
+  transform: translateX(-50%);
+  min-width: 180px;
+  background: white;
+  border: 1px solid rgba(229, 229, 229, 0.8);
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12), 0 2px 8px rgba(0, 0, 0, 0.08);
+  padding: 12px 0;
+  margin-top: 8px;
+  list-style: none;
+  z-index: 1002;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateX(-50%) translateY(-10px);
+  transition: opacity 0.3s ease, visibility 0.3s ease,
+    transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: none;
+  overflow: visible;
+
+  ${MenuItem}:hover & {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(0);
+    pointer-events: auto;
+  }
+
+  @media ${device.mobile} {
+    min-width: 160px;
+    padding: 8px 0;
+  }
+`;
+
+export const SubMenuItem = styled.li`
+  margin: 0;
+
+  a {
+    display: block;
+    padding: 12px 24px;
+    height: auto;
+    line-height: 1.5;
+    font-size: 1.5rem;
+    font-weight: 400;
+    color: #333;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+
+    &::after {
+      display: none;
+    }
+
+    &:hover {
+      background: rgba(164, 73, 69, 0.08);
+      color: #a44945;
+      padding-left: 28px;
+    }
+
+    @media ${device.mobile} {
+      padding: 10px 20px;
+      font-size: 1.4rem;
+
+      &:hover {
+        padding-left: 24px;
+      }
     }
   }
 `;

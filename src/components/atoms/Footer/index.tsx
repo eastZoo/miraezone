@@ -11,7 +11,7 @@ export const Footer = () => {
           <Link to="/">
             <S.FooterLogoImage src={logo} alt="교회 로고" />
             <S.FooterLogoText>
-              <S.FooterLogoSubtitle>대한예수교 장로회</S.FooterLogoSubtitle>
+              <S.FooterLogoSubtitle>기독교대한성결교회</S.FooterLogoSubtitle>
               <S.FooterLogoTitle>미래존교회</S.FooterLogoTitle>
             </S.FooterLogoText>
           </Link>
@@ -20,17 +20,17 @@ export const Footer = () => {
         {/* 연락처 정보 */}
         <S.FooterContactInfo>
           <S.ContactItem>
-            주소: 48724 부산광역시 동구 정공단로 17번길 16
+            주소: 부산 동래구 시실로211번길 6 (명장동)
           </S.ContactItem>
           <S.ContactDivider>|</S.ContactDivider>
-          <S.ContactItem>Tel: 051-647-2452~3</S.ContactItem>
+          <S.ContactItem>Tel: 051-524-5112</S.ContactItem>
           <S.ContactDivider>|</S.ContactDivider>
-          <S.ContactItem>Fax: 051-647-2454</S.ContactItem>
+          <S.ContactItem>Fax: 051-524-5113</S.ContactItem>
         </S.FooterContactInfo>
 
         {/* 저작권 정보 */}
         <S.FooterCopyright>
-          Copyright © 2023 미래존교회 All rights reserved. Designed by (주)스데반정보
+          Copyright © 2025 미래존교회 All rights reserved. Designed by eastZoo
         </S.FooterCopyright>
       </S.FooterInner>
     </S.FooterWrapper>
