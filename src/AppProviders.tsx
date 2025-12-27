@@ -7,12 +7,14 @@ import { theme } from "@/styles/theme";
 import { GlobalStyle } from "@/styles/GlobalStyle";
 import { queryClient } from "@/lib/queryClient";
 import AppRoutes from "@/lib/core/routes/Routes";
+import ScrollToTop from "@/components/common/ScrollToTop";
 
 export default function AppProviders() {
   return (
     <QueryClientProvider client={queryClient}>
       <ThemeProvider theme={theme}>
         <BrowserRouter>
+          <ScrollToTop />
           <GlobalStyle />
           <AppRoutes />
           <ReactQueryDevtools

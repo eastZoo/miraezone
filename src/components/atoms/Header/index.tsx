@@ -9,46 +9,46 @@ import { Link } from "react-router-dom";
 const menuItems = [
   {
     title: "교회소개",
-    path: "/",
+    path: "/church/introduce",
     subMenu: [
-      { title: "교회 소개", path: "/" },
-      { title: "교회 조직", path: "/" },
-      { title: "오시는 길", path: "/" },
+      { title: "교회 소개", path: "/church/introduce" },
+      { title: "교회 조직", path: "/church/organization" },
+      { title: "오시는 길", path: "/church/location" },
     ],
   },
   {
     title: "안내/소식",
-    path: "/",
+    path: "/notice",
     subMenu: [
-      { title: "공지사항", path: "/" },
-      { title: "교회 소식", path: "/" },
-      { title: "주보", path: "/" },
+      { title: "공지사항", path: "/notice" },
+      { title: "교회 소식", path: "/news" },
+      { title: "주보", path: "/bulletins" },
     ],
   },
   {
     title: "예배/찬양",
-    path: "/",
+    path: "/worship/info",
     subMenu: [
-      { title: "예배 안내", path: "/" },
-      { title: "설교 영상", path: "/" },
+      { title: "예배 안내", path: "/worship/info" },
+      { title: "설교 영상", path: "/worship/videos" },
     ],
   },
   {
     title: "다음세대",
-    path: "/",
+    path: "/nextgen/elementary",
     subMenu: [
-      { title: "유초등부", path: "/" },
-      { title: "중고등부", path: "/" },
-      { title: "청년부", path: "/" },
-      { title: "다음세대 소식", path: "/" },
+      { title: "유초등부", path: "/nextgen/elementary" },
+      { title: "중고등부", path: "/nextgen/youth" },
+      { title: "청년부", path: "/nextgen/youngadult" },
+      { title: "다음세대 소식", path: "/nextgen/news" },
     ],
   },
   {
     title: "자료실",
-    path: "/",
+    path: "/resources/songs",
     subMenu: [
-      { title: "찬양 자료", path: "/" },
-      { title: "다운로드", path: "/" },
+      { title: "찬양 자료", path: "/resources/songs" },
+      { title: "다운로드", path: "/resources/downloads" },
     ],
   },
 ];

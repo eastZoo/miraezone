@@ -4,7 +4,7 @@ import styled from "styled-components";
 export const Wrapper = styled.div`
   width: 100%;
   height: auto;
-  overflow-x: auto;
+
   -webkit-overflow-scrolling: touch;
 
   @media ${device.mobile} {
