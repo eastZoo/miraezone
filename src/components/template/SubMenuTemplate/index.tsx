@@ -27,6 +27,64 @@ export interface SubMenuTemplateProps {
   children: React.ReactNode;
 }
 
+// 이미지 프리로딩을 위한 전역 변수
+const images = [homeBg1, homeBg2, homeBg3];
+let imagesPreloaded = false;
+
+// 이미지 프리로드 함수
+const preloadImages = () => {
+  if (imagesPreloaded) return;
+
+  images.forEach((imageSrc) => {
+    const img = new Image();
+    img.src = imageSrc;
+  });
+
+  imagesPreloaded = true;
+};
+
+// 배너 컴포넌트 메모이제이션
+const Banner: React.FC = React.memo(() => {
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  useEffect(() => {
+    // 이미지 프리로드
+    preloadImages();
+
+    const interval = setInterval(() => {
+      setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
+    }, 10000); // 10초마다 변경
+
+    return () => clearInterval(interval);
+  }, []);
+
+  return (
+    <S.BannerWrapper>
+      <S.BannerContainer>
+        <S.BackgroundSlide>
+          {images.map((image, index) => (
+            <S.BackgroundImage
+              key={`bg-${index}`}
+              src={image}
+              alt={`배경 이미지 ${index + 1}`}
+              $isActive={index === currentIndex}
+              decoding="async"
+              loading="eager"
+            />
+          ))}
+        </S.BackgroundSlide>
+        <S.BannerOverlay>
+          <S.BannerMottoYear>2026 표어</S.BannerMottoYear>
+          <S.BannerText>{"일하시는 하나님, 순종하는 교회"}</S.BannerText>
+          <S.BannerVerse>(눅 5:5-6)</S.BannerVerse>
+        </S.BannerOverlay>
+      </S.BannerContainer>
+    </S.BannerWrapper>
+  );
+});
+
+Banner.displayName = "Banner";
+
 const SubMenuTemplate: React.FC<SubMenuTemplateProps> = ({
   mainMenuTitle,
   subMenuItems,
@@ -36,38 +94,15 @@ const SubMenuTemplate: React.FC<SubMenuTemplateProps> = ({
   children,
 }) => {
   const location = useLocation();
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const images = [homeBg1, homeBg2, homeBg3];
 
+  // 컴포넌트 마운트 시 이미지 프리로드
   useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
-    }, 10000); // 10초마다 변경
-
-    return () => clearInterval(interval);
-  }, [images.length]);
+    preloadImages();
+  }, []);
 
   return (
     <MainTemplate transparentHeader>
-      <S.BannerWrapper>
-        <S.BannerContainer>
-          <S.BackgroundSlide>
-            {images.map((image, index) => (
-              <S.BackgroundImage
-                key={`bg-${index}`}
-                src={image}
-                alt={`배경 이미지 ${index + 1}`}
-                $isActive={index === currentIndex}
-              />
-            ))}
-          </S.BackgroundSlide>
-          <S.BannerOverlay>
-            <S.BannerMottoYear>2026 표어</S.BannerMottoYear>
-            <S.BannerText>{"일하시는 하나님, 순종하는 교회"}</S.BannerText>
-            <S.BannerVerse>(눅 5:5-6)</S.BannerVerse>
-          </S.BannerOverlay>
-        </S.BannerContainer>
-      </S.BannerWrapper>
+      <Banner />
       <S.Wrapper>
         {/* 사이드바 */}
         <S.Sidebar>

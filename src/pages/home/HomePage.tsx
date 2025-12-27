@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import MainTemplate from "@/components/template/MainTemplate";
 import * as S from "./HomePage.style";
 import homeBg1 from "@/styles/assets/images/home_bg1.jpg";
@@ -11,6 +12,7 @@ import { HiPlay } from "react-icons/hi";
  * - 인증된 사용자만 접근 가능 (ProtectedRoute로 보호됨)
  */
 export default function HomePage() {
+  const navigate = useNavigate();
   const [currentIndex, setCurrentIndex] = useState(0);
   const images = [homeBg1, homeBg2, homeBg3];
 
@@ -123,7 +125,9 @@ export default function HomePage() {
                 준비중입니다...
                 {/* 야고보서 4:13 - 5:6 나영호 담임목사 */}
               </S.WeeklyMessageInfo>
-              <S.WeeklyMessageButton>
+              <S.WeeklyMessageButton
+                onClick={() => navigate("/worship/videos")}
+              >
                 <HiPlay />
                 금주의 말씀 더보기
               </S.WeeklyMessageButton>
@@ -139,24 +143,33 @@ export default function HomePage() {
                   bgImage: "church",
                   title: "교회소개",
                   subtitle: "Church Introduce",
+                  path: "/church/introduce",
                 },
                 {
                   bgImage: "worship",
                   title: "예배시간",
                   subtitle: "Worship Time",
+                  path: "/worship/info",
                 },
                 {
                   bgImage: "location",
                   title: "오시는길",
                   subtitle: "Location",
+                  path: "/church/location",
                 },
-                { bgImage: "news", title: "교회소식", subtitle: "News" },
+                {
+                  bgImage: "news",
+                  title: "교회소식",
+                  subtitle: "News",
+                  path: "/news",
+                },
               ].map((item, index) => (
                 <S.QuickNavCard
                   key={index}
                   ref={(el) => {
                     quickNavRefs.current[index] = el;
                   }}
+                  onClick={() => navigate(item.path)}
                 >
                   <S.QuickNavImage $bgImage={item.bgImage}>
                     <S.QuickNavOverlay>
@@ -183,15 +196,20 @@ export default function HomePage() {
             </S.NextGenerationDescription>
             <S.NextGenerationGrid>
               {[
-                { number: "01", label: "유초등부" },
-                { number: "04", label: "중고등부" },
-                { number: "05", label: "청년부" },
+                {
+                  number: "01",
+                  label: "유초등부",
+                  path: "/nextgen/elementary",
+                },
+                { number: "04", label: "중고등부", path: "/nextgen/youth" },
+                { number: "05", label: "청년부", path: "/nextgen/youngadult" },
               ].map((item, index) => (
                 <S.NextGenItem
                   key={index}
                   ref={(el) => {
                     nextGenRefs.current[index] = el;
                   }}
+                  onClick={() => navigate(item.path)}
                 >
                   <S.NextGenCircle>
                     <S.NextGenNumber>{item.number}</S.NextGenNumber>
