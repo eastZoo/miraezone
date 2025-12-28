@@ -1,13 +1,8 @@
 import React, { useState } from "react";
 import SubMenuTemplate from "@/components/template/SubMenuTemplate";
+import { useBulletinList } from "@/lib/hooks/useBulletin";
 import * as S from "./BulletinsPage.style";
-
-interface BulletinItem {
-  id: number;
-  title: string;
-  date: string;
-  thumbnail?: string;
-}
+import dayjs from "dayjs";
 
 const BulletinsPage: React.FC = () => {
   const subMenuItems = [
@@ -16,14 +11,34 @@ const BulletinsPage: React.FC = () => {
     { title: "주보", path: "/bulletins" },
   ];
 
-  const [bulletins] = useState<BulletinItem[]>([
-    { id: 1, title: "25.02.09 교회주보", date: "2025.02.09" },
-    { id: 2, title: "25.02.02 교회주보", date: "2025.02.02" },
-    { id: 3, title: "25.01.26 교회주보", date: "2025.01.26" },
-    { id: 4, title: "25.01.19 교회주보", date: "2025.01.19" },
-    { id: 5, title: "25.01.12 교회주보", date: "2025.01.12" },
-    { id: 6, title: "25.01.05 교회주보", date: "2025.01.05" },
-  ]);
+  const [page, setPage] = useState(1);
+  const [search, setSearch] = useState<string>("");
+  const limit = 10;
+
+  // 주보 목록 조회
+  const { data, isLoading } = useBulletinList(page, limit, search);
+  const bulletins = data?.data || [];
+  const total = data?.total || 0;
+
+  const totalPages = Math.ceil(total / limit);
+
+  const handleSearch = () => {
+    setPage(1);
+  };
+
+  if (isLoading) {
+    return (
+      <SubMenuTemplate
+        mainMenuTitle="안내/소식"
+        subMenuItems={subMenuItems}
+        currentSubMenuPath="/bulletins"
+        pageTitle="주보"
+        breadcrumb={["Home", "안내/소식", "주보"]}
+      >
+        <S.ContentWrapper>로딩 중...</S.ContentWrapper>
+      </SubMenuTemplate>
+    );
+  }
 
   return (
     <SubMenuTemplate
@@ -39,15 +54,17 @@ const BulletinsPage: React.FC = () => {
           <S.ViewMode>
             <S.ViewIcon $active={true}>■</S.ViewIcon>
             <S.ViewIcon>□</S.ViewIcon>
-            <S.InfoText>전체 {bulletins.length}건</S.InfoText>
+            <S.InfoText>전체 {total}건</S.InfoText>
           </S.ViewMode>
           <S.SearchArea>
-            <S.SelectBox>
-              <option>제목</option>
-              <option>날짜</option>
-            </S.SelectBox>
-            <S.SearchInput type="text" placeholder="검색어를 입력하세요" />
-            <S.SearchButton>검색</S.SearchButton>
+            <S.SearchInput
+              type="text"
+              placeholder="검색어를 입력하세요"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              onKeyPress={(e) => e.key === "Enter" && handleSearch()}
+            />
+            <S.SearchButton onClick={handleSearch}>검색</S.SearchButton>
           </S.SearchArea>
         </S.Toolbar>
 
@@ -56,15 +73,25 @@ const BulletinsPage: React.FC = () => {
           {bulletins.map((bulletin) => (
             <S.BulletinCard key={bulletin.id}>
               <S.BulletinThumbnail>
-                <S.ThumbnailPlaceholder>
-                  <p>주보</p>
-                  <p style={{ fontSize: "1.2rem", marginTop: "8px" }}>
-                    {bulletin.date}
-                  </p>
-                </S.ThumbnailPlaceholder>
+                {bulletin.thumbnailUrl ? (
+                  <img
+                    src={bulletin.thumbnailUrl}
+                    alt={bulletin.title}
+                    style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                  />
+                ) : (
+                  <S.ThumbnailPlaceholder>
+                    <p>주보</p>
+                    <p style={{ fontSize: "1.2rem", marginTop: "8px" }}>
+                      {dayjs(bulletin.date).format("YYYY.MM.DD")}
+                    </p>
+                  </S.ThumbnailPlaceholder>
+                )}
               </S.BulletinThumbnail>
               <S.BulletinInfo>
-                <S.BulletinDate>{bulletin.date}</S.BulletinDate>
+                <S.BulletinDate>
+                  {dayjs(bulletin.date).format("YYYY.MM.DD")}
+                </S.BulletinDate>
                 <S.BulletinTitle>{bulletin.title}</S.BulletinTitle>
               </S.BulletinInfo>
             </S.BulletinCard>
@@ -73,11 +100,27 @@ const BulletinsPage: React.FC = () => {
 
         {/* 페이지네이션 */}
         <S.Pagination>
-          <S.PaginationButton disabled>이전</S.PaginationButton>
-          <S.PaginationNumber $active={true}>1</S.PaginationNumber>
-          <S.PaginationNumber>2</S.PaginationNumber>
-          <S.PaginationNumber>3</S.PaginationNumber>
-          <S.PaginationButton>다음</S.PaginationButton>
+          <S.PaginationButton
+            disabled={page === 1}
+            onClick={() => setPage(page - 1)}
+          >
+            이전
+          </S.PaginationButton>
+          {Array.from({ length: totalPages }, (_, i) => i + 1).map((num) => (
+            <S.PaginationNumber
+              key={num}
+              $active={num === page}
+              onClick={() => setPage(num)}
+            >
+              {num}
+            </S.PaginationNumber>
+          ))}
+          <S.PaginationButton
+            disabled={page === totalPages}
+            onClick={() => setPage(page + 1)}
+          >
+            다음
+          </S.PaginationButton>
         </S.Pagination>
       </S.ContentWrapper>
     </SubMenuTemplate>

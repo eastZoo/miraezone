@@ -48,7 +48,7 @@ export const AdminHeaderContainer = styled(AdminContainer)`
   position: relative;
   display: grid;
   grid-template-columns: auto 1fr;
-  grid-template-rows: 40px 50px;
+  grid-template-rows: 50px;
 `;
 
 /* ========== 상단 정보 바 ========== */
@@ -121,10 +121,16 @@ export const LogoSection = styled.div`
   align-items: center;
   justify-content: center;
   grid-column: 1;
-  grid-row: 1 / 3;
+  grid-row: 1;
   background: ${({ theme }) => theme.colors.adminBgColor};
   padding: 0 20px;
-  height: 90px;
+  height: 50px;
+
+  img {
+    height: 40px;
+    width: auto;
+    object-fit: contain;
+  }
 `;
 
 export const LogoText = styled.div`
@@ -149,7 +155,7 @@ export const LogoTitle = styled(NavBarDiv)`
 export const NavMenu = styled.nav`
   flex: 1;
   display: flex;
-  justify-content: center;
+  justify-content: flex-end;
 `;
 
 export const MenuList = styled.ul`
@@ -159,6 +165,7 @@ export const MenuList = styled.ul`
   list-style: none;
   margin: 0;
   padding: 0;
+  justify-content: flex-end;
 `;
 
 export const MenuItem = styled.li`
@@ -169,7 +176,7 @@ export const MenuItem = styled.li`
 
 export const MenuLink = styled(NavBarLink)<{ $isActive?: boolean }>`
   font-weight: ${({ $isActive }) => ($isActive ? "600" : "400")};
-  padding: 6px 16px;
+  padding: 6px 20px;
   border-radius: ${({ $isActive }) => ($isActive ? "8px 8px 0 0" : "0")};
   white-space: nowrap;
   transition: all 0.2s ease;
@@ -178,7 +185,7 @@ export const MenuLink = styled(NavBarLink)<{ $isActive?: boolean }>`
   height: 50px;
   box-sizing: border-box;
   line-height: 40px;
-  width: 200px;
+  min-width: auto;
   text-align: center;
   ${({ $isActive, theme }) =>
     $isActive

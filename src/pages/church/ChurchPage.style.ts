@@ -277,10 +277,16 @@ export const MapContainer = styled.div`
   overflow: hidden;
   margin: 24px 0;
   border: 1px solid #e5e5e5;
+  position: relative;
 
   @media ${device.mobile} {
     height: 300px;
   }
+`;
+
+export const Map = styled.div`
+  width: 100%;
+  height: 100%;
 `;
 
 export const MapPlaceholder = styled.div`
@@ -293,6 +299,9 @@ export const MapPlaceholder = styled.div`
   justify-content: center;
   color: #666;
   font-size: 1.6rem;
+  position: absolute;
+  top: 0;
+  left: 0;
 
   @media ${device.mobile} {
     font-size: 1.4rem;

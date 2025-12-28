@@ -25,6 +25,10 @@ const NextGenNewsPage = lazy(() => import("@/pages/nextgen/NextGenNewsPage"));
 // 자료실
 const SongsPage = lazy(() => import("@/pages/resources/SongsPage"));
 const DownloadsPage = lazy(() => import("@/pages/resources/DownloadsPage"));
+// 관리자
+const ChurchAdminPage = lazy(() => import("@/pages/admin/church/ChurchAdminPage"));
+const OrganizationAdminPage = lazy(() => import("@/pages/admin/church/OrganizationAdminPage"));
+const LocationAdminPage = lazy(() => import("@/pages/admin/church/LocationAdminPage"));
 
 export default function AppRoutes() {
   const routes = [
@@ -51,6 +55,10 @@ export default function AppRoutes() {
     // 자료실
     { path: "/resources/songs", element: <SongsPage /> },
     { path: "/resources/downloads", element: <DownloadsPage /> },
+    // 관리자
+    { path: "/admin/church", element: <ChurchAdminPage /> },
+    { path: "/admin/church/organization", element: <OrganizationAdminPage /> },
+    { path: "/admin/church/location", element: <LocationAdminPage /> },
     { path: "/404", element: <NotFoundPage /> },
     { path: "*", element: <Navigate to="/404" replace /> },
   ];

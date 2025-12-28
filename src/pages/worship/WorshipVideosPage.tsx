@@ -1,15 +1,8 @@
 import React, { useState } from "react";
 import SubMenuTemplate from "@/components/template/SubMenuTemplate";
+import { useWorshipVideos } from "@/lib/hooks/useWorship";
 import * as S from "./WorshipPage.style";
-
-interface VideoItem {
-  id: number;
-  title: string;
-  date: string;
-  speaker: string;
-  thumbnail?: string;
-  views: number;
-}
+import dayjs from "dayjs";
 
 const WorshipVideosPage: React.FC = () => {
   const subMenuItems = [
@@ -17,50 +10,36 @@ const WorshipVideosPage: React.FC = () => {
     { title: "설교 영상", path: "/worship/videos" },
   ];
 
-  const [videos] = useState<VideoItem[]>([
-    {
-      id: 1,
-      title: "새해를 향한 믿음의 출발",
-      date: "2025.01.12",
-      speaker: "나영호 담임목사",
-      views: 1234,
-    },
-    {
-      id: 2,
-      title: "하나님의 약속을 신뢰하라",
-      date: "2025.01.05",
-      speaker: "나영호 담임목사",
-      views: 987,
-    },
-    {
-      id: 3,
-      title: "2024년 연말 감사 예배",
-      date: "2024.12.29",
-      speaker: "나영호 담임목사",
-      views: 1567,
-    },
-    {
-      id: 4,
-      title: "성탄절 특별 예배",
-      date: "2024.12.25",
-      speaker: "나영호 담임목사",
-      views: 2341,
-    },
-    {
-      id: 5,
-      title: "하나님을 향한 감사",
-      date: "2024.12.22",
-      speaker: "김철수 부목사",
-      views: 756,
-    },
-    {
-      id: 6,
-      title: "참된 복음의 능력",
-      date: "2024.12.15",
-      speaker: "나영호 담임목사",
-      views: 1123,
-    },
-  ]);
+  const [page, setPage] = useState(1);
+  const [speaker, setSpeaker] = useState<string>("");
+  const [search, setSearch] = useState<string>("");
+  const limit = 10;
+
+  // 설교 영상 목록 조회
+  const { data, isLoading } = useWorshipVideos(page, limit, speaker, search);
+  const videos = data?.data || [];
+  const total = data?.total || 0;
+
+  const totalPages = Math.ceil(total / limit);
+
+  const handleSearch = () => {
+    setPage(1);
+    // 검색은 useWorshipVideos의 queryKey에 의해 자동으로 재요청됨
+  };
+
+  if (isLoading) {
+    return (
+      <SubMenuTemplate
+        mainMenuTitle="예배/찬양"
+        subMenuItems={subMenuItems}
+        currentSubMenuPath="/worship/videos"
+        pageTitle="설교 영상"
+        breadcrumb={["Home", "예배/찬양", "설교 영상"]}
+      >
+        <S.ContentWrapper>로딩 중...</S.ContentWrapper>
+      </SubMenuTemplate>
+    );
+  }
 
   return (
     <SubMenuTemplate
@@ -76,20 +55,25 @@ const WorshipVideosPage: React.FC = () => {
           <S.ViewMode>
             <S.ViewIcon $active={true}>■</S.ViewIcon>
             <S.ViewIcon>□</S.ViewIcon>
-            <S.InfoText>전체 {videos.length}건</S.InfoText>
+            <S.InfoText>전체 {total}건</S.InfoText>
           </S.ViewMode>
           <S.SearchArea>
-            <S.SelectBox>
-              <option>전체</option>
-              <option>나영호 목사</option>
-              <option>김철수 목사</option>
+            <S.SelectBox
+              value={speaker}
+              onChange={(e) => setSpeaker(e.target.value)}
+            >
+              <option value="">전체</option>
+              <option value="나영호">나영호 목사</option>
+              <option value="김철수">김철수 목사</option>
             </S.SelectBox>
-            <S.SelectBox>
-              <option>제목</option>
-              <option>설교자</option>
-            </S.SelectBox>
-            <S.SearchInput type="text" placeholder="검색어를 입력하세요" />
-            <S.SearchButton>검색</S.SearchButton>
+            <S.SearchInput
+              type="text"
+              placeholder="검색어를 입력하세요"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              onKeyPress={(e) => e.key === "Enter" && handleSearch()}
+            />
+            <S.SearchButton onClick={handleSearch}>검색</S.SearchButton>
           </S.SearchArea>
         </S.Toolbar>
 
@@ -98,12 +82,22 @@ const WorshipVideosPage: React.FC = () => {
           {videos.map((video) => (
             <S.VideoCard key={video.id}>
               <S.VideoThumbnail>
-                <S.ThumbnailPlaceholder>
-                  <S.PlayIcon>▶</S.PlayIcon>
-                </S.ThumbnailPlaceholder>
+                {video.thumbnailUrl ? (
+                  <img
+                    src={video.thumbnailUrl}
+                    alt={video.title}
+                    style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                  />
+                ) : (
+                  <S.ThumbnailPlaceholder>
+                    <S.PlayIcon>▶</S.PlayIcon>
+                  </S.ThumbnailPlaceholder>
+                )}
               </S.VideoThumbnail>
               <S.VideoInfo>
-                <S.VideoDate>{video.date}</S.VideoDate>
+                <S.VideoDate>
+                  {dayjs(video.date).format("YYYY.MM.DD")}
+                </S.VideoDate>
                 <S.VideoTitle>{video.title}</S.VideoTitle>
                 <S.VideoMeta>
                   <S.VideoSpeaker>{video.speaker}</S.VideoSpeaker>
@@ -116,11 +110,27 @@ const WorshipVideosPage: React.FC = () => {
 
         {/* 페이지네이션 */}
         <S.Pagination>
-          <S.PaginationButton disabled>이전</S.PaginationButton>
-          <S.PaginationNumber $active={true}>1</S.PaginationNumber>
-          <S.PaginationNumber>2</S.PaginationNumber>
-          <S.PaginationNumber>3</S.PaginationNumber>
-          <S.PaginationButton>다음</S.PaginationButton>
+          <S.PaginationButton
+            disabled={page === 1}
+            onClick={() => setPage(page - 1)}
+          >
+            이전
+          </S.PaginationButton>
+          {Array.from({ length: totalPages }, (_, i) => i + 1).map((num) => (
+            <S.PaginationNumber
+              key={num}
+              $active={num === page}
+              onClick={() => setPage(num)}
+            >
+              {num}
+            </S.PaginationNumber>
+          ))}
+          <S.PaginationButton
+            disabled={page === totalPages}
+            onClick={() => setPage(page + 1)}
+          >
+            다음
+          </S.PaginationButton>
         </S.Pagination>
       </S.ContentWrapper>
     </SubMenuTemplate>

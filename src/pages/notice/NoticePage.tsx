@@ -1,14 +1,8 @@
 import React, { useState } from "react";
 import SubMenuTemplate from "@/components/template/SubMenuTemplate";
+import { useNoticeList } from "@/lib/hooks/useNotice";
 import * as S from "./NoticePage.style";
-
-interface NoticeItem {
-  id: number;
-  title: string;
-  date: string;
-  views: number;
-  isNew?: boolean;
-}
+import dayjs from "dayjs";
 
 const NoticePage: React.FC = () => {
   const subMenuItems = [
@@ -17,40 +11,35 @@ const NoticePage: React.FC = () => {
     { title: "주보", path: "/bulletins" },
   ];
 
-  const [notices] = useState<NoticeItem[]>([
-    {
-      id: 1,
-      title: "2025년 새해 인사말",
-      date: "2025.01.01",
-      views: 123,
-      isNew: true,
-    },
-    {
-      id: 2,
-      title: "1월 예배 및 모임 안내",
-      date: "2024.12.28",
-      views: 89,
-      isNew: true,
-    },
-    {
-      id: 3,
-      title: "겨울 수양회 참가 안내",
-      date: "2024.12.20",
-      views: 156,
-    },
-    {
-      id: 4,
-      title: "연말 감사 예배 안내",
-      date: "2024.12.15",
-      views: 234,
-    },
-    {
-      id: 5,
-      title: "12월 성도와의 만남",
-      date: "2024.12.10",
-      views: 98,
-    },
-  ]);
+  const [page, setPage] = useState(1);
+  const [search, setSearch] = useState<string>("");
+  const limit = 10;
+
+  // 공지사항 목록 조회
+  const { data, isLoading } = useNoticeList(page, limit, search);
+  const notices = data?.data || [];
+  const total = data?.total || 0;
+
+  const totalPages = Math.ceil(total / limit);
+  const newCount = notices.filter((n) => n.isNew).length;
+
+  const handleSearch = () => {
+    setPage(1);
+  };
+
+  if (isLoading) {
+    return (
+      <SubMenuTemplate
+        mainMenuTitle="안내/소식"
+        subMenuItems={subMenuItems}
+        currentSubMenuPath="/notice"
+        pageTitle="공지사항"
+        breadcrumb={["Home", "안내/소식", "공지사항"]}
+      >
+        <S.ContentWrapper>로딩 중...</S.ContentWrapper>
+      </SubMenuTemplate>
+    );
+  }
 
   return (
     <SubMenuTemplate
@@ -66,16 +55,17 @@ const NoticePage: React.FC = () => {
           <S.ViewMode>
             <S.ViewIcon $active={true}>■</S.ViewIcon>
             <S.ViewIcon>□</S.ViewIcon>
-            <S.InfoText>새글 {notices.filter((n) => n.isNew).length}/{notices.length}</S.InfoText>
+            <S.InfoText>새글 {newCount}/{total}</S.InfoText>
           </S.ViewMode>
           <S.SearchArea>
-            <S.SelectBox>
-              <option>제목</option>
-              <option>내용</option>
-              <option>작성자</option>
-            </S.SelectBox>
-            <S.SearchInput type="text" placeholder="검색어를 입력하세요" />
-            <S.SearchButton>검색</S.SearchButton>
+            <S.SearchInput
+              type="text"
+              placeholder="검색어를 입력하세요"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              onKeyPress={(e) => e.key === "Enter" && handleSearch()}
+            />
+            <S.SearchButton onClick={handleSearch}>검색</S.SearchButton>
           </S.SearchArea>
         </S.Toolbar>
 
@@ -85,10 +75,13 @@ const NoticePage: React.FC = () => {
             <S.NoticeItem key={notice.id}>
               <S.NoticeTitle>
                 {notice.isNew && <S.NewBadge>NEW</S.NewBadge>}
+                {notice.isImportant && <S.NewBadge>중요</S.NewBadge>}
                 {notice.title}
               </S.NoticeTitle>
               <S.NoticeMeta>
-                <S.NoticeDate>{notice.date}</S.NoticeDate>
+                <S.NoticeDate>
+                  {dayjs(notice.createdAt).format("YYYY.MM.DD")}
+                </S.NoticeDate>
                 <S.NoticeViews>조회 {notice.views}</S.NoticeViews>
               </S.NoticeMeta>
             </S.NoticeItem>
@@ -97,11 +90,27 @@ const NoticePage: React.FC = () => {
 
         {/* 페이지네이션 */}
         <S.Pagination>
-          <S.PaginationButton disabled>이전</S.PaginationButton>
-          <S.PaginationNumber $active={true}>1</S.PaginationNumber>
-          <S.PaginationNumber>2</S.PaginationNumber>
-          <S.PaginationNumber>3</S.PaginationNumber>
-          <S.PaginationButton>다음</S.PaginationButton>
+          <S.PaginationButton
+            disabled={page === 1}
+            onClick={() => setPage(page - 1)}
+          >
+            이전
+          </S.PaginationButton>
+          {Array.from({ length: totalPages }, (_, i) => i + 1).map((num) => (
+            <S.PaginationNumber
+              key={num}
+              $active={num === page}
+              onClick={() => setPage(num)}
+            >
+              {num}
+            </S.PaginationNumber>
+          ))}
+          <S.PaginationButton
+            disabled={page === totalPages}
+            onClick={() => setPage(page + 1)}
+          >
+            다음
+          </S.PaginationButton>
         </S.Pagination>
       </S.ContentWrapper>
     </SubMenuTemplate>

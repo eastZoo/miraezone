@@ -10,8 +10,8 @@ export const Wrapper = styled.div`
 export const ContentLayout = styled.div<{ hasSidebar?: boolean }>`
   display: flex;
   align-items: flex-start;
-  min-height: calc(100vh - 90px);
-  margin-top: 90px; /* 고정된 헤더 높이만큼 여백 추가 */
+  min-height: calc(100vh - 50px);
+  margin-top: 50px; /* 고정된 헤더 높이만큼 여백 추가 */
   padding-left: ${({ hasSidebar }) =>
     hasSidebar ? "300px" : "0"}; /* 사이드바가 있을 때만 여백 추가 */
   padding-right: ${({ hasSidebar }) =>

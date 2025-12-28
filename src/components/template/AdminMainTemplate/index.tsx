@@ -28,13 +28,8 @@ const AdminMainTemplate = ({
   // 현재 경로에 따라 상단 네비게이션 바의 활성 메뉴( CSS ) 를 결정
   const getActiveMenu = () => {
     const path = location.pathname;
-    if (path.startsWith("/admin/members")) return "members";
-    if (path.startsWith("/admin/discounts")) return "discounts";
-    if (path.startsWith("/admin/categories")) return "categories";
-    if (path.startsWith("/admin/products")) return "products";
-    if (path.startsWith("/admin/orders")) return "orders";
-    if (path.startsWith("/admin/statistics")) return "statistics";
-    if (path.startsWith("/admin/settings")) return "settings";
+
+    if (path.startsWith("/admin/church")) return "church";
     return "members"; // 기본값
   };
 
