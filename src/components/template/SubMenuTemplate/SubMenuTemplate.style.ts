@@ -195,7 +195,7 @@ export const SubMenuList = styled.ul`
   padding: 0;
 `;
 
-export const SubMenuItem = styled.li`
+export const SubMenuItem = styled.li<{ $isSubItem?: boolean }>`
   margin: 0;
   padding: 0;
   border-bottom: 1px solid #f0f0f0;
@@ -205,28 +205,47 @@ export const SubMenuItem = styled.li`
   }
 `;
 
-export const SubMenuLink = styled(Link)<{ $isActive: boolean }>`
-  display: block;
-  padding: 18px 24px;
+export const SubItemIndicator = styled.span`
+  display: inline-block;
+  margin-right: 8px;
+  color: #999;
+  font-size: 1.4rem;
+`;
+
+export const SubMenuLink = styled(Link)<{ $isActive: boolean; $isSubItem?: boolean }>`
+  display: flex;
+  align-items: center;
+  padding: ${({ $isSubItem }) => ($isSubItem ? "14px 24px 14px 48px" : "18px 24px")};
   color: ${({ $isActive }) => ($isActive ? "#1a1a2e" : "#666")};
-  font-size: 1.6rem;
+  font-size: ${({ $isSubItem }) => ($isSubItem ? "1.4rem" : "1.6rem")};
   font-weight: ${({ $isActive }) => ($isActive ? 600 : 400)};
   text-decoration: none;
   transition: all 0.2s ease;
   background: ${({ $isActive }) => ($isActive ? "#f0f4ff" : "transparent")};
-  border-left: ${({ $isActive }) =>
-    $isActive ? "4px solid #1a1a2e" : "4px solid transparent"};
+  border-left: ${({ $isActive, $isSubItem }) =>
+    $isActive
+      ? $isSubItem
+        ? "3px solid #667eea"
+        : "4px solid #1a1a2e"
+      : "4px solid transparent"};
   position: relative;
 
   &:hover {
     background: #f8f9ff;
     color: #1a1a2e;
-    padding-left: ${({ $isActive }) => ($isActive ? "24px" : "28px")};
+    padding-left: ${({ $isActive, $isSubItem }) =>
+      $isActive
+        ? $isSubItem
+          ? "48px"
+          : "24px"
+        : $isSubItem
+        ? "52px"
+        : "28px"};
   }
 
   @media ${device.mobile} {
-    padding: 14px 20px;
-    font-size: 1.4rem;
+    padding: ${({ $isSubItem }) => ($isSubItem ? "12px 20px 12px 40px" : "14px 20px")};
+    font-size: ${({ $isSubItem }) => ($isSubItem ? "1.3rem" : "1.4rem")};
   }
 `;
 

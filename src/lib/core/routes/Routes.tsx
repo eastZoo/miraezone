@@ -27,10 +27,27 @@ const WorshipVideoDetailPage = lazy(
 );
 // 다음세대
 const ElementaryPage = lazy(() => import("@/pages/nextgen/ElementaryPage"));
+const ElementaryAlbumPage = lazy(
+  () => import("@/pages/nextgen/ElementaryAlbumPage")
+);
 const YouthPage = lazy(() => import("@/pages/nextgen/YouthPage"));
+const YouthAlbumPage = lazy(() => import("@/pages/nextgen/YouthAlbumPage"));
 const YoungAdultPage = lazy(() => import("@/pages/nextgen/YoungAdultPage"));
+const YoungAdultAlbumPage = lazy(
+  () => import("@/pages/nextgen/YoungAdultAlbumPage")
+);
 const NextGenNewsPage = lazy(() => import("@/pages/nextgen/NextGenNewsPage"));
+const NextGenNewsDetailPage = lazy(
+  () => import("@/pages/nextgen/NextGenNewsDetailPage")
+);
+const NextGenAlbumDetailPage = lazy(
+  () => import("@/pages/nextgen/NextGenAlbumDetailPage")
+);
 // 자료실
+const ChurchAlbumPage = lazy(() => import("@/pages/resources/ChurchAlbumPage"));
+const ChurchAlbumDetailPage = lazy(
+  () => import("@/pages/resources/ChurchAlbumDetailPage")
+);
 const SongsPage = lazy(() => import("@/pages/resources/SongsPage"));
 const DownloadsPage = lazy(() => import("@/pages/resources/DownloadsPage"));
 // 관리자
@@ -52,6 +69,12 @@ const BulletinsAdminPage = lazy(
 );
 const WorshipAdminPage = lazy(
   () => import("@/pages/admin/worship/WorshipAdminPage")
+);
+const NextGenAdminPage = lazy(
+  () => import("@/pages/admin/nextgen/NextGenAdminPage")
+);
+const ChurchAlbumAdminPage = lazy(
+  () => import("@/pages/admin/resources/ChurchAlbumAdminPage")
 );
 
 export default function AppRoutes() {
@@ -77,10 +100,28 @@ export default function AppRoutes() {
     { path: "/worship/videos/:id", element: <WorshipVideoDetailPage /> },
     // 다음세대
     { path: "/nextgen/elementary", element: <ElementaryPage /> },
+    { path: "/nextgen/elementary/albums", element: <ElementaryAlbumPage /> },
+    {
+      path: "/nextgen/elementary/albums/:id",
+      element: <NextGenAlbumDetailPage />,
+    },
     { path: "/nextgen/youth", element: <YouthPage /> },
+    { path: "/nextgen/youth/albums", element: <YouthAlbumPage /> },
+    { path: "/nextgen/youth/albums/:id", element: <NextGenAlbumDetailPage /> },
     { path: "/nextgen/youngadult", element: <YoungAdultPage /> },
+    { path: "/nextgen/youngadult/albums", element: <YoungAdultAlbumPage /> },
+    {
+      path: "/nextgen/youngadult/albums/:id",
+      element: <NextGenAlbumDetailPage />,
+    },
     { path: "/nextgen/news", element: <NextGenNewsPage /> },
+    { path: "/nextgen/news/:id", element: <NextGenNewsDetailPage /> },
     // 자료실
+    { path: "/resources/church-albums", element: <ChurchAlbumPage /> },
+    {
+      path: "/resources/church-albums/:id",
+      element: <ChurchAlbumDetailPage />,
+    },
     { path: "/resources/songs", element: <SongsPage /> },
     { path: "/resources/downloads", element: <DownloadsPage /> },
     // 관리자
@@ -91,6 +132,8 @@ export default function AppRoutes() {
     { path: "/admin/news", element: <NewsAdminPage /> },
     { path: "/admin/bulletins", element: <BulletinsAdminPage /> },
     { path: "/admin/worship", element: <WorshipAdminPage /> },
+    { path: "/admin/nextgen", element: <NextGenAdminPage /> },
+    { path: "/admin/church-albums", element: <ChurchAlbumAdminPage /> },
     { path: "/404", element: <NotFoundPage /> },
     { path: "*", element: <Navigate to="/404" replace /> },
   ];

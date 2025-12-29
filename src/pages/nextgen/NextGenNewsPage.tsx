@@ -1,10 +1,12 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import SubMenuTemplate from "@/components/template/SubMenuTemplate";
 import { useNextGenList } from "@/lib/hooks/useNextGen";
 import * as S from "./NextGenNewsPage.style";
 import dayjs from "dayjs";
 
 const NextGenNewsPage: React.FC = () => {
+  const navigate = useNavigate();
   const subMenuItems = [
     { title: "유초등부", path: "/nextgen/elementary" },
     { title: "중고등부", path: "/nextgen/youth" },
@@ -55,9 +57,9 @@ const NextGenNewsPage: React.FC = () => {
         {/* 검색 및 필터 */}
         <S.Toolbar>
           <S.ViewMode>
-            <S.ViewIcon $active={true}>■</S.ViewIcon>
-            <S.ViewIcon>□</S.ViewIcon>
-            <S.InfoText>새글 {newCount}/{total}</S.InfoText>
+            <S.InfoText>
+              새글 {newCount}/{total}
+            </S.InfoText>
           </S.ViewMode>
           <S.SearchArea>
             <S.SelectBox
@@ -83,9 +85,13 @@ const NextGenNewsPage: React.FC = () => {
         {/* 소식 목록 */}
         <S.NewsList>
           {news.map((item) => (
-            <S.NewsItem key={item.id}>
+            <S.NewsItem
+              key={item.id}
+              onClick={() => navigate(`/nextgen/news/${item.id}`)}
+            >
               <S.NewsDepartment>{item.department}</S.NewsDepartment>
               <S.NewsTitle>
+                {item.isNotice && <S.NoticeBadge>공지</S.NoticeBadge>}
                 {item.isNew && <S.NewBadge>NEW</S.NewBadge>}
                 {item.title}
               </S.NewsTitle>
@@ -129,4 +135,3 @@ const NextGenNewsPage: React.FC = () => {
 };
 
 export default NextGenNewsPage;
-

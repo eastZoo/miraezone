@@ -10,7 +10,10 @@ import homeBg3 from "@/styles/assets/images/home_bg3.jpg";
 export interface SubMenuItem {
   title: string;
   path: string;
+  isSubItem?: boolean; // 하위 메뉴 여부
 }
+
+export type { SubMenuItem };
 
 export interface SubMenuTemplateProps {
   /** 메인 메뉴 타이틀 */
@@ -113,10 +116,18 @@ const SubMenuTemplate: React.FC<SubMenuTemplateProps> = ({
             {subMenuItems.map((item, index) => {
               const isActive =
                 location.pathname === item.path ||
-                currentSubMenuPath === item.path;
+                location.pathname.startsWith(item.path + "/") ||
+                currentSubMenuPath === item.path ||
+                currentSubMenuPath?.startsWith(item.path + "/");
               return (
-                <S.SubMenuItem key={index}>
-                  <S.SubMenuLink as={Link} to={item.path} $isActive={isActive}>
+                <S.SubMenuItem key={index} $isSubItem={item.isSubItem}>
+                  <S.SubMenuLink
+                    as={Link}
+                    to={item.path}
+                    $isActive={isActive}
+                    $isSubItem={item.isSubItem}
+                  >
+                    {item.isSubItem && <S.SubItemIndicator>└</S.SubItemIndicator>}
                     {item.title}
                   </S.SubMenuLink>
                 </S.SubMenuItem>

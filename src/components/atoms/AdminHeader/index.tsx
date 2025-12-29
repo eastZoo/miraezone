@@ -88,6 +88,24 @@ const AdminHeader: React.FC = () => {
                     예배 관리
                   </S.MenuLink>
                 </S.MenuItem>
+                <S.MenuItem>
+                  <S.MenuLink
+                    as={Link}
+                    to="/admin/nextgen"
+                    $isActive={isActive("/admin/nextgen")}
+                  >
+                    다음세대 관리
+                  </S.MenuLink>
+                </S.MenuItem>
+                <S.MenuItem>
+                  <S.MenuLink
+                    as={Link}
+                    to="/admin/church-albums"
+                    $isActive={isActive("/admin/church-albums")}
+                  >
+                    교회 앨범 관리
+                  </S.MenuLink>
+                </S.MenuItem>
               </S.MenuList>
             </S.NavMenu>
           </S.MainNavInner>

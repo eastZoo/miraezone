@@ -54,8 +54,7 @@ const BulletinsPage: React.FC = () => {
         {/* 검색 및 필터 */}
         <S.Toolbar>
           <S.ViewMode>
-            <S.ViewIcon $active={true}>■</S.ViewIcon>
-            <S.ViewIcon>□</S.ViewIcon>
+           
             <S.InfoText>전체 {total}건</S.InfoText>
           </S.ViewMode>
           <S.SearchArea>

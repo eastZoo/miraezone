@@ -55,9 +55,9 @@ const NoticePage: React.FC = () => {
         {/* 검색 및 필터 */}
         <S.Toolbar>
           <S.ViewMode>
-            <S.ViewIcon $active={true}>■</S.ViewIcon>
-            <S.ViewIcon>□</S.ViewIcon>
-            <S.InfoText>새글 {newCount}/{total}</S.InfoText>
+            <S.InfoText>
+              새글 {newCount}/{total}
+            </S.InfoText>
           </S.ViewMode>
           <S.SearchArea>
             <S.SearchInput
@@ -123,4 +123,3 @@ const NoticePage: React.FC = () => {
 };
 
 export default NoticePage;
-

@@ -28,24 +28,6 @@ export const ViewMode = styled.div`
   gap: 8px;
 `;
 
-export const ViewIcon = styled.button<{ $active?: boolean }>`
-  width: 32px;
-  height: 32px;
-  border: 1px solid #e5e5e5;
-  background: ${({ $active }) => ($active ? "#1a1a2e" : "#ffffff")};
-  color: ${({ $active }) => ($active ? "#ffffff" : "#666")};
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.4rem;
-  transition: all 0.2s ease;
-
-  &:hover {
-    border-color: #1a1a2e;
-  }
-`;
-
 export const InfoText = styled.span`
   font-size: 1.4rem;
   color: #666;
@@ -60,20 +42,6 @@ export const SearchArea = styled.div`
   @media ${device.mobile} {
     width: 100%;
     flex-wrap: wrap;
-  }
-`;
-
-export const SelectBox = styled.select`
-  padding: 8px 12px;
-  border: 1px solid #e5e5e5;
-  border-radius: 4px;
-  font-size: 1.4rem;
-  background: #ffffff;
-  cursor: pointer;
-
-  @media ${device.mobile} {
-    flex: 1;
-    min-width: 100px;
   }
 `;
 
@@ -111,101 +79,87 @@ export const SearchButton = styled.button`
   }
 `;
 
-export const NewsList = styled.ul`
-  list-style: none;
-  padding: 0;
-  margin: 0 0 40px 0;
-  border-top: 2px solid #1a1a2e;
+export const AlbumsGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+  margin-bottom: 40px;
+
+  @media ${device.mobile} {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    margin-bottom: 30px;
+  }
 `;
 
-export const NewsItem = styled.li`
-  display: grid;
-  grid-template-columns: 100px 1fr auto;
-  align-items: center;
-  padding: 20px 16px;
-  border-bottom: 1px solid #e5e5e5;
-  transition: background 0.2s ease;
+export const AlbumCard = styled.div`
+  background: #ffffff;
+  border: 1px solid #e5e5e5;
+  border-radius: 8px;
+  overflow: hidden;
+  transition: all 0.2s ease;
   cursor: pointer;
-  gap: 20px;
 
   &:hover {
-    background: #f8f9ff;
-  }
-
-  @media ${device.mobile} {
-    grid-template-columns: 1fr;
-    gap: 12px;
-    padding: 16px;
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    border-color: #1a1a2e;
   }
 `;
 
-export const NewsDepartment = styled.div`
-  font-size: 1.3rem;
+export const AlbumThumbnail = styled.div`
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  background: #f8f9ff;
+  position: relative;
+  overflow: hidden;
+`;
+
+export const ThumbnailPlaceholder = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: #ffffff;
-  background: #667eea;
-  padding: 6px 12px;
-  border-radius: 4px;
-  text-align: center;
-  font-weight: 500;
-  white-space: nowrap;
-
-  @media ${device.mobile} {
-    justify-self: start;
-  }
-`;
-
-export const NewsTitle = styled.div`
   font-size: 1.6rem;
-  color: #333;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-
-  @media ${device.mobile} {
-    font-size: 1.4rem;
-    width: 100%;
-  }
-`;
-
-export const NewBadge = styled.span`
-  display: inline-block;
-  padding: 4px 8px;
-  background: #ff4444;
-  color: #ffffff;
-  font-size: 1.2rem;
   font-weight: 600;
-  border-radius: 4px;
-  line-height: 1;
 `;
 
-export const NoticeBadge = styled.span`
-  display: inline-block;
-  padding: 4px 8px;
-  background: #ffc107;
-  color: #333;
+export const AlbumInfo = styled.div`
+  padding: 16px;
+`;
+
+export const AlbumDate = styled.div`
   font-size: 1.2rem;
-  font-weight: 600;
-  border-radius: 4px;
-  line-height: 1;
-`;
-
-export const NewsMeta = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 20px;
-  font-size: 1.4rem;
   color: #999;
-  flex-shrink: 0;
-
-  @media ${device.mobile} {
-    font-size: 1.3rem;
-    gap: 16px;
-  }
+  margin-bottom: 8px;
 `;
 
-export const NewsDate = styled.span``;
+export const AlbumTitle = styled.div`
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #1a1a2e;
+  line-height: 1.4;
+  margin-bottom: 8px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+`;
 
-export const NewsViews = styled.span``;
+export const AlbumMeta = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 1.2rem;
+  color: #666;
+  padding-top: 8px;
+  border-top: 1px solid #f0f0f0;
+`;
+
+export const AlbumViews = styled.span``;
 
 export const Pagination = styled.div`
   display: flex;
@@ -247,3 +201,10 @@ export const PaginationNumber = styled.button<{ $active?: boolean }>`
   }
 `;
 
+export const NoAlbums = styled.div`
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 48px;
+  font-size: 1.6rem;
+  color: #999;
+`;

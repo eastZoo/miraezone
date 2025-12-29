@@ -12,6 +12,7 @@ interface SongItem {
 
 const SongsPage: React.FC = () => {
   const subMenuItems = [
+    { title: "교회 앨범", path: "/resources/church-albums" },
     { title: "찬양 자료", path: "/resources/songs" },
     { title: "다운로드", path: "/resources/downloads" },
   ];
@@ -73,8 +74,6 @@ const SongsPage: React.FC = () => {
         {/* 검색 및 필터 */}
         <S.Toolbar>
           <S.ViewMode>
-            <S.ViewIcon $active={true}>■</S.ViewIcon>
-            <S.ViewIcon>□</S.ViewIcon>
             <S.InfoText>전체 {songs.length}곡</S.InfoText>
           </S.ViewMode>
           <S.SearchArea>
