@@ -27,9 +27,7 @@ const BulletinsAdminPage: React.FC = () => {
   const [formData, setFormData] = useState({
     title: "",
     date: dayjs().format("YYYY-MM-DD"),
-    thumbnailUrl: "",
   });
-  const [uploadingFiles, setUploadingFiles] = useState<File[]>([]);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
   const limit = 10;
@@ -64,9 +62,7 @@ const BulletinsAdminPage: React.FC = () => {
     setFormData({
       title: "",
       date: dayjs().format("YYYY-MM-DD"),
-      thumbnailUrl: "",
     });
-    setUploadingFiles([]);
   };
 
   // 수정 시작
@@ -77,9 +73,7 @@ const BulletinsAdminPage: React.FC = () => {
     setFormData({
       title: bulletin.title,
       date: dayjs(bulletin.date).format("YYYY-MM-DD"),
-      thumbnailUrl: bulletin.thumbnailUrl || "",
     });
-    setUploadingFiles([]);
   };
 
   // 취소
@@ -90,9 +84,7 @@ const BulletinsAdminPage: React.FC = () => {
     setFormData({
       title: "",
       date: dayjs().format("YYYY-MM-DD"),
-      thumbnailUrl: "",
     });
-    setUploadingFiles([]);
   };
 
   // 주보 저장
@@ -309,17 +301,6 @@ const BulletinsAdminPage: React.FC = () => {
                   onChange={(e) =>
                     setFormData({ ...formData, date: e.target.value })
                   }
-                />
-              </S.FormRow>
-              <S.FormRow>
-                <S.FormLabel>썸네일 URL</S.FormLabel>
-                <S.FormInput
-                  type="text"
-                  value={formData.thumbnailUrl}
-                  onChange={(e) =>
-                    setFormData({ ...formData, thumbnailUrl: e.target.value })
-                  }
-                  placeholder="썸네일 이미지 URL (선택사항)"
                 />
               </S.FormRow>
               <S.FormActions>

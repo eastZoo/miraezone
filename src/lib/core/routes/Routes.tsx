@@ -10,8 +10,13 @@ const OrganizationPage = lazy(() => import("@/pages/church/OrganizationPage"));
 const LocationPage = lazy(() => import("@/pages/church/LocationPage"));
 // 안내/소식
 const NoticePage = lazy(() => import("@/pages/notice/NoticePage"));
+const NoticeDetailPage = lazy(() => import("@/pages/notice/NoticeDetailPage"));
 const NewsPage = lazy(() => import("@/pages/news/NewsPage"));
+const NewsDetailPage = lazy(() => import("@/pages/news/NewsDetailPage"));
 const BulletinsPage = lazy(() => import("@/pages/bulletins/BulletinsPage"));
+const BulletinDetailPage = lazy(
+  () => import("@/pages/bulletins/BulletinDetailPage")
+);
 // 예배/찬양
 const WorshipInfoPage = lazy(() => import("@/pages/worship/WorshipInfoPage"));
 const WorshipVideosPage = lazy(
@@ -26,12 +31,22 @@ const NextGenNewsPage = lazy(() => import("@/pages/nextgen/NextGenNewsPage"));
 const SongsPage = lazy(() => import("@/pages/resources/SongsPage"));
 const DownloadsPage = lazy(() => import("@/pages/resources/DownloadsPage"));
 // 관리자
-const ChurchAdminPage = lazy(() => import("@/pages/admin/church/ChurchAdminPage"));
-const OrganizationAdminPage = lazy(() => import("@/pages/admin/church/OrganizationAdminPage"));
-const LocationAdminPage = lazy(() => import("@/pages/admin/church/LocationAdminPage"));
-const NoticeAdminPage = lazy(() => import("@/pages/admin/notice/NoticeAdminPage"));
+const ChurchAdminPage = lazy(
+  () => import("@/pages/admin/church/ChurchAdminPage")
+);
+const OrganizationAdminPage = lazy(
+  () => import("@/pages/admin/church/OrganizationAdminPage")
+);
+const LocationAdminPage = lazy(
+  () => import("@/pages/admin/church/LocationAdminPage")
+);
+const NoticeAdminPage = lazy(
+  () => import("@/pages/admin/notice/NoticeAdminPage")
+);
 const NewsAdminPage = lazy(() => import("@/pages/admin/news/NewsAdminPage"));
-const BulletinsAdminPage = lazy(() => import("@/pages/admin/bulletins/BulletinsAdminPage"));
+const BulletinsAdminPage = lazy(
+  () => import("@/pages/admin/bulletins/BulletinsAdminPage")
+);
 
 export default function AppRoutes() {
   const routes = [
@@ -45,8 +60,11 @@ export default function AppRoutes() {
     { path: "/church/location", element: <LocationPage /> },
     // 안내/소식
     { path: "/notice", element: <NoticePage /> },
+    { path: "/notice/:id", element: <NoticeDetailPage /> },
     { path: "/news", element: <NewsPage /> },
+    { path: "/news/:id", element: <NewsDetailPage /> },
     { path: "/bulletins", element: <BulletinsPage /> },
+    { path: "/bulletins/:id", element: <BulletinDetailPage /> },
     // 예배/찬양
     { path: "/worship/info", element: <WorshipInfoPage /> },
     { path: "/worship/videos", element: <WorshipVideosPage /> },

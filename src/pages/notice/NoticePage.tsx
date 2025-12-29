@@ -1,10 +1,12 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import SubMenuTemplate from "@/components/template/SubMenuTemplate";
 import { useNoticeList } from "@/lib/hooks/useNotice";
 import * as S from "./NoticePage.style";
 import dayjs from "dayjs";
 
 const NoticePage: React.FC = () => {
+  const navigate = useNavigate();
   const subMenuItems = [
     { title: "공지사항", path: "/notice" },
     { title: "교회 소식", path: "/news" },
@@ -72,7 +74,10 @@ const NoticePage: React.FC = () => {
         {/* 공지사항 목록 */}
         <S.NoticeList>
           {notices.map((notice) => (
-            <S.NoticeItem key={notice.id}>
+            <S.NoticeItem
+              key={notice.id}
+              onClick={() => navigate(`/notice/${notice.id}`)}
+            >
               <S.NoticeTitle>
                 {notice.isNew && <S.NewBadge>NEW</S.NewBadge>}
                 {notice.isImportant && <S.NewBadge>중요</S.NewBadge>}

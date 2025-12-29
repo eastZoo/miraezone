@@ -2,6 +2,7 @@ import React from "react";
 import SubMenuTemplate from "@/components/template/SubMenuTemplate";
 import { useChurchInfo, useChurchHistory } from "@/lib/hooks/useChurch";
 import ReactMarkdown from "react-markdown";
+import remarkBreaks from "remark-breaks";
 import * as S from "./ChurchPage.style";
 
 const IntroducePage: React.FC = () => {
@@ -46,7 +47,9 @@ const IntroducePage: React.FC = () => {
           <S.SectionTitle>교회 비전</S.SectionTitle>
           <S.SectionContent>
             {vision?.content ? (
-              <ReactMarkdown>{vision.content}</ReactMarkdown>
+              <ReactMarkdown remarkPlugins={[remarkBreaks]}>
+                {vision.content}
+              </ReactMarkdown>
             ) : (
               <p>
                 미래존교회는 하나님의 사랑과 예수 그리스도의 복음을 전하며, 서로
@@ -62,7 +65,9 @@ const IntroducePage: React.FC = () => {
           <S.SectionTitle>교회 소개</S.SectionTitle>
           <S.SectionContent>
             {introduction?.content ? (
-              <ReactMarkdown>{introduction.content}</ReactMarkdown>
+              <ReactMarkdown remarkPlugins={[remarkBreaks]}>
+                {introduction.content}
+              </ReactMarkdown>
             ) : (
               <>
                 <p>

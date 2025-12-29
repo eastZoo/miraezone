@@ -1,10 +1,12 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import SubMenuTemplate from "@/components/template/SubMenuTemplate";
 import { useBulletinList } from "@/lib/hooks/useBulletin";
 import * as S from "./BulletinsPage.style";
 import dayjs from "dayjs";
 
 const BulletinsPage: React.FC = () => {
+  const navigate = useNavigate();
   const subMenuItems = [
     { title: "공지사항", path: "/notice" },
     { title: "교회 소식", path: "/news" },
@@ -71,7 +73,10 @@ const BulletinsPage: React.FC = () => {
         {/* 주보 목록 - 그리드 형태 */}
         <S.BulletinsGrid>
           {bulletins.map((bulletin) => (
-            <S.BulletinCard key={bulletin.id}>
+            <S.BulletinCard
+              key={bulletin.id}
+              onClick={() => navigate(`/bulletins/${bulletin.id}`)}
+            >
               <S.BulletinThumbnail>
                 {bulletin.thumbnailUrl ? (
                   <img

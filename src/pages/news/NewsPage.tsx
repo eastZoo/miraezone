@@ -1,10 +1,12 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import SubMenuTemplate from "@/components/template/SubMenuTemplate";
 import { useNewsList } from "@/lib/hooks/useNews";
 import * as S from "./NewsPage.style";
 import dayjs from "dayjs";
 
 const NewsPage: React.FC = () => {
+  const navigate = useNavigate();
   const subMenuItems = [
     { title: "공지사항", path: "/notice" },
     { title: "교회 소식", path: "/news" },
@@ -83,7 +85,10 @@ const NewsPage: React.FC = () => {
         {/* 교회 소식 목록 */}
         <S.NewsList>
           {news.map((item) => (
-            <S.NewsItem key={item.id}>
+            <S.NewsItem
+              key={item.id}
+              onClick={() => navigate(`/news/${item.id}`)}
+            >
               <S.NewsCategory>{item.category}</S.NewsCategory>
               <S.NewsTitle>
                 {item.isNew && <S.NewBadge>NEW</S.NewBadge>}

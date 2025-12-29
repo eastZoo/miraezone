@@ -23,7 +23,6 @@ const NewsAdminPage: React.FC = () => {
     title: "",
     content: "",
     category: "소식",
-    thumbnailUrl: "",
     author: "",
     isNew: false,
   });
@@ -62,7 +61,6 @@ const NewsAdminPage: React.FC = () => {
       title: "",
       content: "",
       category: "소식",
-      thumbnailUrl: "",
       author: "",
       isNew: false,
     });
@@ -77,7 +75,6 @@ const NewsAdminPage: React.FC = () => {
       title: item.title,
       content: item.content,
       category: item.category,
-      thumbnailUrl: item.thumbnailUrl || "",
       author: item.author || "",
       isNew: item.isNew,
     });
@@ -94,7 +91,6 @@ const NewsAdminPage: React.FC = () => {
       title: "",
       content: "",
       category: "소식",
-      thumbnailUrl: "",
       author: "",
       isNew: false,
     });
@@ -374,17 +370,6 @@ const NewsAdminPage: React.FC = () => {
                   <option value="선교">선교</option>
                   <option value="소식">소식</option>
                 </S.SelectBox>
-              </S.FormRow>
-              <S.FormRow>
-                <S.FormLabel>썸네일 URL</S.FormLabel>
-                <S.FormInput
-                  type="text"
-                  value={formData.thumbnailUrl}
-                  onChange={(e) =>
-                    setFormData({ ...formData, thumbnailUrl: e.target.value })
-                  }
-                  placeholder="썸네일 이미지 URL (선택사항)"
-                />
               </S.FormRow>
               <S.FormRow>
                 <S.FormLabel>작성자</S.FormLabel>
