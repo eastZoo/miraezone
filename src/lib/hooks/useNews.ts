@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { request } from "../api";
 
 /**
@@ -16,6 +16,32 @@ export interface News {
   isActive: boolean;
   createdAt: string;
   updatedAt: string;
+}
+
+/**
+ * 교회 소식 생성 DTO
+ */
+export interface CreateNewsDto {
+  title: string;
+  content: string;
+  category: string;
+  thumbnailUrl?: string;
+  author?: string;
+  isNew?: boolean;
+  isActive?: boolean;
+}
+
+/**
+ * 교회 소식 수정 DTO
+ */
+export interface UpdateNewsDto {
+  title?: string;
+  content?: string;
+  category?: string;
+  thumbnailUrl?: string;
+  author?: string;
+  isNew?: boolean;
+  isActive?: boolean;
 }
 
 /**
@@ -59,6 +85,62 @@ export const useNews = (id: number) => {
       return result;
     },
     enabled: !!id,
+  });
+};
+
+/**
+ * 교회 소식 생성
+ */
+export const useCreateNews = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (data: CreateNewsDto) => {
+      return await request<News>({
+        method: "POST",
+        url: "/news",
+        data,
+      });
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["news"] });
+    },
+  });
+};
+
+/**
+ * 교회 소식 수정
+ */
+export const useUpdateNews = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async ({ id, data }: { id: number; data: UpdateNewsDto }) => {
+      return await request<News>({
+        method: "PUT",
+        url: `/news/${id}`,
+        data,
+      });
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["news"] });
+    },
+  });
+};
+
+/**
+ * 교회 소식 삭제
+ */
+export const useDeleteNews = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (id: number) => {
+      return await request({
+        method: "DELETE",
+        url: `/news/${id}`,
+      });
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["news"] });
+    },
   });
 };
 

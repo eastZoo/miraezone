@@ -29,6 +29,9 @@ const DownloadsPage = lazy(() => import("@/pages/resources/DownloadsPage"));
 const ChurchAdminPage = lazy(() => import("@/pages/admin/church/ChurchAdminPage"));
 const OrganizationAdminPage = lazy(() => import("@/pages/admin/church/OrganizationAdminPage"));
 const LocationAdminPage = lazy(() => import("@/pages/admin/church/LocationAdminPage"));
+const NoticeAdminPage = lazy(() => import("@/pages/admin/notice/NoticeAdminPage"));
+const NewsAdminPage = lazy(() => import("@/pages/admin/news/NewsAdminPage"));
+const BulletinsAdminPage = lazy(() => import("@/pages/admin/bulletins/BulletinsAdminPage"));
 
 export default function AppRoutes() {
   const routes = [
@@ -59,6 +62,9 @@ export default function AppRoutes() {
     { path: "/admin/church", element: <ChurchAdminPage /> },
     { path: "/admin/church/organization", element: <OrganizationAdminPage /> },
     { path: "/admin/church/location", element: <LocationAdminPage /> },
+    { path: "/admin/notice", element: <NoticeAdminPage /> },
+    { path: "/admin/news", element: <NewsAdminPage /> },
+    { path: "/admin/bulletins", element: <BulletinsAdminPage /> },
     { path: "/404", element: <NotFoundPage /> },
     { path: "*", element: <Navigate to="/404" replace /> },
   ];

@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { request } from "../api";
 
 /**
@@ -15,6 +15,30 @@ export interface Notice {
   isActive: boolean;
   createdAt: string;
   updatedAt: string;
+}
+
+/**
+ * 공지사항 생성 DTO
+ */
+export interface CreateNoticeDto {
+  title: string;
+  content: string;
+  author?: string;
+  isNew?: boolean;
+  isImportant?: boolean;
+  isActive?: boolean;
+}
+
+/**
+ * 공지사항 수정 DTO
+ */
+export interface UpdateNoticeDto {
+  title?: string;
+  content?: string;
+  author?: string;
+  isNew?: boolean;
+  isImportant?: boolean;
+  isActive?: boolean;
 }
 
 /**
@@ -56,6 +80,62 @@ export const useNotice = (id: number) => {
       return result;
     },
     enabled: !!id,
+  });
+};
+
+/**
+ * 공지사항 생성
+ */
+export const useCreateNotice = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (data: CreateNoticeDto) => {
+      return await request<Notice>({
+        method: "POST",
+        url: "/notice",
+        data,
+      });
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["notice"] });
+    },
+  });
+};
+
+/**
+ * 공지사항 수정
+ */
+export const useUpdateNotice = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async ({ id, data }: { id: number; data: UpdateNoticeDto }) => {
+      return await request<Notice>({
+        method: "PUT",
+        url: `/notice/${id}`,
+        data,
+      });
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["notice"] });
+    },
+  });
+};
+
+/**
+ * 공지사항 삭제
+ */
+export const useDeleteNotice = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (id: number) => {
+      return await request({
+        method: "DELETE",
+        url: `/notice/${id}`,
+      });
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["notice"] });
+    },
   });
 };
 
