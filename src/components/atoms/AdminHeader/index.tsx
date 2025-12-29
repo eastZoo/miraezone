@@ -79,6 +79,15 @@ const AdminHeader: React.FC = () => {
                     주보 관리
                   </S.MenuLink>
                 </S.MenuItem>
+                <S.MenuItem>
+                  <S.MenuLink
+                    as={Link}
+                    to="/admin/worship"
+                    $isActive={isActive("/admin/worship")}
+                  >
+                    예배 관리
+                  </S.MenuLink>
+                </S.MenuItem>
               </S.MenuList>
             </S.NavMenu>
           </S.MainNavInner>

@@ -22,6 +22,9 @@ const WorshipInfoPage = lazy(() => import("@/pages/worship/WorshipInfoPage"));
 const WorshipVideosPage = lazy(
   () => import("@/pages/worship/WorshipVideosPage")
 );
+const WorshipVideoDetailPage = lazy(
+  () => import("@/pages/worship/WorshipVideoDetailPage")
+);
 // 다음세대
 const ElementaryPage = lazy(() => import("@/pages/nextgen/ElementaryPage"));
 const YouthPage = lazy(() => import("@/pages/nextgen/YouthPage"));
@@ -47,6 +50,9 @@ const NewsAdminPage = lazy(() => import("@/pages/admin/news/NewsAdminPage"));
 const BulletinsAdminPage = lazy(
   () => import("@/pages/admin/bulletins/BulletinsAdminPage")
 );
+const WorshipAdminPage = lazy(
+  () => import("@/pages/admin/worship/WorshipAdminPage")
+);
 
 export default function AppRoutes() {
   const routes = [
@@ -68,6 +74,7 @@ export default function AppRoutes() {
     // 예배/찬양
     { path: "/worship/info", element: <WorshipInfoPage /> },
     { path: "/worship/videos", element: <WorshipVideosPage /> },
+    { path: "/worship/videos/:id", element: <WorshipVideoDetailPage /> },
     // 다음세대
     { path: "/nextgen/elementary", element: <ElementaryPage /> },
     { path: "/nextgen/youth", element: <YouthPage /> },
@@ -83,6 +90,7 @@ export default function AppRoutes() {
     { path: "/admin/notice", element: <NoticeAdminPage /> },
     { path: "/admin/news", element: <NewsAdminPage /> },
     { path: "/admin/bulletins", element: <BulletinsAdminPage /> },
+    { path: "/admin/worship", element: <WorshipAdminPage /> },
     { path: "/404", element: <NotFoundPage /> },
     { path: "*", element: <Navigate to="/404" replace /> },
   ];

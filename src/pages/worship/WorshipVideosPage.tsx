@@ -1,10 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
+import { useNavigate } from "react-router-dom";
 import SubMenuTemplate from "@/components/template/SubMenuTemplate";
 import { useWorshipVideos } from "@/lib/hooks/useWorship";
+import { extractYouTubeThumbnail } from "@/lib/utils/youtubeUtils";
 import * as S from "./WorshipPage.style";
 import dayjs from "dayjs";
 
 const WorshipVideosPage: React.FC = () => {
+  const navigate = useNavigate();
   const subMenuItems = [
     { title: "예배 안내", path: "/worship/info" },
     { title: "설교 영상", path: "/worship/videos" },
@@ -22,9 +25,24 @@ const WorshipVideosPage: React.FC = () => {
 
   const totalPages = Math.ceil(total / limit);
 
+  // 유튜브 썸네일 URL 추출
+  const videosWithThumbnails = useMemo(() => {
+    return videos.map((video) => {
+      let thumbnailUrl = video.thumbnailUrl;
+      if (!thumbnailUrl && video.videoUrl) {
+        thumbnailUrl = extractYouTubeThumbnail(video.videoUrl) || undefined;
+      }
+      return { ...video, thumbnailUrl };
+    });
+  }, [videos]);
+
   const handleSearch = () => {
     setPage(1);
     // 검색은 useWorshipVideos의 queryKey에 의해 자동으로 재요청됨
+  };
+
+  const handleVideoClick = (videoId: number) => {
+    navigate(`/worship/videos/${videoId}`);
   };
 
   if (isLoading) {
@@ -77,36 +95,76 @@ const WorshipVideosPage: React.FC = () => {
           </S.SearchArea>
         </S.Toolbar>
 
-        {/* 설교 영상 그리드 */}
-        <S.VideosGrid>
-          {videos.map((video) => (
-            <S.VideoCard key={video.id}>
-              <S.VideoThumbnail>
-                {video.thumbnailUrl ? (
-                  <img
-                    src={video.thumbnailUrl}
-                    alt={video.title}
-                    style={{ width: "100%", height: "100%", objectFit: "cover" }}
-                  />
-                ) : (
-                  <S.ThumbnailPlaceholder>
-                    <S.PlayIcon>▶</S.PlayIcon>
-                  </S.ThumbnailPlaceholder>
-                )}
-              </S.VideoThumbnail>
-              <S.VideoInfo>
-                <S.VideoDate>
-                  {dayjs(video.date).format("YYYY.MM.DD")}
-                </S.VideoDate>
-                <S.VideoTitle>{video.title}</S.VideoTitle>
-                <S.VideoMeta>
-                  <S.VideoSpeaker>{video.speaker}</S.VideoSpeaker>
-                  <S.VideoViews>조회 {video.views}</S.VideoViews>
-                </S.VideoMeta>
-              </S.VideoInfo>
-            </S.VideoCard>
-          ))}
-        </S.VideosGrid>
+        {/* 설교 영상 테이블 */}
+        <S.VideosTable>
+          <S.VideosTableHeader>
+            <S.VideosTableHeaderCell style={{ width: "80px" }}>
+              No
+            </S.VideosTableHeaderCell>
+            <S.VideosTableHeaderCell style={{ width: "120px" }}>
+              사진
+            </S.VideosTableHeaderCell>
+            <S.VideosTableHeaderCell>제목</S.VideosTableHeaderCell>
+            <S.VideosTableHeaderCell>설교자</S.VideosTableHeaderCell>
+            <S.VideosTableHeaderCell style={{ width: "120px" }}>
+              날짜
+            </S.VideosTableHeaderCell>
+          </S.VideosTableHeader>
+          <S.VideosTableBody>
+            {videosWithThumbnails.length > 0 ? (
+              videosWithThumbnails.map((video, index) => {
+                // 페이지네이션을 고려한 번호 계산
+                const no = total - (page - 1) * limit - index;
+                return (
+                  <S.VideosTableRow
+                    key={video.id}
+                    onClick={() => handleVideoClick(video.id)}
+                  >
+                    <S.VideosTableCell style={{ textAlign: "center" }}>
+                      {no}
+                    </S.VideosTableCell>
+                    <S.VideosTableCell>
+                      {video.thumbnailUrl ? (
+                        <S.VideoThumbnailImg
+                          src={video.thumbnailUrl}
+                          alt={video.title}
+                          onError={(e) => {
+                            // 썸네일 로드 실패 시 플레이스홀더 표시
+                            e.currentTarget.style.display = "none";
+                            e.currentTarget.nextElementSibling?.classList.remove(
+                              "hidden"
+                            );
+                          }}
+                        />
+                      ) : null}
+                      <S.ThumbnailPlaceholder
+                        className={video.thumbnailUrl ? "hidden" : ""}
+                      >
+                        <S.PlayIcon>▶</S.PlayIcon>
+                      </S.ThumbnailPlaceholder>
+                    </S.VideosTableCell>
+                    <S.VideosTableCell>
+                      <S.VideoTitleText>{video.title}</S.VideoTitleText>
+                    </S.VideosTableCell>
+                    <S.VideosTableCell>{video.speaker}</S.VideosTableCell>
+                    <S.VideosTableCell>
+                      {dayjs(video.date).format("YYYY.MM.DD")}
+                    </S.VideosTableCell>
+                  </S.VideosTableRow>
+                );
+              })
+            ) : (
+              <S.VideosTableRow>
+                <S.VideosTableCell
+                  colSpan={5}
+                  style={{ textAlign: "center", color: "#999" }}
+                >
+                  등록된 설교 영상이 없습니다.
+                </S.VideosTableCell>
+              </S.VideosTableRow>
+            )}
+          </S.VideosTableBody>
+        </S.VideosTable>
 
         {/* 페이지네이션 */}
         <S.Pagination>
@@ -138,4 +196,3 @@ const WorshipVideosPage: React.FC = () => {
 };
 
 export default WorshipVideosPage;
-

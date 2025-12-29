@@ -121,3 +121,173 @@ export const useWorshipNotices = () => {
   });
 };
 
+/**
+ * 예배 일정 생성 DTO
+ */
+interface CreateWorshipScheduleDto {
+  type: string;
+  time: string;
+  name: string;
+  place: string;
+  order?: number;
+  isActive?: boolean;
+}
+
+/**
+ * 예배 일정 수정 DTO
+ */
+interface UpdateWorshipScheduleDto {
+  type?: string;
+  time?: string;
+  name?: string;
+  place?: string;
+  order?: number;
+  isActive?: boolean;
+}
+
+/**
+ * 설교 영상 생성 DTO
+ */
+interface CreateWorshipVideoDto {
+  title: string;
+  date: string;
+  speaker: string;
+  videoUrl: string;
+  isActive?: boolean;
+}
+
+/**
+ * 설교 영상 수정 DTO
+ */
+interface UpdateWorshipVideoDto {
+  title?: string;
+  date?: string;
+  speaker?: string;
+  videoUrl?: string;
+  isActive?: boolean;
+}
+
+/**
+ * 예배 일정 생성
+ */
+export const useCreateWorshipSchedule = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (data: CreateWorshipScheduleDto) => {
+      return await request<WorshipSchedule>({
+        method: "POST",
+        url: "/worship/schedules",
+        data,
+      });
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["worship", "schedules"] });
+    },
+  });
+};
+
+/**
+ * 예배 일정 수정
+ */
+export const useUpdateWorshipSchedule = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async ({
+      id,
+      data,
+    }: {
+      id: number;
+      data: UpdateWorshipScheduleDto;
+    }) => {
+      return await request<WorshipSchedule>({
+        method: "PUT",
+        url: `/worship/schedules/${id}`,
+        data,
+      });
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["worship", "schedules"] });
+    },
+  });
+};
+
+/**
+ * 예배 일정 삭제
+ */
+export const useDeleteWorshipSchedule = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (id: number) => {
+      return await request<void>({
+        method: "DELETE",
+        url: `/worship/schedules/${id}`,
+      });
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["worship", "schedules"] });
+    },
+  });
+};
+
+/**
+ * 설교 영상 생성
+ */
+export const useCreateWorshipVideo = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (data: CreateWorshipVideoDto) => {
+      return await request<WorshipVideo>({
+        method: "POST",
+        url: "/worship/videos",
+        data,
+      });
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["worship", "videos"] });
+    },
+  });
+};
+
+/**
+ * 설교 영상 수정
+ */
+export const useUpdateWorshipVideo = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async ({
+      id,
+      data,
+    }: {
+      id: number;
+      data: UpdateWorshipVideoDto;
+    }) => {
+      return await request<WorshipVideo>({
+        method: "PUT",
+        url: `/worship/videos/${id}`,
+        data,
+      });
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["worship", "videos"] });
+    },
+  });
+};
+
+/**
+ * 설교 영상 삭제
+ */
+export const useDeleteWorshipVideo = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (id: number) => {
+      return await request<void>({
+        method: "DELETE",
+        url: `/worship/videos/${id}`,
+      });
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["worship", "videos"] });
+    },
+  });
+};
+

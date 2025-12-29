@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React from "react";
 import SubMenuTemplate from "@/components/template/SubMenuTemplate";
 import { useWorshipSchedules, useWorshipNotices } from "@/lib/hooks/useWorship";
 import * as S from "./WorshipPage.style";
@@ -9,23 +9,14 @@ const WorshipInfoPage: React.FC = () => {
     { title: "설교 영상", path: "/worship/videos" },
   ];
 
-  // 예배 일정 조회
+  // 예배 일정 조회 (모든 예배)
   const { data: schedules = [], isLoading: schedulesLoading } =
     useWorshipSchedules();
   // 예배 안내 조회
   const { data: notices = [], isLoading: noticesLoading } = useWorshipNotices();
 
-  // 예배 타입별로 그룹화
-  const schedulesByType = useMemo(() => {
-    const grouped: Record<string, typeof schedules> = {};
-    schedules.forEach((schedule) => {
-      if (!grouped[schedule.type]) {
-        grouped[schedule.type] = [];
-      }
-      grouped[schedule.type].push(schedule);
-    });
-    return grouped;
-  }, [schedules]);
+  // order 기준으로 정렬
+  const sortedSchedules = [...schedules].sort((a, b) => a.order - b.order);
 
   if (schedulesLoading || noticesLoading) {
     return (
@@ -50,22 +41,34 @@ const WorshipInfoPage: React.FC = () => {
       breadcrumb={["Home", "예배/찬양", "예배 안내"]}
     >
       <S.ContentWrapper>
-        <S.WorshipSchedule>
-          {Object.entries(schedulesByType).map(([type, typeSchedules]) => (
-            <S.ScheduleSection key={type}>
-              <S.ScheduleTitle>{type} 예배</S.ScheduleTitle>
-              <S.ScheduleList>
-                {typeSchedules.map((schedule) => (
-                  <S.ScheduleItem key={schedule.id}>
-                    <S.ScheduleTime>{schedule.time}</S.ScheduleTime>
-                    <S.ScheduleName>{schedule.name}</S.ScheduleName>
-                    <S.SchedulePlace>{schedule.place}</S.SchedulePlace>
-                  </S.ScheduleItem>
-                ))}
-              </S.ScheduleList>
-            </S.ScheduleSection>
-          ))}
-        </S.WorshipSchedule>
+        {/* 예배 일정 테이블 (모든 예배 표시) */}
+        <S.ScheduleTable>
+          <S.ScheduleTableHeader>
+            <S.ScheduleTableHeaderCell>예배명</S.ScheduleTableHeaderCell>
+            <S.ScheduleTableHeaderCell>시간</S.ScheduleTableHeaderCell>
+            <S.ScheduleTableHeaderCell>장소</S.ScheduleTableHeaderCell>
+          </S.ScheduleTableHeader>
+          <S.ScheduleTableBody>
+            {sortedSchedules.length > 0 ? (
+              sortedSchedules.map((schedule) => (
+                <S.ScheduleTableRow key={schedule.id}>
+                  <S.ScheduleTableCell>{schedule.name}</S.ScheduleTableCell>
+                  <S.ScheduleTableCell>{schedule.time}</S.ScheduleTableCell>
+                  <S.ScheduleTableCell>{schedule.place}</S.ScheduleTableCell>
+                </S.ScheduleTableRow>
+              ))
+            ) : (
+              <S.ScheduleTableRow>
+                <S.ScheduleTableCell
+                  colSpan={3}
+                  style={{ textAlign: "center", color: "#999" }}
+                >
+                  등록된 예배 일정이 없습니다.
+                </S.ScheduleTableCell>
+              </S.ScheduleTableRow>
+            )}
+          </S.ScheduleTableBody>
+        </S.ScheduleTable>
 
         <S.WorshipNotice>
           <S.NoticeTitle>예배 안내</S.NoticeTitle>

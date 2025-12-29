@@ -5,44 +5,69 @@ export const ContentWrapper = styled.div`
   width: 100%;
 `;
 
-export const WorshipSchedule = styled.div`
-  margin-bottom: 50px;
-`;
-
-export const ScheduleSection = styled.section`
-  margin-bottom: 40px;
-
-  &:last-child {
-    margin-bottom: 0;
-  }
-`;
-
-export const ScheduleTitle = styled.h2`
-  font-size: 2.4rem;
-  font-weight: 700;
-  color: #1a1a2e;
-  margin: 0 0 24px 0;
-  padding-bottom: 16px;
+// 탭 스타일
+export const TabContainer = styled.div`
+  display: flex;
+  gap: 0;
+  margin-bottom: 30px;
   border-bottom: 2px solid #e5e5e5;
+`;
+
+export const TabButton = styled.button<{ $active?: boolean }>`
+  padding: 16px 32px;
+  background: ${({ $active }) => ($active ? "#1a1a2e" : "#ffffff")};
+  color: ${({ $active }) => ($active ? "#ffffff" : "#666")};
+  border: none;
+  border-bottom: ${({ $active }) => ($active ? "3px solid #1a1a2e" : "3px solid transparent")};
+  font-size: 1.6rem;
+  font-weight: ${({ $active }) => ($active ? "600" : "400")};
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+  top: 2px;
+
+  &:hover {
+    background: ${({ $active }) => ($active ? "#1a1a2e" : "#f8f9ff")};
+    color: ${({ $active }) => ($active ? "#ffffff" : "#1a1a2e")};
+  }
 
   @media ${device.mobile} {
-    font-size: 2rem;
-    margin-bottom: 20px;
-    padding-bottom: 12px;
+    padding: 12px 20px;
+    font-size: 1.4rem;
   }
 `;
 
-export const ScheduleList = styled.ul`
-  list-style: none;
-  padding: 0;
-  margin: 0;
+// 예배 일정 테이블 스타일
+export const ScheduleTable = styled.table`
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 40px;
+  background: #ffffff;
+  border: 1px solid #e5e5e5;
+  border-radius: 8px;
+  overflow: hidden;
 `;
 
-export const ScheduleItem = styled.li`
-  display: grid;
-  grid-template-columns: 120px 1fr 150px;
-  align-items: center;
-  padding: 20px;
+export const ScheduleTableHeader = styled.thead`
+  background: #1a1a2e;
+  color: #ffffff;
+`;
+
+export const ScheduleTableHeaderCell = styled.th`
+  padding: 16px 20px;
+  text-align: left;
+  font-size: 1.6rem;
+  font-weight: 600;
+
+  @media ${device.mobile} {
+    padding: 12px 16px;
+    font-size: 1.4rem;
+  }
+`;
+
+export const ScheduleTableBody = styled.tbody``;
+
+export const ScheduleTableRow = styled.tr`
   border-bottom: 1px solid #f0f0f0;
   transition: background 0.2s ease;
 
@@ -53,41 +78,16 @@ export const ScheduleItem = styled.li`
   &:last-child {
     border-bottom: none;
   }
-
-  @media ${device.mobile} {
-    grid-template-columns: 1fr;
-    gap: 12px;
-    padding: 16px;
-  }
 `;
 
-export const ScheduleTime = styled.div`
-  font-size: 1.8rem;
-  font-weight: 600;
-  color: #1a1a2e;
-
-  @media ${device.mobile} {
-    font-size: 1.6rem;
-  }
-`;
-
-export const ScheduleName = styled.div`
-  font-size: 1.6rem;
+export const ScheduleTableCell = styled.td`
+  padding: 16px 20px;
+  font-size: 1.5rem;
   color: #333;
 
   @media ${device.mobile} {
+    padding: 12px 16px;
     font-size: 1.4rem;
-  }
-`;
-
-export const SchedulePlace = styled.div`
-  font-size: 1.5rem;
-  color: #666;
-  text-align: right;
-
-  @media ${device.mobile} {
-    font-size: 1.4rem;
-    text-align: left;
   }
 `;
 
@@ -243,111 +243,101 @@ export const SearchButton = styled.button`
   }
 `;
 
-export const VideosGrid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 30px;
+// 설교 영상 테이블 스타일
+export const VideosTable = styled.table`
+  width: 100%;
+  border-collapse: collapse;
   margin-bottom: 40px;
-
-  @media ${device.mobile} {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 20px;
-    margin-bottom: 30px;
-  }
-`;
-
-export const VideoCard = styled.div`
   background: #ffffff;
   border: 1px solid #e5e5e5;
   border-radius: 8px;
   overflow: hidden;
-  transition: all 0.2s ease;
-  cursor: pointer;
+`;
 
-  &:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-    border-color: #1a1a2e;
+export const VideosTableHeader = styled.thead`
+  background: #1a1a2e;
+  color: #ffffff;
+`;
+
+export const VideosTableHeaderCell = styled.th`
+  padding: 16px 20px;
+  text-align: left;
+  font-size: 1.6rem;
+  font-weight: 600;
+
+  @media ${device.mobile} {
+    padding: 12px 16px;
+    font-size: 1.4rem;
   }
 `;
 
-export const VideoThumbnail = styled.div`
-  width: 100%;
-  aspect-ratio: 16 / 9;
-  background: #1a1a2e;
-  position: relative;
-  overflow: hidden;
+export const VideosTableBody = styled.tbody``;
+
+export const VideosTableRow = styled.tr`
+  border-bottom: 1px solid #f0f0f0;
+  transition: background 0.2s ease;
+  cursor: pointer;
+
+  &:hover {
+    background: #f8f9ff;
+  }
+
+  &:last-child {
+    border-bottom: none;
+  }
+`;
+
+export const VideosTableCell = styled.td`
+  padding: 16px 20px;
+  font-size: 1.5rem;
+  color: #333;
+  vertical-align: middle;
+
+  @media ${device.mobile} {
+    padding: 12px 16px;
+    font-size: 1.4rem;
+  }
+`;
+
+export const VideoThumbnailImg = styled.img`
+  width: 120px;
+  height: 68px;
+  object-fit: cover;
+  border-radius: 4px;
 `;
 
 export const ThumbnailPlaceholder = styled.div`
-  width: 100%;
-  height: 100%;
+  width: 120px;
+  height: 68px;
   display: flex;
   align-items: center;
   justify-content: center;
   background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+  border-radius: 4px;
+
+  &.hidden {
+    display: none;
+  }
 `;
 
 export const PlayIcon = styled.div`
-  width: 60px;
-  height: 60px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
   background: rgba(255, 255, 255, 0.9);
   display: flex;
   align-items: center;
   justify-content: center;
   color: #1a1a2e;
-  font-size: 2.4rem;
-  padding-left: 4px;
-  transition: all 0.2s ease;
-
-  ${VideoCard}:hover & {
-    transform: scale(1.1);
-    background: #ffffff;
-  }
+  font-size: 1.8rem;
+  padding-left: 3px;
 `;
 
-export const VideoInfo = styled.div`
-  padding: 20px;
-`;
-
-export const VideoDate = styled.div`
-  font-size: 1.3rem;
-  color: #999;
-  margin-bottom: 12px;
-`;
-
-export const VideoTitle = styled.div`
-  font-size: 1.6rem;
+export const VideoTitleText = styled.div`
   font-weight: 600;
   color: #1a1a2e;
   line-height: 1.4;
-  margin-bottom: 12px;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-
-  @media ${device.mobile} {
-    font-size: 1.4rem;
-  }
 `;
-
-export const VideoMeta = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-size: 1.3rem;
-  color: #666;
-  padding-top: 12px;
-  border-top: 1px solid #f0f0f0;
-`;
-
-export const VideoSpeaker = styled.span`
-  font-weight: 500;
-`;
-
-export const VideoViews = styled.span``;
 
 export const Pagination = styled.div`
   display: flex;
