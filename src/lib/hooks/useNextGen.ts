@@ -161,15 +161,18 @@ export const useUpdateNextGen = () => {
 };
 
 /**
- * 다음세대 삭제
+ * 다음세대 삭제 (소프트 딜리트)
  */
 export const useDeleteNextGen = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async (id: number) => {
       await request({
-        method: "DELETE",
+        method: "PATCH",
         url: `/nextgen/${id}`,
+        data: {
+          deletedAt: new Date().toISOString(),
+        },
       });
     },
     onSuccess: () => {

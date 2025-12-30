@@ -44,10 +44,10 @@ const AdminMainTemplate = ({
       const subTabBar = document.querySelector('[data-subtab-bar="true"]');
       setHasSubTabs(!!subTabBar);
     };
-    
+
     checkSubTabs();
     const interval = setInterval(checkSubTabs, 100);
-    
+
     return () => clearInterval(interval);
   }, [location.pathname]);
 
@@ -57,7 +57,9 @@ const AdminMainTemplate = ({
       <AdminHeader />
       <S.ContentLayout hasSidebar={hasSidebar} hasSubTabs={hasSubTabs}>
         {/* 사이드바 */}
-        {hasSidebar && <AdminSidebar activeMenu={getActiveMenu()} hasSubTabs={hasSubTabs} />}
+        {/* {hasSidebar && (
+          <AdminSidebar activeMenu={getActiveMenu()} hasSubTabs={hasSubTabs} />
+        )} */}
         {/* /pages 폴더의 페이지들이 위치할 컨테이너 */}
         {containerType === "wide" ? (
           <S.ContainerWrapperAdmin hasSidebar={hasSidebar}>

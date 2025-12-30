@@ -3,13 +3,14 @@ import SubMenuTemplate from "@/components/template/SubMenuTemplate";
 import {
   useChurchLocation,
   useTransportInfoList,
+  type ChurchLocation,
 } from "@/lib/hooks/useLocation";
 import * as S from "./ChurchPage.style";
 
-// 다음 지도 API 타입 선언
+// 네이버 지도 API 타입 선언
 declare global {
   interface Window {
-    daum: any;
+    naver: any;
   }
 }
 
@@ -29,64 +30,257 @@ const LocationPage: React.FC = () => {
   const mapRef = useRef<HTMLDivElement>(null);
   const mapInstanceRef = useRef<any>(null);
   const markerRef = useRef<any>(null);
+  const infoWindowRef = useRef<any>(null);
 
-  // 다음 지도 API 스크립트 로드 및 지도 초기화
+  // location 데이터가 로드되면 지도 초기화
   useEffect(() => {
-    if (!location || !location.latitude || !location.longitude) return;
+    // 로딩 중이면 실행하지 않음
+    if (locationLoading) {
+      return;
+    }
 
-    const script = document.createElement("script");
-    script.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${
-      import.meta.env.VITE_KAKAO_MAP_API_KEY || ""
-    }&autoload=false`;
-    script.async = true;
-    document.head.appendChild(script);
+    console.log("location", location);
+    console.log(
+      "location.latitude",
+      location ? (location as ChurchLocation).latitude : undefined
+    );
+    console.log(
+      "location.longitude",
+      location ? (location as ChurchLocation).longitude : undefined
+    );
 
-    script.onload = () => {
-      if (window.daum && window.daum.maps) {
-        window.daum.maps.load(() => {
-          if (!mapRef.current) return;
+    // location이 없으면 실행하지 않음
+    if (!location) {
+      return;
+    }
 
-          const mapOption = {
-            center: new window.daum.maps.LatLng(
-              location.latitude!,
-              location.longitude!
-            ),
-            level: 3,
-          };
+    // location을 로컬 변수에 저장하여 타입 추론 개선
+    const currentLocation = location as ChurchLocation;
 
-          const map = new window.daum.maps.Map(mapRef.current, mapOption);
-          mapInstanceRef.current = map;
+    // 지도 초기화 함수
+    const initializeMap = () => {
+      // DB에서 가져온 좌표가 없으면 지도를 표시하지 않음
+      if (!currentLocation.latitude || !currentLocation.longitude) {
+        console.log(
+          "No coordinates in location data, skipping map initialization"
+        );
+        return;
+      }
 
-          // 마커 생성
-          const markerPosition = new window.daum.maps.LatLng(
-            location.latitude!,
-            location.longitude!
-          );
-          const marker = new window.daum.maps.Marker({
-            position: markerPosition,
-          });
-          marker.setMap(map);
-          markerRef.current = marker;
+      if (!mapRef.current || !window.naver?.maps) return;
 
-          // 인포윈도우 생성
-          const infowindow = new window.daum.maps.InfoWindow({
-            content: `<div style="padding:10px;font-size:14px;">${location.address}</div>`,
-          });
-          infowindow.open(map, marker);
-        });
+      const lat =
+        typeof currentLocation.latitude === "string"
+          ? parseFloat(currentLocation.latitude)
+          : currentLocation.latitude;
+      const lng =
+        typeof currentLocation.longitude === "string"
+          ? parseFloat(currentLocation.longitude)
+          : currentLocation.longitude;
+
+      console.log("Initializing map with coordinates:", { lat, lng });
+
+      // 지도가 이미 초기화되어 있으면 업데이트
+      if (mapInstanceRef.current) {
+        updateMap(lat, lng, currentLocation.address);
+      } else {
+        // 지도가 초기화되지 않았으면 새로 초기화
+        initMap(lat, lng, currentLocation.address);
       }
     };
 
-    return () => {
-      // 스크립트가 이미 추가되어 있으면 제거하지 않음 (다른 페이지에서도 사용 가능)
-      const existingScript = document.querySelector(
-        `script[src*="dapi.kakao.com/v2/maps/sdk.js"]`
-      );
-      if (existingScript && existingScript === script) {
-        document.head.removeChild(script);
-      }
+    // 네이버 지도 API가 로드되었는지 확인
+    if (window.naver?.maps) {
+      // API가 이미 로드되어 있으면 바로 초기화
+      initializeMap();
+    } else {
+      // API가 아직 로드되지 않았으면 로드 대기
+      const checkNaverMaps = setInterval(() => {
+        if (window.naver?.maps) {
+          clearInterval(checkNaverMaps);
+          initializeMap();
+        }
+      }, 100);
+
+      // 10초 후 타임아웃
+      setTimeout(() => {
+        clearInterval(checkNaverMaps);
+      }, 10000);
+    }
+  }, [location, locationLoading]);
+
+  /**
+   * 지도 초기화
+   */
+  const initMap = (lat: number, lng: number, address?: string) => {
+    if (!mapRef.current || !window.naver?.maps) return;
+
+    const mapOptions = {
+      center: new window.naver.maps.LatLng(lat, lng),
+      zoom: 15,
+      zoomControl: true,
+      zoomControlOptions: {
+        position: window.naver.maps.Position.TOP_RIGHT,
+      },
     };
-  }, [location]);
+
+    const map = new window.naver.maps.Map(mapRef.current, mapOptions);
+    mapInstanceRef.current = map;
+
+    // 마커 생성
+    const markerPosition = new window.naver.maps.LatLng(lat, lng);
+    const marker = new window.naver.maps.Marker({
+      position: markerPosition,
+      map: map,
+      icon: {
+        content: `
+          <div style="
+            background: linear-gradient(135deg, #3b82f6 0%, #10b981 100%);
+            width: 40px;
+            height: 40px;
+            border-radius: 50% 50% 50% 0;
+            transform: rotate(-45deg);
+            border: 3px solid white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+          ">
+            <div style="
+              transform: rotate(45deg);
+              color: white;
+              font-size: 20px;
+              font-weight: bold;
+            ">📍</div>
+          </div>
+        `,
+        anchor: new window.naver.maps.Point(20, 40),
+      },
+    });
+    markerRef.current = marker;
+
+    // 정보창 생성
+    const infoWindow = new window.naver.maps.InfoWindow({
+      content: `
+        <div style="
+          padding: 12px 16px;
+          background: white;
+          border-radius: 8px;
+          box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+          min-width: 120px;
+          text-align: center;
+        ">
+          <div style="
+            font-size: 16px;
+            font-weight: 700;
+            color: #111827;
+            margin-bottom: 4px;
+            background: linear-gradient(135deg, #3b82f6 0%, #10b981 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+          ">미래존교회</div>
+          <div style="
+            font-size: 12px;
+            color: #6b7280;
+            margin-top: 4px;
+          ">${address || ""}</div>
+        </div>
+      `,
+      borderWidth: 0,
+      backgroundColor: "transparent",
+      pixelOffset: new window.naver.maps.Point(0, -10),
+    });
+    infoWindowRef.current = infoWindow;
+
+    // 마커 클릭 시 정보창 토글
+    window.naver.maps.Event.addListener(marker, "click", () => {
+      if (infoWindow.getMap()) {
+        infoWindow.close();
+      } else {
+        infoWindow.open(map, marker);
+      }
+    });
+
+    // 지도 로드 시 정보창 자동 표시
+    infoWindow.open(map, marker);
+  };
+
+  /**
+   * 지도 업데이트 (좌표 변경 시)
+   */
+  const updateMap = (lat: number, lng: number, address?: string) => {
+    if (!mapInstanceRef.current || !window.naver?.maps) return;
+
+    const moveLatLon = new window.naver.maps.LatLng(lat, lng);
+    mapInstanceRef.current.setCenter(moveLatLon);
+
+    // 마커 위치 업데이트
+    if (markerRef.current) {
+      markerRef.current.setPosition(moveLatLon);
+    } else {
+      const marker = new window.naver.maps.Marker({
+        position: moveLatLon,
+        map: mapInstanceRef.current,
+        icon: {
+          content: `
+            <div style="
+              background: linear-gradient(135deg, #3b82f6 0%, #10b981 100%);
+              width: 40px;
+              height: 40px;
+              border-radius: 50% 50% 50% 0;
+              transform: rotate(-45deg);
+              border: 3px solid white;
+              box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+              display: flex;
+              align-items: center;
+              justify-content: center;
+            ">
+              <div style="
+                transform: rotate(45deg);
+                color: white;
+                font-size: 20px;
+                font-weight: bold;
+              ">📍</div>
+            </div>
+          `,
+          anchor: new window.naver.maps.Point(20, 40),
+        },
+      });
+      markerRef.current = marker;
+    }
+
+    // 정보창 업데이트
+    if (infoWindowRef.current) {
+      infoWindowRef.current.setContent(`
+        <div style="
+          padding: 12px 16px;
+          background: white;
+          border-radius: 8px;
+          box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+          min-width: 120px;
+          text-align: center;
+        ">
+          <div style="
+            font-size: 16px;
+            font-weight: 700;
+            color: #111827;
+            margin-bottom: 4px;
+            background: linear-gradient(135deg, #3b82f6 0%, #10b981 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+          ">미래존교회</div>
+          <div style="
+            font-size: 12px;
+            color: #6b7280;
+            margin-top: 4px;
+          ">${address || ""}</div>
+        </div>
+      `);
+      infoWindowRef.current.open(mapInstanceRef.current, markerRef.current);
+    }
+  };
 
   // 교통수단별 아이콘 매핑
   const getTransportIcon = (type: string) => {
@@ -133,20 +327,25 @@ const LocationPage: React.FC = () => {
                 <S.LocationItem>
                   <S.LocationLabel>주소</S.LocationLabel>
                   <S.LocationValue>
-                    {location.address}
-                    {location.addressDetail && ` ${location.addressDetail}`}
+                    {(location as ChurchLocation).address}
+                    {(location as ChurchLocation).addressDetail &&
+                      ` ${(location as ChurchLocation).addressDetail}`}
                   </S.LocationValue>
                 </S.LocationItem>
-                {location.phone && (
+                {(location as ChurchLocation).phone && (
                   <S.LocationItem>
                     <S.LocationLabel>전화</S.LocationLabel>
-                    <S.LocationValue>{location.phone}</S.LocationValue>
+                    <S.LocationValue>
+                      {(location as ChurchLocation).phone}
+                    </S.LocationValue>
                   </S.LocationItem>
                 )}
-                {location.email && (
+                {(location as ChurchLocation).email && (
                   <S.LocationItem>
                     <S.LocationLabel>이메일</S.LocationLabel>
-                    <S.LocationValue>{location.email}</S.LocationValue>
+                    <S.LocationValue>
+                      {(location as ChurchLocation).email}
+                    </S.LocationValue>
                   </S.LocationItem>
                 )}
               </S.LocationInfo>
@@ -158,9 +357,11 @@ const LocationPage: React.FC = () => {
 
         <S.Section>
           <S.SectionTitle>지도</S.SectionTitle>
-          {location && location.latitude && location.longitude ? (
+          {location &&
+          (location as ChurchLocation).latitude &&
+          (location as ChurchLocation).longitude ? (
             <S.MapContainer>
-              <div ref={mapRef} style={{ width: "100%", height: "100%" }} />
+              <S.Map ref={mapRef} />
             </S.MapContainer>
           ) : (
             <S.MapContainer>
@@ -183,7 +384,7 @@ const LocationPage: React.FC = () => {
         <S.Section>
           <S.SectionTitle>대중교통 안내</S.SectionTitle>
           <S.SectionContent>
-            {transportList.length > 0 ? (
+            {Array.isArray(transportList) && transportList.length > 0 ? (
               <S.TransportList>
                 {transportList.map((transport) => (
                   <S.TransportItem key={transport.id}>

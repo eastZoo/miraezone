@@ -38,7 +38,7 @@ const NextGenAdminPage: React.FC = () => {
     if (location.pathname.includes("/news")) return "news";
     return "department";
   }, [location.pathname]);
-  
+
   const [selectedDepartment, setSelectedDepartment] =
     useState<string>("유초등부");
 
@@ -489,7 +489,33 @@ const NextGenAdminPage: React.FC = () => {
   }
 
   return (
-    <AdminMainTemplate>
+    <AdminMainTemplate
+      containerType="standard"
+      pageTitle={
+        activeTab === "department"
+          ? "부서 정보 관리"
+          : activeTab === "elementary"
+          ? "유초등부 앨범"
+          : activeTab === "youth"
+          ? "중고등부 앨범"
+          : activeTab === "youngadult"
+          ? "청년부 앨범"
+          : "다음세대 소식 관리"
+      }
+      breadcrumb={[
+        "관리자",
+        "다음세대 관리",
+        activeTab === "department"
+          ? "부서 정보 관리"
+          : activeTab === "elementary"
+          ? "유초등부 앨범"
+          : activeTab === "youth"
+          ? "중고등부 앨범"
+          : activeTab === "youngadult"
+          ? "청년부 앨범"
+          : "다음세대 소식 관리",
+      ]}
+    >
       <S.Container>
         {/* 부서 정보 관리 */}
         {activeTab === "department" && (

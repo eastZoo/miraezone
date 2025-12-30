@@ -981,11 +981,14 @@ export const NextGenItem = styled.div`
   }
 `;
 
-export const NextGenCircle = styled.div`
+export const NextGenCircle = styled.div<{ $heroImageUrl?: string }>`
   width: 160px;
   height: 160px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #a44945 0%, #8a3a37 100%);
+  background: ${({ $heroImageUrl }) =>
+    $heroImageUrl
+      ? "transparent"
+      : "linear-gradient(135deg, #a44945 0%, #8a3a37 100%)"};
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1008,8 +1011,12 @@ export const NextGenCircle = styled.div`
     left: 0;
     right: 0;
     bottom: 0;
-    background: url("data:image/svg+xml,%3Csvg width='150' height='150' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='75' cy='75' r='70' fill='none' stroke='rgba(255,255,255,0.2)' stroke-width='2'/%3E%3C/svg%3E");
+    background: ${({ $heroImageUrl }) =>
+      $heroImageUrl
+        ? "none"
+        : `url("data:image/svg+xml,%3Csvg width='150' height='150' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='75' cy='75' r='70' fill='none' stroke='rgba(255,255,255,0.2)' stroke-width='2'/%3E%3C/svg%3E")`};
     opacity: 0.5;
+    z-index: 1;
   }
 
   ${NextGenItem}:hover & {
@@ -1021,6 +1028,17 @@ export const NextGenCircle = styled.div`
     width: 120px;
     height: 120px;
   }
+`;
+
+export const NextGenCircleImage = styled.img`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+  z-index: 0;
 `;
 
 export const NextGenNumber = styled.div`
@@ -1148,19 +1166,14 @@ export const PhotoItem = styled.div`
   }
 `;
 
-export const PhotoImage = styled.div<{ $index: number }>`
+export const PhotoImage = styled.img<{ $index: number }>`
   width: 100%;
   height: 100%;
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
+  object-fit: cover;
+  object-position: center;
   transition: transform 0.3s ease;
-
-  ${PhotoItem}:hover & {
-    transform: scale(1.05);
-  }
-
-  ${(props) => {
+  display: block;
+  background: ${({ $index }) => {
     const gradients = [
       "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
       "linear-gradient(135deg, #f093fb 0%, #f5576c 100%)",
@@ -1170,11 +1183,11 @@ export const PhotoImage = styled.div<{ $index: number }>`
       "linear-gradient(135deg, #a8edea 0%, #fed6e3 100%)",
       "linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%)",
       "linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%)",
-      "linear-gradient(135deg, #ff8a80 0%, #ea6100 100%)",
-      "linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%)",
-      "linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 100%)",
-      "linear-gradient(135deg, #fbc2eb 0%, #a6c1ee 100%)",
     ];
-    return `background: ${gradients[props.$index % gradients.length]};`;
-  }}
+    return gradients[$index % gradients.length];
+  }};
+
+  ${PhotoItem}:hover & {
+    transform: scale(1.05);
+  }
 `;

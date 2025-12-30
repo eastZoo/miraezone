@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import * as S from "./AdminHeader.style";
 import { Link, useLocation } from "react-router-dom";
 import logo from "@/styles/assets/images/church_logo.png";
@@ -76,14 +76,17 @@ const AdminHeader: React.FC = () => {
     const exactMatch = allSubItems.some(
       (item) => item.path === location.pathname && item.path !== path
     );
-    
+
     if (exactMatch) {
       return false;
     }
-    
+
     // 경로가 해당 경로로 시작하고, 다음 문자가 /이거나 끝인 경우만 활성화
-    return location.pathname.startsWith(path) && 
-           (location.pathname.length === path.length || location.pathname[path.length] === '/');
+    return (
+      location.pathname.startsWith(path) &&
+      (location.pathname.length === path.length ||
+        location.pathname[path.length] === "/")
+    );
   };
 
   const isGroupActive = (group: MenuGroup) => {
@@ -93,19 +96,42 @@ const AdminHeader: React.FC = () => {
         return true;
       }
       // 하위 경로인 경우
-      return location.pathname.startsWith(item.path + '/');
+      return location.pathname.startsWith(item.path + "/");
     });
   };
 
-  // 현재 경로에 따라 활성 그룹 설정
+  // 현재 경로에 해당하는 그룹을 메모이제이션
+  const currentGroup = useMemo(() => {
+    return menuGroups.find((group) => isGroupActive(group));
+  }, [location.pathname]);
+
+  // 현재 경로에 따라 활성 그룹 설정 (깜빡거림 방지)
   useEffect(() => {
-    const currentGroup = menuGroups.find((group) => isGroupActive(group));
+    // 현재 활성 그룹이 있고, 새로운 경로가 같은 그룹의 하위 항목이면 activeGroup 유지
+    if (activeGroup) {
+      const currentActiveGroup = menuGroups.find(
+        (g) => g.label === activeGroup
+      );
+      if (currentActiveGroup) {
+        const isStillInSameGroup = currentActiveGroup.subItems.some((item) => {
+          if (location.pathname === item.path) return true;
+          return location.pathname.startsWith(item.path + "/");
+        });
+
+        // 같은 그룹 내에서 이동하는 경우 activeGroup 유지 (깜빡거림 방지)
+        if (isStillInSameGroup) {
+          return;
+        }
+      }
+    }
+
     // 하위 탭이 하나 이상 있으면 항상 드롭다운 표시
     if (currentGroup && currentGroup.subItems.length >= 1) {
       setActiveGroup(currentGroup.label);
     } else {
       setActiveGroup(null);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location.pathname]);
 
   const handleGroupClick = (group: MenuGroup) => {
@@ -125,7 +151,7 @@ const AdminHeader: React.FC = () => {
       <S.AdminHeaderContainer>
         {/* 로고 섹션 */}
         <S.LogoSection>
-          <Link to="/admin">
+          <Link to="/admin/church">
             <img src={logo} alt="교회 로고" />
           </Link>
         </S.LogoSection>

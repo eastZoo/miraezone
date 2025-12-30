@@ -20,13 +20,18 @@ import dayjs from "dayjs";
 const WorshipAdminPage: React.FC = () => {
   const location = useLocation();
   // URL 기반으로 활성 탭 결정
-  const activeTab = location.pathname.includes("/videos") ? "videos" : "schedules";
+  const activeTab = location.pathname.includes("/videos")
+    ? "videos"
+    : "schedules";
 
   // 예배 일정 조회
   const { data: schedules = [], isLoading: schedulesLoading } =
     useWorshipSchedules();
   // 설교 영상 조회 (관리자용 - 모든 영상)
-  const { data: videosData, isLoading: videosLoading } = useWorshipVideos(1, 100);
+  const { data: videosData, isLoading: videosLoading } = useWorshipVideos(
+    1,
+    100
+  );
   const videos = videosData?.data || [];
 
   // Mutations
@@ -39,7 +44,9 @@ const WorshipAdminPage: React.FC = () => {
 
   // 예배 일정 관리 상태
   const [isCreatingSchedule, setIsCreatingSchedule] = useState(false);
-  const [editingScheduleId, setEditingScheduleId] = useState<number | null>(null);
+  const [editingScheduleId, setEditingScheduleId] = useState<number | null>(
+    null
+  );
   const [scheduleFormData, setScheduleFormData] = useState({
     name: "",
     time: "",
@@ -216,7 +223,17 @@ const WorshipAdminPage: React.FC = () => {
   }
 
   return (
-    <AdminMainTemplate>
+    <AdminMainTemplate
+      containerType="standard"
+      pageTitle={
+        activeTab === "schedules" ? "예배 일정 관리" : "설교 영상 관리"
+      }
+      breadcrumb={[
+        "관리자",
+        "예배/찬양 관리",
+        activeTab === "schedules" ? "예배 일정 관리" : "설교 영상 관리",
+      ]}
+    >
       <S.Container>
         {/* 예배 일정 관리 */}
         {activeTab === "schedules" && (
@@ -302,7 +319,9 @@ const WorshipAdminPage: React.FC = () => {
                 </S.FormRow>
                 <S.FormActions>
                   <S.SaveButton onClick={handleSaveSchedule}>저장</S.SaveButton>
-                  <S.CancelButton onClick={handleCancelSchedule}>취소</S.CancelButton>
+                  <S.CancelButton onClick={handleCancelSchedule}>
+                    취소
+                  </S.CancelButton>
                 </S.FormActions>
               </S.FormSection>
             )}
@@ -321,7 +340,9 @@ const WorshipAdminPage: React.FC = () => {
                     <S.EditButton onClick={() => handleEditSchedule(schedule)}>
                       수정
                     </S.EditButton>
-                    <S.DeleteButton onClick={() => handleDeleteSchedule(schedule.id)}>
+                    <S.DeleteButton
+                      onClick={() => handleDeleteSchedule(schedule.id)}
+                    >
                       삭제
                     </S.DeleteButton>
                   </S.ScheduleActions>
@@ -361,7 +382,10 @@ const WorshipAdminPage: React.FC = () => {
                     type="text"
                     value={videoFormData.title}
                     onChange={(e) =>
-                      setVideoFormData({ ...videoFormData, title: e.target.value })
+                      setVideoFormData({
+                        ...videoFormData,
+                        title: e.target.value,
+                      })
                     }
                     placeholder="설교 제목을 입력하세요"
                   />
@@ -372,7 +396,10 @@ const WorshipAdminPage: React.FC = () => {
                     type="date"
                     value={videoFormData.date}
                     onChange={(e) =>
-                      setVideoFormData({ ...videoFormData, date: e.target.value })
+                      setVideoFormData({
+                        ...videoFormData,
+                        date: e.target.value,
+                      })
                     }
                   />
                 </S.FormRow>
@@ -382,7 +409,10 @@ const WorshipAdminPage: React.FC = () => {
                     type="text"
                     value={videoFormData.speaker}
                     onChange={(e) =>
-                      setVideoFormData({ ...videoFormData, speaker: e.target.value })
+                      setVideoFormData({
+                        ...videoFormData,
+                        speaker: e.target.value,
+                      })
                     }
                     placeholder="설교자 이름을 입력하세요"
                   />
@@ -393,7 +423,10 @@ const WorshipAdminPage: React.FC = () => {
                     type="text"
                     value={videoFormData.videoUrl}
                     onChange={(e) =>
-                      setVideoFormData({ ...videoFormData, videoUrl: e.target.value })
+                      setVideoFormData({
+                        ...videoFormData,
+                        videoUrl: e.target.value,
+                      })
                     }
                     placeholder="https://www.youtube.com/watch?v=..."
                   />
@@ -403,7 +436,9 @@ const WorshipAdminPage: React.FC = () => {
                 </S.FormRow>
                 <S.FormActions>
                   <S.SaveButton onClick={handleSaveVideo}>저장</S.SaveButton>
-                  <S.CancelButton onClick={handleCancelVideo}>취소</S.CancelButton>
+                  <S.CancelButton onClick={handleCancelVideo}>
+                    취소
+                  </S.CancelButton>
                 </S.FormActions>
               </S.FormSection>
             )}
@@ -413,7 +448,9 @@ const WorshipAdminPage: React.FC = () => {
               {videos.map((video) => {
                 const thumbnailUrl =
                   video.thumbnailUrl ||
-                  (video.videoUrl ? extractYouTubeThumbnail(video.videoUrl) : null);
+                  (video.videoUrl
+                    ? extractYouTubeThumbnail(video.videoUrl)
+                    : null);
                 return (
                   <S.VideoItem key={video.id}>
                     <S.VideoThumbnail>
@@ -435,7 +472,9 @@ const WorshipAdminPage: React.FC = () => {
                       <S.EditButton onClick={() => handleEditVideo(video)}>
                         수정
                       </S.EditButton>
-                      <S.DeleteButton onClick={() => handleDeleteVideo(video.id)}>
+                      <S.DeleteButton
+                        onClick={() => handleDeleteVideo(video.id)}
+                      >
                         삭제
                       </S.DeleteButton>
                     </S.VideoActions>
@@ -451,4 +490,3 @@ const WorshipAdminPage: React.FC = () => {
 };
 
 export default WorshipAdminPage;
-

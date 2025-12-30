@@ -212,15 +212,18 @@ export const useUpdateWorshipSchedule = () => {
 };
 
 /**
- * 예배 일정 삭제
+ * 예배 일정 삭제 (소프트 딜리트)
  */
 export const useDeleteWorshipSchedule = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async (id: number) => {
       return await request<void>({
-        method: "DELETE",
+        method: "PATCH",
         url: `/worship/schedules/${id}`,
+        data: {
+          deletedAt: new Date().toISOString(),
+        },
       });
     },
     onSuccess: () => {
@@ -274,15 +277,18 @@ export const useUpdateWorshipVideo = () => {
 };
 
 /**
- * 설교 영상 삭제
+ * 설교 영상 삭제 (소프트 딜리트)
  */
 export const useDeleteWorshipVideo = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async (id: number) => {
       return await request<void>({
-        method: "DELETE",
+        method: "PATCH",
         url: `/worship/videos/${id}`,
+        data: {
+          deletedAt: new Date().toISOString(),
+        },
       });
     },
     onSuccess: () => {

@@ -254,7 +254,11 @@ const BulletinsAdminPage: React.FC = () => {
   }
 
   return (
-    <AdminMainTemplate>
+    <AdminMainTemplate
+      containerType="standard"
+      pageTitle="주보 관리"
+      breadcrumb={["관리자", "주보 관리"]}
+    >
       <S.Container>
         <S.Section>
           <S.SectionHeader>

@@ -239,7 +239,11 @@ const NewsAdminPage: React.FC = () => {
   }
 
   return (
-    <AdminMainTemplate>
+    <AdminMainTemplate
+      containerType="standard"
+      pageTitle="교회 소식 관리"
+      breadcrumb={["관리자", "교회 소식 관리"]}
+    >
       <S.Container>
         <S.Section>
           <S.SectionHeader>

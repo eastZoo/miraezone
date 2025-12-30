@@ -13,8 +13,6 @@ export interface SubMenuItem {
   isSubItem?: boolean; // 하위 메뉴 여부
 }
 
-export type { SubMenuItem };
-
 export interface SubMenuTemplateProps {
   /** 메인 메뉴 타이틀 */
   mainMenuTitle: string;
@@ -78,7 +76,9 @@ const Banner: React.FC = React.memo(() => {
         </S.BackgroundSlide>
         <S.BannerOverlay>
           <S.BannerMottoYear>2026 표어</S.BannerMottoYear>
-          <S.BannerText>{"일하시는 하나님, 순종하는 교회"}</S.BannerText>
+          <S.BannerText>
+            {"말씀을 먹고 사는 교회, 말씀을 먹고 사는 성도"}
+          </S.BannerText>
           <S.BannerVerse>(눅 5:5-6)</S.BannerVerse>
         </S.BannerOverlay>
       </S.BannerContainer>
@@ -127,7 +127,9 @@ const SubMenuTemplate: React.FC<SubMenuTemplateProps> = ({
                     $isActive={isActive}
                     $isSubItem={item.isSubItem}
                   >
-                    {item.isSubItem && <S.SubItemIndicator>└</S.SubItemIndicator>}
+                    {item.isSubItem && (
+                      <S.SubItemIndicator>└</S.SubItemIndicator>
+                    )}
                     {item.title}
                   </S.SubMenuLink>
                 </S.SubMenuItem>

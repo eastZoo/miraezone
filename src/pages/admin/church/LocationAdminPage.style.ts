@@ -1,34 +1,15 @@
 import styled from "styled-components";
+import * as Common from "@/styles/adminCommonStyles";
 
-export const Container = styled.div`
-  padding: 24px;
-  max-width: 1200px;
-  margin: 0 auto;
+export const Container = styled(Common.AdminContainer)``;
+
+export const Section = styled(Common.AdminSection)`
+  margin-bottom: ${({ theme }) => theme.spacing(12)};
 `;
 
-export const Section = styled.div`
-  margin-bottom: 48px;
-  background: #fff;
-  border-radius: 8px;
-  padding: 24px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-`;
+export const SectionHeader = styled(Common.SectionHeader)``;
 
-export const SectionHeader = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 24px;
-  padding-bottom: 16px;
-  border-bottom: 2px solid #e0e0e0;
-`;
-
-export const SectionTitle = styled.h2`
-  font-size: 24px;
-  font-weight: 600;
-  color: #333;
-  margin: 0;
-`;
+export const SectionTitle = styled(Common.SectionTitle)``;
 
 // 폼 스타일
 export const FormGroup = styled.div`
@@ -55,61 +36,36 @@ export const AddressSearchRow = styled.div`
   align-items: center;
 `;
 
-export const Input = styled.input`
-  padding: 10px 12px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  font-size: 14px;
-  width: 100%;
-
-  &:focus {
-    outline: none;
-    border-color: #007bff;
-  }
+export const Input = styled(Common.FormInput)`
+  padding: ${({ theme }) => theme.spacing(2.5)} ${({ theme }) => theme.spacing(3)};
+  font-size: 1.4rem;
 
   &[readonly] {
-    background: #f8f9fa;
+    background: ${({ theme }) => theme.colors.gray100};
     cursor: pointer;
   }
 `;
 
-export const TextArea = styled.textarea`
-  padding: 10px 12px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  font-size: 14px;
-  font-family: inherit;
-  resize: vertical;
-  width: 100%;
-
-  &:focus {
-    outline: none;
-    border-color: #007bff;
-  }
+export const TextArea = styled(Common.FormTextArea)`
+  padding: ${({ theme }) => theme.spacing(2.5)} ${({ theme }) => theme.spacing(3)};
+  font-size: 1.4rem;
 `;
 
-export const Select = styled.select`
-  padding: 10px 12px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  font-size: 14px;
-  background: white;
-
-  &:focus {
-    outline: none;
-    border-color: #007bff;
-  }
+export const Select = styled(Common.FormSelect)`
+  padding: ${({ theme }) => theme.spacing(2.5)} ${({ theme }) => theme.spacing(3)};
+  font-size: 1.4rem;
 `;
 
 // 지도 스타일
 export const MapContainer = styled.div`
   position: relative;
   width: 100%;
-  height: 400px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
+  height: 500px;
+  border: 1px solid ${({ theme }) => theme.colors.gray100};
+  border-radius: ${({ theme }) => theme.radius.md};
   overflow: hidden;
-  background: #f8f9fa;
+  background: ${({ theme }) => theme.colors.gray100};
+  box-shadow: ${({ theme }) => theme.shadows.field};
 `;
 
 export const Map = styled.div`
@@ -123,8 +79,9 @@ export const MapPlaceholder = styled.div`
   left: 50%;
   transform: translate(-50%, -50%);
   text-align: center;
-  color: #999;
-  font-size: 14px;
+  color: ${({ theme }) => theme.colors.muted};
+  font-size: 1.4rem;
+  z-index: 1;
 `;
 
 // 대중교통 안내 스타일
@@ -193,21 +150,8 @@ export const TransportListScrollable = styled.div`
   }
 `;
 
-export const TransportItem = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 12px 16px;
-  background: #f8f9fa;
-  border-radius: 4px;
-  border: 1px solid #e0e0e0;
-  margin-bottom: 12px;
-  transition: all 0.2s;
-
-  &:hover {
-    background: #f0f0f0;
-    border-color: #007bff;
-  }
+export const TransportItem = styled(Common.ListItem)`
+  margin-bottom: ${({ theme }) => theme.spacing(3)};
 `;
 
 export const TransportContent = styled.div`
@@ -237,31 +181,38 @@ export const ButtonGroup = styled.div`
 `;
 
 export const Button = styled.button<{ $primary?: boolean; $danger?: boolean }>`
-  padding: 10px 20px;
-  background: ${(props) => {
-    if (props.$danger) return "#dc3545";
-    if (props.$primary) return "#007bff";
-    return "#6c757d";
+  padding: ${({ theme }) => theme.spacing(2.5)} ${({ theme }) => theme.spacing(5)};
+  background: ${({ $danger, $primary, theme }) => {
+    if ($danger) return theme.colors.red;
+    if ($primary) return theme.colors.primary;
+    return theme.colors.muted;
   }};
-  color: white;
+  color: ${({ theme }) => theme.colors.white100};
   border: none;
-  border-radius: 4px;
-  font-size: 14px;
+  border-radius: ${({ theme }) => theme.radius.sm};
+  font-size: 1.4rem;
   font-weight: 500;
   cursor: pointer;
-  transition: background 0.2s;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   white-space: nowrap;
 
-  &:hover {
-    background: ${(props) => {
-      if (props.$danger) return "#c82333";
-      if (props.$primary) return "#0056b3";
-      return "#5a6268";
+  &:hover:not(:disabled) {
+    background: ${({ $danger, $primary, theme }) => {
+      if ($danger) return `color-mix(in srgb, ${theme.colors.red} 90%, black)`;
+      if ($primary) return `color-mix(in srgb, ${theme.colors.primary} 90%, black)`;
+      return `color-mix(in srgb, ${theme.colors.muted} 90%, black)`;
     }};
+    transform: translateY(-1px);
+    box-shadow: ${({ theme }) => theme.shadows.item};
+  }
+
+  &:active:not(:disabled) {
+    transform: translateY(0);
   }
 
   &:disabled {
-    background: #ccc;
+    background: ${({ theme }) => theme.colors.gray100};
+    opacity: 0.6;
     cursor: not-allowed;
   }
 `;

@@ -133,15 +133,18 @@ export const useUpdateBulletin = () => {
 };
 
 /**
- * 주보 삭제
+ * 주보 삭제 (소프트 딜리트)
  */
 export const useDeleteBulletin = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async (id: number) => {
       return await request({
-        method: "DELETE",
+        method: "PATCH",
         url: `/bulletins/${id}`,
+        data: {
+          deletedAt: new Date().toISOString(),
+        },
       });
     },
     onSuccess: () => {
@@ -198,15 +201,18 @@ export const useAddBulletinFile = () => {
 };
 
 /**
- * 주보 파일 삭제
+ * 주보 파일 삭제 (소프트 딜리트)
  */
 export const useDeleteBulletinFile = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async (fileId: number) => {
       return await request({
-        method: "DELETE",
+        method: "PATCH",
         url: `/bulletins/files/${fileId}`,
+        data: {
+          deletedAt: new Date().toISOString(),
+        },
       });
     },
     onSuccess: () => {

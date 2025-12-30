@@ -127,15 +127,18 @@ export const useUpdateNews = () => {
 };
 
 /**
- * 교회 소식 삭제
+ * 교회 소식 삭제 (소프트 딜리트)
  */
 export const useDeleteNews = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async (id: number) => {
       return await request({
-        method: "DELETE",
+        method: "PATCH",
         url: `/news/${id}`,
+        data: {
+          deletedAt: new Date().toISOString(),
+        },
       });
     },
     onSuccess: () => {

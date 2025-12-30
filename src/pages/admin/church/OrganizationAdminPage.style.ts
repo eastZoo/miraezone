@@ -1,42 +1,23 @@
 import styled from "styled-components";
+import * as Common from "@/styles/adminCommonStyles";
 
-export const Container = styled.div`
-  padding: 24px;
-  max-width: 1200px;
-  margin: 0 auto;
+export const Container = styled(Common.AdminContainer)``;
+
+export const Section = styled(Common.AdminSection)`
+  margin-bottom: ${({ theme }) => theme.spacing(12)};
 `;
 
-export const Section = styled.div`
-  margin-bottom: 48px;
-  background: #fff;
-  border-radius: 8px;
-  padding: 24px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-`;
+export const SectionHeader = styled(Common.SectionHeader)``;
 
-export const SectionHeader = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 24px;
-  padding-bottom: 16px;
-  border-bottom: 2px solid #e0e0e0;
-`;
+export const SectionTitle = styled(Common.SectionTitle)``;
 
-export const SectionTitle = styled.h2`
-  font-size: 24px;
-  font-weight: 600;
-  color: #333;
-  margin: 0;
-`;
-
-// 조직도 미리보기
 export const OrgChartPreview = styled.div`
-  margin-bottom: 24px;
-  padding: 24px;
-  background: #f8f9fa;
-  border-radius: 4px;
-  border: 1px solid #e0e0e0;
+  margin-bottom: ${({ theme }) => theme.spacing(6)};
+  padding: ${({ theme }) => theme.spacing(6)};
+  background: ${({ theme }) => theme.colors.white100};
+  border-radius: ${({ theme }) => theme.radius.sm};
+  border: 1px solid ${({ theme }) => theme.colors.gray100};
+  box-shadow: ${({ theme }) => theme.shadows.field};
 `;
 
 export const OrgLevel = styled.div`
@@ -51,30 +32,36 @@ export const OrgItem = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 12px 20px;
-  background: white;
-  border-radius: 4px;
-  border: 1px solid #ddd;
+  padding: ${({ theme }) => theme.spacing(3)} ${({ theme }) => theme.spacing(5)};
+  background: ${({ theme }) => theme.colors.white100};
+  border-radius: ${({ theme }) => theme.radius.sm};
+  border: 1px solid ${({ theme }) => theme.colors.gray100};
   min-width: 120px;
+  transition: all 0.2s ease;
+
+  &:hover {
+    box-shadow: ${({ theme }) => theme.shadows.field};
+    border-color: ${({ theme }) => theme.colors.primary};
+  }
 `;
 
 export const OrgPosition = styled.span`
-  font-size: 14px;
-  color: #666;
-  margin-bottom: 4px;
+  font-size: 1.4rem;
+  color: ${({ theme }) => theme.colors.muted};
+  margin-bottom: ${({ theme }) => theme.spacing(1)};
 `;
 
 export const OrgName = styled.span`
-  font-size: 16px;
+  font-size: 1.6rem;
   font-weight: 600;
-  color: #333;
+  color: ${({ theme }) => theme.colors.text};
 `;
 
 export const OrgConnector = styled.div`
   text-align: center;
-  color: #999;
-  font-size: 20px;
-  margin: 8px 0;
+  color: ${({ theme }) => theme.colors.muted};
+  font-size: 2rem;
+  margin: ${({ theme }) => theme.spacing(2)} 0;
 `;
 
 // 조직 구성원 목록
@@ -137,20 +124,8 @@ export const MemberList = styled.div`
   gap: 12px;
 `;
 
-export const MemberItem = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 12px 16px;
-  background: #f8f9fa;
-  border-radius: 4px;
-  border: 1px solid #e0e0e0;
-  transition: all 0.2s;
-
-  &:hover {
-    background: #f0f0f0;
-    border-color: #007bff;
-  }
+export const MemberItem = styled(Common.ListItem)`
+  margin-bottom: ${({ theme }) => theme.spacing(3)};
 `;
 
 export const MemberContent = styled.div`
@@ -161,23 +136,23 @@ export const MemberContent = styled.div`
 `;
 
 export const MemberName = styled.span`
-  font-size: 16px;
+  font-size: 1.6rem;
   font-weight: 600;
-  color: #333;
-  margin-bottom: 4px;
+  color: ${({ theme }) => theme.colors.text};
+  margin-bottom: ${({ theme }) => theme.spacing(1)};
 `;
 
 export const MemberInfo = styled.div`
   display: flex;
-  gap: 16px;
-  font-size: 13px;
-  color: #666;
+  gap: ${({ theme }) => theme.spacing(4)};
+  font-size: 1.3rem;
+  color: ${({ theme }) => theme.colors.muted};
 
   span {
-    padding: 2px 8px;
-    background: white;
-    border-radius: 4px;
-    border: 1px solid #e0e0e0;
+    padding: ${({ theme }) => theme.spacing(0.5)} ${({ theme }) => theme.spacing(2)};
+    background: ${({ theme }) => theme.colors.white100};
+    border-radius: ${({ theme }) => theme.radius.sm};
+    border: 1px solid ${({ theme }) => theme.colors.gray100};
   }
 `;
 
@@ -354,64 +329,49 @@ export const EmptyMessage = styled.div`
   font-size: 14px;
 `;
 
-export const Input = styled.input`
-  padding: 10px 12px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  font-size: 14px;
-
-  &:focus {
-    outline: none;
-    border-color: #007bff;
-  }
+export const Input = styled(Common.FormInput)`
+  padding: ${({ theme }) => theme.spacing(2.5)} ${({ theme }) => theme.spacing(3)};
+  font-size: 1.4rem;
 `;
 
-export const Select = styled.select`
-  padding: 10px 12px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  font-size: 14px;
-  background: white;
-
-  &:focus {
-    outline: none;
-    border-color: #007bff;
-  }
+export const Select = styled(Common.FormSelect)`
+  padding: ${({ theme }) => theme.spacing(2.5)} ${({ theme }) => theme.spacing(3)};
+  font-size: 1.4rem;
 `;
 
-export const TextArea = styled.textarea`
-  padding: 10px 12px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  font-size: 14px;
-  font-family: inherit;
-  resize: vertical;
+export const TextArea = styled(Common.FormTextArea)`
+  padding: ${({ theme }) => theme.spacing(2.5)} ${({ theme }) => theme.spacing(3)};
+  font-size: 1.4rem;
   min-width: 200px;
-
-  &:focus {
-    outline: none;
-    border-color: #007bff;
-  }
 `;
 
-export const ButtonGroup = styled.div`
-  display: flex;
-  gap: 8px;
-`;
+export const ButtonGroup = styled(Common.ItemActions)``;
 
 export const Button = styled.button<{ $danger?: boolean }>`
-  padding: 8px 16px;
-  background: ${(props) => (props.$danger ? "#dc3545" : "#007bff")};
-  color: white;
+  padding: ${({ theme }) => theme.spacing(2)} ${({ theme }) => theme.spacing(4)};
+  background: ${({ $danger, theme }) => ($danger ? theme.colors.red : theme.colors.primary)};
+  color: ${({ theme }) => theme.colors.white100};
   border: none;
-  border-radius: 4px;
-  font-size: 14px;
+  border-radius: ${({ theme }) => theme.radius.sm};
+  font-size: 1.4rem;
+  font-weight: 500;
   cursor: pointer;
-  transition: background 0.2s;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   white-space: nowrap;
 
-  &:hover {
-    background: ${(props) => (props.$danger ? "#c82333" : "#0056b3")};
+  &:hover:not(:disabled) {
+    background: ${({ $danger, theme }) => ($danger ? `color-mix(in srgb, ${theme.colors.red} 90%, black)` : `color-mix(in srgb, ${theme.colors.primary} 90%, black)`)};
+    transform: translateY(-1px);
+    box-shadow: ${({ theme }) => theme.shadows.item};
+  }
+
+  &:active:not(:disabled) {
+    transform: translateY(0);
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
   }
 `;
 

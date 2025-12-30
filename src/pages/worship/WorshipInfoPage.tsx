@@ -77,7 +77,7 @@ const WorshipInfoPage: React.FC = () => {
               notices.map((notice) => <p key={notice.id}>{notice.content}</p>)
             ) : (
               <>
-                <p>
+                {/* <p>
                   미래존교회는 주일과 수요일, 금요일에 정기 예배를 드립니다.
                   모든 성도 여러분의 참여를 환영합니다.
                 </p>
@@ -88,7 +88,7 @@ const WorshipInfoPage: React.FC = () => {
                 <p>
                   코로나19 확산 방지를 위해 마스크 착용과 개인 위생 수칙을
                   준수해 주시기 바랍니다.
-                </p>
+                </p> */}
               </>
             )}
           </S.NoticeContent>

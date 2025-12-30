@@ -40,7 +40,7 @@ export const AdminHeader = styled.div`
   left: 0;
   right: 0;
   z-index: 1000;
-  background: ${({ theme }) => theme.colors.white100};
+  background: ${({ theme }) => theme.colors.adminBgColor};
   box-shadow: ${({ theme }) => theme.shadows.field};
   border-bottom: 1px solid ${({ theme }) => theme.colors.gray100};
   backdrop-filter: blur(10px);
@@ -49,7 +49,6 @@ export const AdminHeader = styled.div`
 
 export const AdminHeaderContainer = styled(AdminContainer)`
   background: transparent;
-  position: relative;
   display: flex;
   align-items: center;
   height: 72px;
@@ -108,7 +107,7 @@ export const MainNavBar = styled.div`
   display: flex;
   align-items: center;
   height: 100%;
-  background: transparent;
+  background: ${({ theme }) => theme.colors.adminBgColor};
 `;
 
 export const MainNavInner = styled.div`
@@ -127,7 +126,7 @@ export const LogoSection = styled.div`
   padding: 0 40px;
   height: 100%;
   min-width: 240px;
-  position: relative;
+
   overflow: hidden;
 
   &::before {
@@ -137,7 +136,11 @@ export const LogoSection = styled.div`
     left: 0;
     right: 0;
     bottom: 0;
-    background: linear-gradient(135deg, ${({ theme }) => theme.colors.white12} 0%, transparent 100%);
+    background: linear-gradient(
+      135deg,
+      ${({ theme }) => theme.colors.white12} 0%,
+      transparent 100%
+    );
     pointer-events: none;
   }
 
@@ -153,8 +156,6 @@ export const LogoSection = styled.div`
     height: 48px;
     width: auto;
     object-fit: contain;
-    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    filter: brightness(0) invert(1);
   }
 
   &:hover img {
@@ -202,7 +203,10 @@ export const MenuItem = styled.li`
   position: relative;
 `;
 
-export const MenuLink = styled(NavBarLink)<{ $isActive?: boolean; $clickable?: boolean }>`
+export const MenuLink = styled(NavBarLink)<{
+  $isActive?: boolean;
+  $clickable?: boolean;
+}>`
   font-weight: ${({ $isActive }) => ($isActive ? "600" : "500")};
   font-size: 1.5rem;
   padding: 0 28px;
@@ -222,9 +226,10 @@ export const MenuLink = styled(NavBarLink)<{ $isActive?: boolean; $clickable?: b
   ${({ $isActive, theme }) =>
     $isActive
       ? `
-    color: ${theme.colors.primary};
-    background: ${theme.colors.primary}1A;
+    color: ${theme.colors.white100};
+    background: linear-gradient(135deg, ${theme.colors.primary} 0%, ${theme.colors.secondary} 100%);
     font-weight: 600;
+    box-shadow: 0 2px 8px ${theme.colors.primary}40;
     
     &::after {
       content: "";
@@ -234,17 +239,18 @@ export const MenuLink = styled(NavBarLink)<{ $isActive?: boolean; $clickable?: b
       transform: translateX(-50%);
       width: 80%;
       height: 3px;
-      background: ${theme.colors.primary};
+      background: ${theme.colors.white100};
       border-radius: 2px 2px 0 0;
+      opacity: 0.8;
     }
   `
       : `
-    color: ${theme.colors.text};
+    color: ${theme.colors.adminTextColor};
     background: transparent;
     
     &:hover {
-      color: ${theme.colors.primary};
-      background: ${theme.colors.primary}14;
+      color: ${theme.colors.white100};
+      background: ${theme.colors.white12};
       transform: translateY(-1px);
     }
   `}
@@ -261,7 +267,10 @@ export const ChevronIcon = styled.span<{ $isOpen?: boolean }>`
   width: 16px;
   height: 16px;
   border-radius: 50%;
-  background: ${({ $isOpen, theme }) => ($isOpen ? `${theme.colors.primary}26` : "transparent")};
+  background: ${({ $isOpen, theme }) =>
+    $isOpen ? `${theme.colors.white12}` : "transparent"};
+  color: ${({ $isOpen, theme }) =>
+    $isOpen ? theme.colors.white100 : theme.colors.adminTextColor};
 `;
 
 /* ========== 하위 탭 영역 ========== */
@@ -270,13 +279,13 @@ export const SubTabBar = styled.div`
   top: 72px;
   left: 0;
   right: 0;
-  background: ${({ theme }) => theme.colors.white100};
-  border-bottom: 1px solid ${({ theme }) => theme.colors.gray100};
+  background: ${({ theme }) => theme.colors.adminBgColor};
+  border-bottom: 1px solid ${({ theme }) => theme.colors.white12};
   z-index: 999;
-  box-shadow: ${({ theme }) => theme.shadows.field};
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   height: 56px;
   animation: slideDown 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  
+
   @keyframes slideDown {
     from {
       opacity: 0;
@@ -301,8 +310,12 @@ export const SubTabContainer = styled.div`
 
 export const SubTabButton = styled(NavBarLink)<{ $isActive?: boolean }>`
   padding: 10px 24px;
-  background: ${({ $isActive, theme }) => ($isActive ? theme.colors.primary : "transparent")};
-  color: ${({ $isActive, theme }) => ($isActive ? theme.colors.white100 : theme.colors.muted)};
+  background: ${({ $isActive, theme }) =>
+    $isActive
+      ? `linear-gradient(135deg, ${theme.colors.primary} 0%, ${theme.colors.secondary} 100%)`
+      : "transparent"};
+  color: ${({ $isActive, theme }) =>
+    $isActive ? theme.colors.white100 : theme.colors.adminTextColor};
   border: none;
   border-radius: ${({ theme }) => theme.radius.sm};
   font-size: 1.4rem;
@@ -316,14 +329,20 @@ export const SubTabButton = styled(NavBarLink)<{ $isActive?: boolean }>`
   align-items: center;
   justify-content: center;
   height: 36px;
-  box-shadow: ${({ $isActive, theme }) => ($isActive ? theme.shadows.item : "none")};
+  box-shadow: ${({ $isActive, theme }) =>
+    $isActive ? `0 2px 8px ${theme.colors.primary}40` : "none"};
 
   &:hover {
-    background: ${({ $isActive, theme }) => ($isActive ? theme.colors.primary : `${theme.colors.primary}1A`)};
-    color: ${({ $isActive, theme }) => ($isActive ? theme.colors.white100 : theme.colors.primary)};
+    background: ${({ $isActive, theme }) =>
+      $isActive
+        ? `linear-gradient(135deg, ${theme.colors.primary} 0%, ${theme.colors.secondary} 100%)`
+        : theme.colors.white12};
+    color: ${({ $isActive, theme }) =>
+      $isActive ? theme.colors.white100 : theme.colors.white100};
     font-weight: 600;
     transform: translateY(-1px);
-    box-shadow: ${({ $isActive, theme }) => ($isActive ? theme.shadows.item : "none")};
+    box-shadow: ${({ $isActive, theme }) =>
+      $isActive ? `0 4px 12px ${theme.colors.primary}40` : "none"};
   }
 
   &:active {

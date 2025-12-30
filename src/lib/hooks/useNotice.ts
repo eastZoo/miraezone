@@ -122,15 +122,18 @@ export const useUpdateNotice = () => {
 };
 
 /**
- * 공지사항 삭제
+ * 공지사항 삭제 (소프트 딜리트)
  */
 export const useDeleteNotice = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async (id: number) => {
       return await request({
-        method: "DELETE",
+        method: "PATCH",
         url: `/notice/${id}`,
+        data: {
+          deletedAt: new Date().toISOString(),
+        },
       });
     },
     onSuccess: () => {

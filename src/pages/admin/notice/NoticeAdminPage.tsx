@@ -138,10 +138,10 @@ const NoticeAdminPage: React.FC = () => {
       const handleImageButtonClick = (e: Event) => {
         const target = e.target as HTMLElement;
         // SimpleMDE의 이미지 버튼 찾기
-        const imageIcon = target.classList.contains("fa-image") 
-          ? target 
-          : target.closest(".fa-image") as HTMLElement;
-        
+        const imageIcon = target.classList.contains("fa-image")
+          ? target
+          : (target.closest(".fa-image") as HTMLElement);
+
         if (imageIcon) {
           e.preventDefault();
           e.stopPropagation();
@@ -153,7 +153,11 @@ const NoticeAdminPage: React.FC = () => {
       if (editorContainer) {
         editorContainer.addEventListener("click", handleImageButtonClick, true);
         cleanup = () => {
-          editorContainer.removeEventListener("click", handleImageButtonClick, true);
+          editorContainer.removeEventListener(
+            "click",
+            handleImageButtonClick,
+            true
+          );
         };
       }
     }, 100);
@@ -234,7 +238,11 @@ const NoticeAdminPage: React.FC = () => {
   }
 
   return (
-    <AdminMainTemplate>
+    <AdminMainTemplate
+      containerType="standard"
+      pageTitle="공지사항 관리"
+      breadcrumb={["관리자", "공지사항 관리"]}
+    >
       <S.Container>
         <S.Section>
           <S.SectionHeader>
@@ -290,9 +298,7 @@ const NoticeAdminPage: React.FC = () => {
                     if (imageFiles.length === 0) return;
 
                     const editor = document.querySelector(
-                      ".CodeMirror"
-                        ? ".CodeMirror"
-                        : ".editor-toolbar"
+                      ".CodeMirror" ? ".CodeMirror" : ".editor-toolbar"
                     ) as HTMLElement;
                     if (!editor) return;
 
@@ -306,8 +312,7 @@ const NoticeAdminPage: React.FC = () => {
                         });
                       } catch (error: any) {
                         alert(
-                          error?.response?.data?.message ||
-                            "이미지 업로드 실패"
+                          error?.response?.data?.message || "이미지 업로드 실패"
                         );
                       }
                     }
@@ -334,8 +339,7 @@ const NoticeAdminPage: React.FC = () => {
                         });
                       } catch (error: any) {
                         alert(
-                          error?.response?.data?.message ||
-                            "이미지 업로드 실패"
+                          error?.response?.data?.message || "이미지 업로드 실패"
                         );
                       } finally {
                         if (imageInputRef.current) {

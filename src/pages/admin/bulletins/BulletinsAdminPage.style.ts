@@ -1,399 +1,283 @@
 import styled from "styled-components";
+import * as Common from "@/styles/adminCommonStyles";
 
-export const Container = styled.div`
-  padding: 24px;
-  max-width: 1200px;
-  margin: 0 auto;
-`;
+export const Container = styled(Common.AdminContainer)``;
 
-export const Section = styled.div`
-  background: #fff;
-  border-radius: 8px;
-  padding: 24px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-`;
+export const Section = styled(Common.AdminSection)``;
 
-export const SectionHeader = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 24px;
-  padding-bottom: 16px;
-  border-bottom: 2px solid #e0e0e0;
-`;
+export const SectionHeader = styled(Common.SectionHeader)``;
 
-export const SectionTitle = styled.h2`
-  font-size: 24px;
-  font-weight: 600;
-  color: #333;
-  margin: 0;
-`;
+export const SectionTitle = styled(Common.SectionTitle)``;
 
-export const AddButton = styled.button`
-  padding: 10px 24px;
-  background: #007bff;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  font-size: 14px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: background 0.2s;
-
-  &:hover {
-    background: #0056b3;
-  }
-`;
+export const AddButton = styled(Common.PrimaryButton)``;
 
 export const Toolbar = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 24px;
-  padding: 16px;
-  background: #f8f9fa;
-  border-radius: 4px;
+  margin-bottom: ${({ theme }) => theme.spacing(6)};
+  padding: ${({ theme }) => theme.spacing(4)};
+  background: ${({ theme }) => theme.colors.white100};
+  border: 1px solid ${({ theme }) => theme.colors.gray100};
+  border-radius: ${({ theme }) => theme.radius.sm};
+  box-shadow: ${({ theme }) => theme.shadows.field};
 `;
 
 export const ViewMode = styled.div`
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: ${({ theme }) => theme.spacing(4)};
 `;
 
 export const InfoText = styled.span`
-  font-size: 14px;
-  color: #666;
+  font-size: 1.4rem;
+  color: ${({ theme }) => theme.colors.muted};
 `;
 
 export const SearchArea = styled.div`
   display: flex;
-  gap: 8px;
+  gap: ${({ theme }) => theme.spacing(2)};
   align-items: center;
 `;
 
-export const SearchInput = styled.input`
-  padding: 8px 12px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  font-size: 14px;
+export const SearchInput = styled(Common.FormInput)`
   width: 300px;
-
-  &:focus {
-    outline: none;
-    border-color: #007bff;
-  }
+  padding: ${({ theme }) => theme.spacing(2)} ${({ theme }) => theme.spacing(3)};
+  font-size: 1.4rem;
 `;
 
-export const SearchButton = styled.button`
-  padding: 8px 16px;
-  background: #333;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  font-size: 14px;
-  cursor: pointer;
-  transition: background 0.2s;
-
-  &:hover {
-    background: #555;
-  }
+export const SearchButton = styled(Common.PrimaryButton)`
+  padding: ${({ theme }) => theme.spacing(2)} ${({ theme }) => theme.spacing(4)};
+  font-size: 1.4rem;
 `;
 
-export const FormSection = styled.div`
-  margin-bottom: 24px;
-  padding: 24px;
-  background: #f8f9fa;
-  border-radius: 4px;
-`;
+export const FormSection = styled(Common.FormSection)``;
 
-export const FormRow = styled.div`
-  margin-bottom: 16px;
-`;
+export const FormRow = styled(Common.FormRow)``;
 
-export const FormLabel = styled.label`
-  display: block;
-  margin-bottom: 8px;
-  font-size: 14px;
-  font-weight: 500;
-  color: #333;
-`;
+export const FormLabel = styled(Common.FormLabel)``;
 
-export const FormInput = styled.input`
-  width: 100%;
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  font-size: 14px;
+export const FormInput = styled(Common.FormInput)``;
 
-  &:focus {
-    outline: none;
-    border-color: #007bff;
-  }
-`;
+export const FormActions = styled(Common.FormActions)``;
 
-export const FormActions = styled.div`
-  display: flex;
-  gap: 8px;
-  margin-top: 24px;
-`;
+export const SaveButton = styled(Common.PrimaryButton)``;
 
-export const SaveButton = styled.button`
-  padding: 10px 24px;
-  background: #007bff;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  font-size: 14px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: background 0.2s;
+export const CancelButton = styled(Common.SecondaryButton)``;
 
-  &:hover {
-    background: #0056b3;
-  }
-`;
-
-export const CancelButton = styled.button`
-  padding: 10px 24px;
-  background: #6c757d;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  font-size: 14px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: background 0.2s;
-
-  &:hover {
-    background: #5a6268;
-  }
-`;
-
-export const FileSection = styled.div`
-  margin-top: 24px;
-  padding: 16px;
-  background: white;
-  border-radius: 4px;
-  border: 1px solid #ddd;
+export const FileSection = styled(Common.AdminCard)`
+  margin-top: ${({ theme }) => theme.spacing(6)};
 `;
 
 export const FileSectionHeader = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 16px;
+  margin-bottom: ${({ theme }) => theme.spacing(4)};
 `;
 
 export const FileSectionTitle = styled.h3`
-  font-size: 16px;
+  font-size: 1.6rem;
   font-weight: 600;
-  color: #333;
+  color: ${({ theme }) => theme.colors.text};
   margin: 0;
 `;
 
 export const UploadButton = styled.button`
-  padding: 8px 16px;
-  background: #28a745;
-  color: white;
+  padding: ${({ theme }) => theme.spacing(2)} ${({ theme }) => theme.spacing(4)};
+  background: ${({ theme }) => theme.colors.secondary};
+  color: ${({ theme }) => theme.colors.white100};
   border: none;
-  border-radius: 4px;
-  font-size: 14px;
+  border-radius: ${({ theme }) => theme.radius.sm};
+  font-size: 1.4rem;
+  font-weight: 500;
   cursor: pointer;
-  transition: background 0.2s;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 
-  &:hover {
-    background: #218838;
+  &:hover:not(:disabled) {
+    background: ${({ theme }) => `color-mix(in srgb, ${theme.colors.secondary} 90%, black)`};
+    transform: translateY(-1px);
+    box-shadow: ${({ theme }) => theme.shadows.item};
+  }
+
+  &:active:not(:disabled) {
+    transform: translateY(0);
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
   }
 `;
 
 export const FileList = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: ${({ theme }) => theme.spacing(2)};
 `;
 
-export const FileItem = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 12px;
-  background: #f8f9fa;
-  border-radius: 4px;
+export const FileItem = styled(Common.ListItem)`
+  margin-bottom: ${({ theme }) => theme.spacing(2)};
 `;
 
 export const FileName = styled.span`
-  font-size: 14px;
-  color: #333;
+  font-size: 1.4rem;
+  color: ${({ theme }) => theme.colors.text};
 `;
 
-export const FileActions = styled.div`
-  display: flex;
-  gap: 8px;
-`;
+export const FileActions = styled(Common.ItemActions)``;
 
-export const DeleteFileButton = styled.button`
-  padding: 4px 12px;
-  background: #dc3545;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  font-size: 12px;
-  cursor: pointer;
-  transition: background 0.2s;
-
-  &:hover {
-    background: #c82333;
-  }
+export const DeleteFileButton = styled(Common.DangerButton)`
+  padding: ${({ theme }) => theme.spacing(1)} ${({ theme }) => theme.spacing(3)};
+  font-size: 1.2rem;
 `;
 
 export const BulletinsGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  gap: 24px;
-  margin-bottom: 24px;
+  gap: ${({ theme }) => theme.spacing(6)};
+  margin-bottom: ${({ theme }) => theme.spacing(6)};
 `;
 
 export const BulletinCard = styled.div`
-  background: white;
-  border: 1px solid #e0e0e0;
-  border-radius: 8px;
+  background: ${({ theme }) => theme.colors.white100};
+  border: 1px solid ${({ theme }) => theme.colors.gray100};
+  border-radius: ${({ theme }) => theme.radius.md};
   overflow: hidden;
-  transition: box-shadow 0.2s;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 
   &:hover {
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: ${({ theme }) => theme.shadows.item};
+    transform: translateY(-2px);
   }
 `;
 
 export const BulletinThumbnail = styled.div`
   width: 100%;
   height: 200px;
-  background: #f8f9fa;
+  background: ${({ theme }) => theme.colors.gray100};
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
 `;
 
 export const ThumbnailPlaceholder = styled.div`
   text-align: center;
-  color: #666;
-  font-size: 18px;
+  color: ${({ theme }) => theme.colors.muted};
+  font-size: 1.8rem;
   font-weight: 600;
 `;
 
 export const BulletinInfo = styled.div`
-  padding: 16px;
+  padding: ${({ theme }) => theme.spacing(4)};
 `;
 
 export const BulletinDate = styled.div`
-  font-size: 14px;
-  color: #666;
-  margin-bottom: 8px;
+  font-size: 1.4rem;
+  color: ${({ theme }) => theme.colors.muted};
+  margin-bottom: ${({ theme }) => theme.spacing(2)};
 `;
 
 export const BulletinTitle = styled.div`
-  font-size: 16px;
+  font-size: 1.6rem;
   font-weight: 500;
-  color: #333;
-  margin-bottom: 12px;
+  color: ${({ theme }) => theme.colors.text};
+  margin-bottom: ${({ theme }) => theme.spacing(3)};
 `;
 
 export const BulletinActions = styled.div`
   display: flex;
-  gap: 8px;
-  padding: 0 16px 16px;
+  gap: ${({ theme }) => theme.spacing(2)};
+  padding: 0 ${({ theme }) => theme.spacing(4)} ${({ theme }) => theme.spacing(4)};
   flex-wrap: wrap;
 `;
 
-export const EditButton = styled.button`
-  padding: 6px 12px;
-  background: #007bff;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  font-size: 12px;
-  cursor: pointer;
-  transition: background 0.2s;
-
-  &:hover {
-    background: #0056b3;
-  }
+export const EditButton = styled(Common.SecondaryButton)`
+  padding: ${({ theme }) => theme.spacing(1.5)} ${({ theme }) => theme.spacing(3)};
+  font-size: 1.2rem;
 `;
 
 export const DownloadButton = styled.button`
-  padding: 6px 12px;
-  background: #28a745;
-  color: white;
+  padding: ${({ theme }) => theme.spacing(1.5)} ${({ theme }) => theme.spacing(3)};
+  background: ${({ theme }) => theme.colors.secondary};
+  color: ${({ theme }) => theme.colors.white100};
   border: none;
-  border-radius: 4px;
-  font-size: 12px;
+  border-radius: ${({ theme }) => theme.radius.sm};
+  font-size: 1.2rem;
+  font-weight: 500;
   cursor: pointer;
-  transition: background 0.2s;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 
-  &:hover {
-    background: #218838;
+  &:hover:not(:disabled) {
+    background: ${({ theme }) => `color-mix(in srgb, ${theme.colors.secondary} 90%, black)`};
+    transform: translateY(-1px);
+    box-shadow: ${({ theme }) => theme.shadows.item};
+  }
+
+  &:active:not(:disabled) {
+    transform: translateY(0);
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
   }
 `;
 
-export const DeleteButton = styled.button`
-  padding: 6px 12px;
-  background: #dc3545;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  font-size: 12px;
-  cursor: pointer;
-  transition: background 0.2s;
-
-  &:hover {
-    background: #c82333;
-  }
+export const DeleteButton = styled(Common.DangerButton)`
+  padding: ${({ theme }) => theme.spacing(1.5)} ${({ theme }) => theme.spacing(3)};
+  font-size: 1.2rem;
 `;
 
 export const Pagination = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 8px;
-  margin-top: 24px;
+  gap: ${({ theme }) => theme.spacing(2)};
+  margin-top: ${({ theme }) => theme.spacing(6)};
 `;
 
-export const PaginationButton = styled.button`
-  padding: 8px 16px;
-  background: white;
-  color: #333;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  font-size: 14px;
-  cursor: pointer;
-  transition: all 0.2s;
-
-  &:hover:not(:disabled) {
-    background: #f8f9fa;
-    border-color: #007bff;
-  }
+export const PaginationButton = styled(Common.SecondaryButton)`
+  padding: ${({ theme }) => theme.spacing(2)} ${({ theme }) => theme.spacing(4)};
+  font-size: 1.4rem;
 
   &:disabled {
-    color: #ccc;
+    opacity: 0.5;
     cursor: not-allowed;
   }
 `;
 
 export const PaginationNumber = styled.button<{ $active: boolean }>`
-  padding: 8px 16px;
-  background: ${(props) => (props.$active ? "#333" : "white")};
-  color: ${(props) => (props.$active ? "white" : "#333")};
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  font-size: 14px;
+  padding: ${({ theme }) => theme.spacing(2)} ${({ theme }) => theme.spacing(4)};
+  background: ${({ $active, theme }) => ($active ? theme.colors.primary : theme.colors.white100)};
+  color: ${({ $active, theme }) => ($active ? theme.colors.white100 : theme.colors.text)};
+  border: 1px solid ${({ theme }) => theme.colors.gray100};
+  border-radius: ${({ theme }) => theme.radius.sm};
+  font-size: 1.4rem;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 
-  &:hover {
-    background: ${(props) => (props.$active ? "#333" : "#f8f9fa")};
-    border-color: #007bff;
+  &:hover:not(:disabled) {
+    background: ${({ $active, theme }) => ($active ? `color-mix(in srgb, ${theme.colors.primary} 90%, black)` : `${theme.colors.primary}14`)};
+    border-color: ${({ theme }) => theme.colors.primary};
+    color: ${({ $active, theme }) => ($active ? theme.colors.white100 : theme.colors.primary)};
+    transform: translateY(-1px);
+  }
+
+  &:active:not(:disabled) {
+    transform: translateY(0);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
   }
 `;
 

@@ -145,15 +145,18 @@ export const useUpdateNextGenAlbum = () => {
 };
 
 /**
- * 앨범 삭제
+ * 앨범 삭제 (소프트 딜리트)
  */
 export const useDeleteNextGenAlbum = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async (id: number) => {
       return await request<void>({
-        method: "DELETE",
+        method: "PATCH",
         url: `/nextgen/albums/${id}`,
+        data: {
+          deletedAt: new Date().toISOString(),
+        },
       });
     },
     onSuccess: (_, id) => {
@@ -199,15 +202,18 @@ export const useAddNextGenAlbumImage = () => {
 };
 
 /**
- * 앨범 이미지 삭제
+ * 앨범 이미지 삭제 (소프트 딜리트)
  */
 export const useDeleteNextGenAlbumImage = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async (imageId: number) => {
       const result = await request<{ albumId: number }>({
-        method: "DELETE",
+        method: "PATCH",
         url: `/nextgen/albums/images/${imageId}`,
+        data: {
+          deletedAt: new Date().toISOString(),
+        },
       });
       return result.albumId;
     },

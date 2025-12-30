@@ -23,9 +23,12 @@ export const Footer = () => {
             주소: 부산 동래구 시실로211번길 6 (명장동)
           </S.ContactItem>
           <S.ContactDivider>|</S.ContactDivider>
-          <S.ContactItem>Tel: 051-524-5112</S.ContactItem>
+          <S.ContactItem>Tel : 051-524-5112</S.ContactItem>
           <S.ContactDivider>|</S.ContactDivider>
-          <S.ContactItem>Fax: 051-524-5113</S.ContactItem>
+          <S.ContactItem>
+            Email :{" "}
+            <a href="mailto:miraezone1004@naver.com">miraezone1004@naver.com</a>
+          </S.ContactItem>
         </S.FooterContactInfo>
 
         {/* 저작권 정보 */}

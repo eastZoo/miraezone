@@ -1,163 +1,93 @@
 import styled from "styled-components";
+import * as Common from "@/styles/adminCommonStyles";
 
-export const Container = styled.div`
-  padding: 24px;
-  max-width: 1200px;
-  margin: 0 auto;
-`;
+export const Container = styled(Common.AdminContainer)``;
 
-export const Section = styled.div`
-  background: #fff;
-  border-radius: 8px;
-  padding: 24px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-`;
+export const Section = styled(Common.AdminSection)``;
 
-export const SectionHeader = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 24px;
-  padding-bottom: 16px;
-  border-bottom: 2px solid #e0e0e0;
-`;
+export const SectionHeader = styled(Common.SectionHeader)``;
 
-export const SectionTitle = styled.h2`
-  font-size: 24px;
-  font-weight: 600;
-  color: #333;
-  margin: 0;
-`;
+export const SectionTitle = styled(Common.SectionTitle)``;
 
-export const AddButton = styled.button`
-  padding: 10px 24px;
-  background: #007bff;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  font-size: 14px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: background 0.2s;
-
-  &:hover {
-    background: #0056b3;
-  }
-`;
+export const AddButton = styled(Common.PrimaryButton)``;
 
 export const Toolbar = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 24px;
-  padding: 16px;
-  background: #f8f9fa;
-  border-radius: 4px;
+  margin-bottom: ${({ theme }) => theme.spacing(6)};
+  padding: ${({ theme }) => theme.spacing(4)};
+  background: ${({ theme }) => theme.colors.white100};
+  border: 1px solid ${({ theme }) => theme.colors.gray100};
+  border-radius: ${({ theme }) => theme.radius.sm};
+  box-shadow: ${({ theme }) => theme.shadows.field};
 `;
 
 export const ViewMode = styled.div`
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: ${({ theme }) => theme.spacing(4)};
 `;
 
 export const InfoText = styled.span`
-  font-size: 14px;
-  color: #666;
+  font-size: 1.4rem;
+  color: ${({ theme }) => theme.colors.muted};
 `;
 
 export const SearchArea = styled.div`
   display: flex;
-  gap: 8px;
+  gap: ${({ theme }) => theme.spacing(2)};
   align-items: center;
 `;
 
-export const SearchInput = styled.input`
-  padding: 8px 12px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  font-size: 14px;
+export const SearchInput = styled(Common.FormInput)`
   width: 300px;
-
-  &:focus {
-    outline: none;
-    border-color: #007bff;
-  }
+  padding: ${({ theme }) => theme.spacing(2)} ${({ theme }) => theme.spacing(3)};
+  font-size: 1.4rem;
 `;
 
-export const SearchButton = styled.button`
-  padding: 8px 16px;
-  background: #333;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  font-size: 14px;
-  cursor: pointer;
-  transition: background 0.2s;
-
-  &:hover {
-    background: #555;
-  }
+export const SearchButton = styled(Common.PrimaryButton)`
+  padding: ${({ theme }) => theme.spacing(2)} ${({ theme }) => theme.spacing(4)};
+  font-size: 1.4rem;
 `;
 
-export const FormSection = styled.div`
-  margin-bottom: 24px;
-  padding: 24px;
-  background: #f8f9fa;
-  border-radius: 4px;
-`;
+export const FormSection = styled(Common.FormSection)``;
 
-export const FormRow = styled.div`
-  margin-bottom: 16px;
-`;
+export const FormRow = styled(Common.FormRow)``;
 
-export const FormLabel = styled.label`
-  display: block;
-  margin-bottom: 8px;
-  font-size: 14px;
-  font-weight: 500;
-  color: #333;
-`;
+export const FormLabel = styled(Common.FormLabel)``;
 
-export const FormInput = styled.input`
-  width: 100%;
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  font-size: 14px;
+export const FormInput = styled(Common.FormInput)``;
 
-  &:focus {
-    outline: none;
-    border-color: #007bff;
-  }
-`;
-
-export const FormTextarea = styled.textarea`
-  width: 100%;
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  font-size: 14px;
-  resize: vertical;
-
-  &:focus {
-    outline: none;
-    border-color: #007bff;
-  }
-`;
+export const FormTextarea = styled(Common.FormTextArea)``;
 
 export const EditorWrapper = styled.div`
   .EasyMDEContainer {
     .editor-toolbar {
-      border: 1px solid #ddd;
-      border-radius: 4px 4px 0 0;
+      border: 1px solid ${({ theme }) => theme.colors.gray100};
+      border-radius: ${({ theme }) => theme.radius.sm} ${({ theme }) => theme.radius.sm} 0 0;
     }
 
     .CodeMirror {
-      border: 1px solid #ddd;
+      border: 1px solid ${({ theme }) => theme.colors.gray100};
       border-top: none;
-      border-radius: 0 0 4px 4px;
+      border-radius: 0 0 ${({ theme }) => theme.radius.sm} ${({ theme }) => theme.radius.sm};
       min-height: 300px;
+      font-size: 1.6rem;
+      line-height: 1.8;
+
+      .CodeMirror-lines {
+        padding: ${({ theme }) => theme.spacing(3)};
+      }
+
+      .CodeMirror-code {
+        font-size: 1.6rem;
+        line-height: 1.8;
+      }
+
+      .CodeMirror-cursor {
+        border-left: 2px solid ${({ theme }) => theme.colors.primary};
+      }
     }
   }
 `;
@@ -165,70 +95,44 @@ export const EditorWrapper = styled.div`
 export const CheckboxLabel = styled.label`
   display: flex;
   align-items: center;
-  gap: 8px;
-  font-size: 14px;
-  color: #333;
+  gap: ${({ theme }) => theme.spacing(2)};
+  font-size: 1.4rem;
+  color: ${({ theme }) => theme.colors.text};
   cursor: pointer;
-  margin-right: 24px;
+  margin-right: ${({ theme }) => theme.spacing(6)};
 
   input[type="checkbox"] {
     width: 18px;
     height: 18px;
     cursor: pointer;
+    accent-color: ${({ theme }) => theme.colors.primary};
   }
 `;
 
-export const FormActions = styled.div`
-  display: flex;
-  gap: 8px;
-  margin-top: 24px;
-`;
+export const FormActions = styled(Common.FormActions)``;
 
-export const SaveButton = styled.button`
-  padding: 10px 24px;
-  background: #007bff;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  font-size: 14px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: background 0.2s;
+export const SaveButton = styled(Common.PrimaryButton)``;
 
-  &:hover {
-    background: #0056b3;
-  }
-`;
-
-export const CancelButton = styled.button`
-  padding: 10px 24px;
-  background: #6c757d;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  font-size: 14px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: background 0.2s;
-
-  &:hover {
-    background: #5a6268;
-  }
-`;
+export const CancelButton = styled(Common.SecondaryButton)``;
 
 export const NoticeList = styled.div`
-  margin-bottom: 24px;
+  margin-bottom: ${({ theme }) => theme.spacing(6)};
 `;
 
-export const NoticeItem = styled.div`
-  padding: 16px;
-  border-bottom: 1px solid #e0e0e0;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+export const NoticeItem = styled(Common.ListItem)`
+  border-bottom: 1px solid ${({ theme }) => theme.colors.gray100};
+  margin-bottom: 0;
+  border-radius: 0;
 
-  &:hover {
-    background: #f8f9fa;
+  &:first-child {
+    border-top-left-radius: ${({ theme }) => theme.radius.sm};
+    border-top-right-radius: ${({ theme }) => theme.radius.sm};
+  }
+
+  &:last-child {
+    border-bottom-left-radius: ${({ theme }) => theme.radius.sm};
+    border-bottom-right-radius: ${({ theme }) => theme.radius.sm};
+    border-bottom: none;
   }
 `;
 
@@ -236,126 +140,90 @@ export const NoticeTitle = styled.div`
   flex: 1;
   display: flex;
   align-items: center;
-  gap: 8px;
-  font-size: 16px;
+  gap: ${({ theme }) => theme.spacing(2)};
+  font-size: 1.6rem;
   font-weight: 500;
-  color: #333;
+  color: ${({ theme }) => theme.colors.text};
 `;
 
-export const NewBadge = styled.span`
-  display: inline-block;
-  padding: 2px 8px;
-  background: #dc3545;
-  color: white;
-  font-size: 12px;
-  font-weight: 600;
-  border-radius: 2px;
-`;
+export const NewBadge = styled(Common.Badge).attrs({ $variant: "danger" as const })``;
 
-export const ImportantBadge = styled.span`
-  display: inline-block;
-  padding: 2px 8px;
+export const ImportantBadge = styled(Common.Badge).attrs({ $variant: "secondary" as const })`
   background: #ffc107;
   color: #333;
-  font-size: 12px;
-  font-weight: 600;
-  border-radius: 2px;
 `;
 
 export const NoticeMeta = styled.div`
   display: flex;
   align-items: center;
-  gap: 16px;
-  margin-right: 16px;
+  gap: ${({ theme }) => theme.spacing(4)};
+  margin-right: ${({ theme }) => theme.spacing(4)};
 `;
 
 export const NoticeDate = styled.span`
-  font-size: 14px;
-  color: #666;
+  font-size: 1.4rem;
+  color: ${({ theme }) => theme.colors.muted};
 `;
 
 export const NoticeViews = styled.span`
-  font-size: 14px;
-  color: #666;
+  font-size: 1.4rem;
+  color: ${({ theme }) => theme.colors.muted};
 `;
 
-export const NoticeActions = styled.div`
-  display: flex;
-  gap: 8px;
+export const NoticeActions = styled(Common.ItemActions)``;
+
+export const EditButton = styled(Common.SecondaryButton)`
+  padding: ${({ theme }) => theme.spacing(1.5)} ${({ theme }) => theme.spacing(3)};
+  font-size: 1.2rem;
 `;
 
-export const EditButton = styled.button`
-  padding: 6px 12px;
-  background: #007bff;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  font-size: 12px;
-  cursor: pointer;
-  transition: background 0.2s;
-
-  &:hover {
-    background: #0056b3;
-  }
-`;
-
-export const DeleteButton = styled.button`
-  padding: 6px 12px;
-  background: #dc3545;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  font-size: 12px;
-  cursor: pointer;
-  transition: background 0.2s;
-
-  &:hover {
-    background: #c82333;
-  }
+export const DeleteButton = styled(Common.DangerButton)`
+  padding: ${({ theme }) => theme.spacing(1.5)} ${({ theme }) => theme.spacing(3)};
+  font-size: 1.2rem;
 `;
 
 export const Pagination = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 8px;
-  margin-top: 24px;
+  gap: ${({ theme }) => theme.spacing(2)};
+  margin-top: ${({ theme }) => theme.spacing(6)};
 `;
 
-export const PaginationButton = styled.button`
-  padding: 8px 16px;
-  background: white;
-  color: #333;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  font-size: 14px;
-  cursor: pointer;
-  transition: all 0.2s;
-
-  &:hover:not(:disabled) {
-    background: #f8f9fa;
-    border-color: #007bff;
-  }
+export const PaginationButton = styled(Common.SecondaryButton)`
+  padding: ${({ theme }) => theme.spacing(2)} ${({ theme }) => theme.spacing(4)};
+  font-size: 1.4rem;
 
   &:disabled {
-    color: #ccc;
+    opacity: 0.5;
     cursor: not-allowed;
   }
 `;
 
 export const PaginationNumber = styled.button<{ $active: boolean }>`
-  padding: 8px 16px;
-  background: ${(props) => (props.$active ? "#333" : "white")};
-  color: ${(props) => (props.$active ? "white" : "#333")};
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  font-size: 14px;
+  padding: ${({ theme }) => theme.spacing(2)} ${({ theme }) => theme.spacing(4)};
+  background: ${({ $active, theme }) => ($active ? theme.colors.primary : theme.colors.white100)};
+  color: ${({ $active, theme }) => ($active ? theme.colors.white100 : theme.colors.text)};
+  border: 1px solid ${({ theme }) => theme.colors.gray100};
+  border-radius: ${({ theme }) => theme.radius.sm};
+  font-size: 1.4rem;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 
-  &:hover {
-    background: ${(props) => (props.$active ? "#333" : "#f8f9fa")};
-    border-color: #007bff;
+  &:hover:not(:disabled) {
+    background: ${({ $active, theme }) => ($active ? `color-mix(in srgb, ${theme.colors.primary} 90%, black)` : `${theme.colors.primary}14`)};
+    border-color: ${({ theme }) => theme.colors.primary};
+    color: ${({ $active, theme }) => ($active ? theme.colors.white100 : theme.colors.primary)};
+    transform: translateY(-1px);
+  }
+
+  &:active:not(:disabled) {
+    transform: translateY(0);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
   }
 `;
 

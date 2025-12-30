@@ -62,10 +62,9 @@ const menuItems = [
     title: "자료실",
     path: "/",
     subMenu: [
-      { title: "설교 자료", path: "/" },
-      { title: "찬양 자료", path: "/" },
-      { title: "교육 자료", path: "/" },
-      { title: "다운로드", path: "/" },
+      { title: "교회 앨범", path: "/" },
+      // { title: "찬양 자료", path: "/" },,
+      // { title: "다운로드", path: "/" },
     ],
   },
 ];

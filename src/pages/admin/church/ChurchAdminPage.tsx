@@ -1,4 +1,10 @@
-import React, { useState, useMemo, useRef, useEffect } from "react";
+import React, {
+  useState,
+  useMemo,
+  useRef,
+  useEffect,
+  useCallback,
+} from "react";
 import AdminMainTemplate from "@/components/template/AdminMainTemplate";
 import {
   useChurchInfo,
@@ -46,6 +52,54 @@ const ChurchAdminPage: React.FC = () => {
     content: "",
     order: 0,
   });
+
+  const baseEditorOptions = useMemo(
+    () => ({
+      spellChecker: false,
+      autofocus: false,
+      toolbar: [
+        "bold",
+        "italic",
+        "heading",
+        "|",
+        "quote",
+        "unordered-list",
+        "ordered-list",
+        "|",
+        "link",
+        "image",
+        "|",
+        "preview",
+        "side-by-side",
+        "fullscreen",
+      ] as const,
+    }),
+    []
+  );
+
+  const visionEditorOptions = useMemo(
+    () => ({
+      ...baseEditorOptions,
+      placeholder: "교회 비전을 Markdown 형식으로 입력하세요...",
+    }),
+    [baseEditorOptions]
+  );
+
+  const introEditorOptions = useMemo(
+    () => ({
+      ...baseEditorOptions,
+      placeholder: "교회 소개를 Markdown 형식으로 입력하세요...",
+    }),
+    [baseEditorOptions]
+  );
+
+  const onChangeVision = useCallback((value: string) => {
+    setVisionContent(value);
+  }, []);
+
+  const onChangeIntro = useCallback((value: string) => {
+    setIntroContent(value);
+  }, []);
 
   // 교회 비전 저장
   const handleSaveVision = async () => {
@@ -193,6 +247,7 @@ const ChurchAdminPage: React.FC = () => {
     () => ({
       placeholder: "Markdown 형식으로 입력하세요...",
       spellChecker: false,
+      autofocus: false,
       toolbar: [
         "bold",
         "italic",
@@ -215,19 +270,19 @@ const ChurchAdminPage: React.FC = () => {
 
   // vision 데이터가 로드되면 초기값 설정 (한 번만)
   useEffect(() => {
-    if (vision && !visionInitialized.current) {
+    if (vision?.content !== undefined && !visionInitialized.current) {
       setVisionContent(vision.content || "");
       visionInitialized.current = true;
     }
-  }, [vision]);
+  }, [vision?.content]);
 
   // introduction 데이터가 로드되면 초기값 설정 (한 번만)
   useEffect(() => {
-    if (introduction && !introInitialized.current) {
+    if (introduction?.content !== undefined && !introInitialized.current) {
       setIntroContent(introduction.content || "");
       introInitialized.current = true;
     }
-  }, [introduction]);
+  }, [introduction?.content]);
 
   return (
     <AdminMainTemplate
@@ -247,11 +302,8 @@ const ChurchAdminPage: React.FC = () => {
           <S.EditorWrapper>
             <SimpleMDE
               value={visionContent}
-              onChange={setVisionContent}
-              options={{
-                ...editorOptions,
-                placeholder: "교회 비전을 Markdown 형식으로 입력하세요...",
-              }}
+              onChange={onChangeVision}
+              options={visionEditorOptions}
             />
           </S.EditorWrapper>
         </S.Section>
@@ -267,11 +319,8 @@ const ChurchAdminPage: React.FC = () => {
           <S.EditorWrapper>
             <SimpleMDE
               value={introContent}
-              onChange={setIntroContent}
-              options={{
-                ...editorOptions,
-                placeholder: "교회 소개를 Markdown 형식으로 입력하세요...",
-              }}
+              onChange={onChangeIntro}
+              options={introEditorOptions}
             />
           </S.EditorWrapper>
         </S.Section>

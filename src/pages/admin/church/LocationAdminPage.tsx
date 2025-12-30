@@ -8,15 +8,15 @@ import {
   useCreateTransportInfo,
   useUpdateTransportInfo,
   useDeleteTransportInfo,
-  type ChurchLocation,
   type TransportInfo,
+  type ChurchLocation,
 } from "@/lib/hooks/useLocation";
 import * as S from "./LocationAdminPage.style";
 
-// 다음 지도 API 타입 선언
+// 네이버 지도 API 타입 선언
 declare global {
   interface Window {
-    daum: any;
+    naver: any;
   }
 }
 
@@ -30,6 +30,9 @@ const LocationAdminPage: React.FC = () => {
   const createTransport = useCreateTransportInfo();
   const updateTransport = useUpdateTransportInfo();
   const deleteTransport = useDeleteTransportInfo();
+
+  // 기본 주소 (정보창 표시용)
+  const DEFAULT_ADDRESS = "부산 동래구 시실로211번길 6";
 
   // 교회 위치 관리 상태
   const [locationData, setLocationData] = useState({
@@ -46,7 +49,8 @@ const LocationAdminPage: React.FC = () => {
 
   // 대중교통 안내 관리 상태
   const [editingTransport, setEditingTransport] = useState<number | null>(null);
-  const [editingTransportData, setEditingTransportData] = useState<Partial<TransportInfo> | null>(null);
+  const [editingTransportData, setEditingTransportData] =
+    useState<Partial<TransportInfo> | null>(null);
   const [newTransport, setNewTransport] = useState({
     type: "bus",
     description: "",
@@ -75,97 +79,246 @@ const LocationAdminPage: React.FC = () => {
   const mapRef = useRef<HTMLDivElement>(null);
   const mapInstanceRef = useRef<any>(null);
   const markerRef = useRef<any>(null);
+  const infoWindowRef = useRef<any>(null);
 
-  // 다음 지도 API 스크립트 로드
+  // location 데이터가 로드되면 폼에 설정하고 지도 초기화
   useEffect(() => {
-    // 다음 지도 API 스크립트
-    const mapScript = document.createElement("script");
-    mapScript.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${import.meta.env.VITE_KAKAO_MAP_API_KEY || ""}&autoload=false&libraries=services`;
-    mapScript.async = true;
-
-    // 지도 API 로드
-    if (!document.querySelector(`script[src*="dapi.kakao.com/v2/maps/sdk.js"]`)) {
-      document.head.appendChild(mapScript);
+    // 로딩 중이면 실행하지 않음
+    if (locationLoading) {
+      return;
     }
 
-    mapScript.onload = () => {
-      if (window.daum && window.daum.maps) {
-        window.daum.maps.load(() => {
-          // 지도 초기화는 location 데이터가 로드된 후에 수행
-          if (location && location.latitude && location.longitude) {
-            initMap(location.latitude, location.longitude);
-          }
-        });
-      }
-    };
-
-    return () => {
-      // 컴포넌트 언마운트 시 스크립트 제거하지 않음 (다른 페이지에서도 사용 가능)
-    };
-  }, []);
-
-  // location 데이터가 로드되면 폼에 설정
-  useEffect(() => {
+    // location이 있으면 폼에 설정
     if (location) {
+      console.log("Location data loaded:", location);
+
+      // location을 로컬 변수에 저장하여 타입 추론 개선
+      const currentLocation = location as ChurchLocation;
+
       setLocationData({
-        address: location.address || "",
-        addressDetail: location.addressDetail || "",
-        latitude: location.latitude || undefined,
-        longitude: location.longitude || undefined,
-        phone: location.phone || "",
-        email: location.email || "",
+        address: currentLocation.address || "",
+        addressDetail: currentLocation.addressDetail || "",
+        latitude: currentLocation.latitude || undefined,
+        longitude: currentLocation.longitude || undefined,
+        phone: currentLocation.phone || "",
+        email: currentLocation.email || "",
       });
 
-      // 지도가 이미 초기화되어 있고 좌표가 있으면 지도 업데이트
-      if (location.latitude && location.longitude && mapInstanceRef.current) {
-        updateMap(location.latitude, location.longitude);
-      } else if (location.latitude && location.longitude && window.daum?.maps) {
-        initMap(location.latitude, location.longitude);
+      // 지도 초기화 함수
+      const initializeMap = () => {
+        // DB에서 가져온 좌표가 없으면 지도를 표시하지 않음
+        if (!currentLocation.latitude || !currentLocation.longitude) {
+          console.log(
+            "No coordinates in location data, skipping map initialization"
+          );
+          return;
+        }
+
+        const lat = currentLocation.latitude;
+        const lng = currentLocation.longitude;
+
+        console.log("Initializing map with coordinates:", { lat, lng });
+
+        // 지도가 이미 초기화되어 있으면 업데이트
+        if (mapInstanceRef.current) {
+          updateMap(lat, lng);
+        } else if (mapRef.current && window.naver?.maps) {
+          // 지도가 초기화되지 않았으면 새로 초기화
+          initMap(lat, lng);
+        }
+      };
+
+      // 네이버 지도 API가 로드되었는지 확인
+      if (window.naver?.maps) {
+        // API가 이미 로드되어 있으면 바로 초기화
+        initializeMap();
+      } else {
+        // API가 아직 로드되지 않았으면 로드 대기
+        const checkNaverMaps = setInterval(() => {
+          if (window.naver?.maps) {
+            clearInterval(checkNaverMaps);
+            initializeMap();
+          }
+        }, 100);
+
+        // 10초 후 타임아웃
+        setTimeout(() => {
+          clearInterval(checkNaverMaps);
+        }, 10000);
       }
     }
-  }, [location]);
+  }, [location, locationLoading]);
 
   /**
    * 지도 초기화
    */
   const initMap = (lat: number, lng: number) => {
-    if (!mapRef.current || !window.daum?.maps) return;
+    if (!mapRef.current || !window.naver?.maps) return;
 
-    const mapOption = {
-      center: new window.daum.maps.LatLng(lat, lng),
-      level: 3,
+    const mapOptions = {
+      center: new window.naver.maps.LatLng(lat, lng),
+      zoom: 15,
+      zoomControl: true,
+      zoomControlOptions: {
+        position: window.naver.maps.Position.TOP_RIGHT,
+      },
     };
 
-    const map = new window.daum.maps.Map(mapRef.current, mapOption);
+    const map = new window.naver.maps.Map(mapRef.current, mapOptions);
     mapInstanceRef.current = map;
 
     // 마커 생성
-    const markerPosition = new window.daum.maps.LatLng(lat, lng);
-    const marker = new window.daum.maps.Marker({
+    const markerPosition = new window.naver.maps.LatLng(lat, lng);
+    const marker = new window.naver.maps.Marker({
       position: markerPosition,
+      map: map,
+      icon: {
+        content: `
+          <div style="
+            background: linear-gradient(135deg, #3b82f6 0%, #10b981 100%);
+            width: 40px;
+            height: 40px;
+            border-radius: 50% 50% 50% 0;
+            transform: rotate(-45deg);
+            border: 3px solid white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+          ">
+            <div style="
+              transform: rotate(45deg);
+              color: white;
+              font-size: 20px;
+              font-weight: bold;
+            ">📍</div>
+          </div>
+        `,
+        anchor: new window.naver.maps.Point(20, 40),
+      },
     });
-    marker.setMap(map);
     markerRef.current = marker;
+
+    // 정보창 생성
+    const infoWindow = new window.naver.maps.InfoWindow({
+      content: `
+        <div style="
+          padding: 12px 16px;
+          background: white;
+          border-radius: 8px;
+          box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+          min-width: 120px;
+          text-align: center;
+        ">
+          <div style="
+            font-size: 16px;
+            font-weight: 700;
+            color: #111827;
+            margin-bottom: 4px;
+            background: linear-gradient(135deg, #3b82f6 0%, #10b981 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+          ">미래존교회</div>
+          <div style="
+            font-size: 12px;
+            color: #6b7280;
+            margin-top: 4px;
+          ">${locationData.address || DEFAULT_ADDRESS}</div>
+        </div>
+      `,
+      borderWidth: 0,
+      backgroundColor: "transparent",
+      pixelOffset: new window.naver.maps.Point(0, -10),
+    });
+    infoWindowRef.current = infoWindow;
+
+    // 마커 클릭 시 정보창 표시
+    window.naver.maps.Event.addListener(marker, "click", () => {
+      if (infoWindow.getMap()) {
+        infoWindow.close();
+      } else {
+        infoWindow.open(map, marker);
+      }
+    });
+
+    // 지도 로드 시 정보창 자동 표시
+    infoWindow.open(map, marker);
   };
 
   /**
    * 지도 업데이트 (좌표 변경 시)
    */
   const updateMap = (lat: number, lng: number) => {
-    if (!mapInstanceRef.current || !window.daum?.maps) return;
+    if (!mapInstanceRef.current || !window.naver?.maps) return;
 
-    const moveLatLon = new window.daum.maps.LatLng(lat, lng);
+    const moveLatLon = new window.naver.maps.LatLng(lat, lng);
     mapInstanceRef.current.setCenter(moveLatLon);
 
     // 마커 위치 업데이트
     if (markerRef.current) {
       markerRef.current.setPosition(moveLatLon);
     } else {
-      const marker = new window.daum.maps.Marker({
+      const marker = new window.naver.maps.Marker({
         position: moveLatLon,
+        map: mapInstanceRef.current,
+        icon: {
+          content: `
+            <div style="
+              background: linear-gradient(135deg, #3b82f6 0%, #10b981 100%);
+              width: 40px;
+              height: 40px;
+              border-radius: 50% 50% 50% 0;
+              transform: rotate(-45deg);
+              border: 3px solid white;
+              box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+              display: flex;
+              align-items: center;
+              justify-content: center;
+            ">
+              <div style="
+                transform: rotate(45deg);
+                color: white;
+                font-size: 20px;
+                font-weight: bold;
+              ">📍</div>
+            </div>
+          `,
+          anchor: new window.naver.maps.Point(20, 40),
+        },
       });
-      marker.setMap(mapInstanceRef.current);
       markerRef.current = marker;
+    }
+
+    // 정보창 업데이트
+    if (infoWindowRef.current) {
+      infoWindowRef.current.setContent(`
+        <div style="
+          padding: 12px 16px;
+          background: white;
+          border-radius: 8px;
+          box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+          min-width: 120px;
+          text-align: center;
+        ">
+          <div style="
+            font-size: 16px;
+            font-weight: 700;
+            color: #111827;
+            margin-bottom: 4px;
+            background: linear-gradient(135deg, #3b82f6 0%, #10b981 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+          ">미래존교회</div>
+          <div style="
+            font-size: 12px;
+            color: #6b7280;
+            margin-top: 4px;
+          ">${locationData.address || DEFAULT_ADDRESS}</div>
+        </div>
+      `);
+      infoWindowRef.current.open(mapInstanceRef.current, markerRef.current);
     }
   };
 
@@ -179,7 +332,7 @@ const LocationAdminPage: React.FC = () => {
   /**
    * 다음 주소 검색 완료 핸들러
    */
-  const handlePostcodeComplete = (data: any) => {
+  const handlePostcodeComplete = async (data: any) => {
     // 주소 정보 설정
     let addr = data.address; // 도로명 주소
     let extraAddr = ""; // 참고항목 변수
@@ -190,37 +343,114 @@ const LocationAdminPage: React.FC = () => {
     }
     // 건물명이 있고, 공동주택일 경우 추가
     if (data.buildingName !== "" && data.apartment === "Y") {
-      extraAddr += extraAddr !== "" ? ", " + data.buildingName : data.buildingName;
+      extraAddr +=
+        extraAddr !== "" ? ", " + data.buildingName : data.buildingName;
     }
     // 표시할 참고항목이 있을 경우, 괄호까지 추가한 최종 문자열을 만든다
     if (extraAddr !== "") {
       extraAddr = " (" + extraAddr + ")";
     }
 
+    const fullAddress = addr + extraAddr;
+
+    // 주소를 먼저 설정
     setLocationData((prev) => ({
       ...prev,
-      address: addr + extraAddr,
+      address: fullAddress,
     }));
 
-    // 주소로 좌표 검색
-    if (window.daum?.maps?.services) {
-      const geocoder = new window.daum.maps.services.Geocoder();
-      geocoder.addressSearch(addr, function (result: any, status: any) {
-        if (status === window.daum.maps.services.Status.OK) {
+    // 네이버 지도 API가 로드될 때까지 대기
+    const waitForNaverMaps = (): Promise<void> => {
+      return new Promise((resolve, reject) => {
+        if (window.naver?.maps?.Service) {
+          resolve();
+          return;
+        }
+
+        let attempts = 0;
+        const maxAttempts = 50; // 5초 대기 (100ms * 50)
+
+        const checkInterval = setInterval(() => {
+          attempts++;
+          if (window.naver?.maps?.Service) {
+            clearInterval(checkInterval);
+            resolve();
+          } else if (attempts >= maxAttempts) {
+            clearInterval(checkInterval);
+            reject(new Error("네이버 지도 API 로드를 기다리는 중 타임아웃"));
+          }
+        }, 100);
+      });
+    };
+
+    try {
+      // 네이버 지도 API 로드 대기
+      await waitForNaverMaps();
+
+      // 주소로 좌표 검색 (네이버 지도 Geocoder 사용)
+      window.naver.maps.Service.geocode(
+        {
+          query: addr, // 도로명 주소만 사용 (참고항목 제외)
+        },
+        function (status: any, response: any) {
+          if (status === window.naver.maps.Service.Status.ERROR) {
+            console.error("Geocoding error:", status);
+            alert("주소 검색에 실패했습니다. 주소를 확인해주세요.");
+            setIsPostcodeOpen(false);
+            return;
+          }
+
+          if (
+            !response.v2 ||
+            !response.v2.meta ||
+            response.v2.meta.totalCount === 0
+          ) {
+            alert("검색 결과가 없습니다. 주소를 확인해주세요.");
+            setIsPostcodeOpen(false);
+            return;
+          }
+
+          const item = response.v2.addresses[0];
+          console.log("item", item);
+          if (!item || !item.y || !item.x) {
+            alert("좌표 정보를 가져올 수 없습니다.");
+            setIsPostcodeOpen(false);
+            return;
+          }
+
+          const lat = parseFloat(item.y);
+          const lng = parseFloat(item.x);
+
+          // 위경도가 유효한지 확인
+          if (isNaN(lat) || isNaN(lng)) {
+            alert("유효하지 않은 좌표입니다.");
+            setIsPostcodeOpen(false);
+            return;
+          }
+
+          console.log("Geocoding result:", { address: fullAddress, lat, lng });
+
+          // 주소와 좌표를 함께 업데이트
           setLocationData((prev) => ({
             ...prev,
-            latitude: parseFloat(result[0].y),
-            longitude: parseFloat(result[0].x),
+            address: fullAddress,
+            latitude: lat,
+            longitude: lng,
           }));
 
           // 지도 업데이트
           if (mapInstanceRef.current) {
-            updateMap(parseFloat(result[0].y), parseFloat(result[0].x));
-          } else if (mapRef.current) {
-            initMap(parseFloat(result[0].y), parseFloat(result[0].x));
+            updateMap(lat, lng);
+          } else if (mapRef.current && window.naver?.maps) {
+            initMap(lat, lng);
           }
         }
-      });
+      );
+    } catch (error) {
+      console.error("Failed to load Naver Maps API:", error);
+      alert(
+        "지도 API를 불러오는 중 오류가 발생했습니다. 페이지를 새로고침해주세요."
+      );
     }
 
     setIsPostcodeOpen(false);
@@ -234,10 +464,34 @@ const LocationAdminPage: React.FC = () => {
       alert("주소를 입력해주세요.");
       return;
     }
+
+    // 위경도가 없으면 경고
+    if (!locationData.latitude || !locationData.longitude) {
+      const confirmSave = confirm(
+        "위경도 정보가 없습니다. 저장하시겠습니까?\n(지도에 표시되지 않을 수 있습니다.)"
+      );
+      if (!confirmSave) {
+        return;
+      }
+    }
+
     try {
-      await upsertLocation.mutateAsync(locationData);
+      // 위경도를 포함하여 저장
+      const saveData = {
+        address: locationData.address,
+        addressDetail: locationData.addressDetail || undefined,
+        latitude: locationData.latitude || undefined,
+        longitude: locationData.longitude || undefined,
+        phone: locationData.phone || undefined,
+        email: locationData.email || undefined,
+      };
+
+      console.log("Saving location data:", saveData);
+
+      await upsertLocation.mutateAsync(saveData);
       alert("교회 위치 정보가 저장되었습니다.");
     } catch (error) {
+      console.error("Save error:", error);
       alert("저장 중 오류가 발생했습니다.");
     }
   };
@@ -314,7 +568,7 @@ const LocationAdminPage: React.FC = () => {
       <AdminMainTemplate
         containerType="standard"
         pageTitle="오시는 길 관리"
-        breadcrumb={["관리자", "교회 정보 관리", "오시는 길 관리"]}
+        breadcrumb={["교회 정보 관리", "오시는 길 관리"]}
       >
         <S.Container>로딩 중...</S.Container>
       </AdminMainTemplate>
@@ -325,7 +579,7 @@ const LocationAdminPage: React.FC = () => {
     <AdminMainTemplate
       containerType="standard"
       pageTitle="오시는 길 관리"
-      breadcrumb={["관리자", "교회 정보 관리", "오시는 길 관리"]}
+      breadcrumb={["관리자", "교회소개 관리", "오시는 길 관리"]}
     >
       <S.Container>
         {/* 교회 위치 정보 섹션 */}
@@ -353,11 +607,15 @@ const LocationAdminPage: React.FC = () => {
             {/* 다음 주소 검색 모달 */}
             {isPostcodeOpen && (
               <S.PostcodeModal>
-                <S.PostcodeModalOverlay onClick={() => setIsPostcodeOpen(false)} />
+                <S.PostcodeModalOverlay
+                  onClick={() => setIsPostcodeOpen(false)}
+                />
                 <S.PostcodeModalContent>
                   <S.PostcodeModalHeader>
                     <S.PostcodeModalTitle>주소 검색</S.PostcodeModalTitle>
-                    <S.Button onClick={() => setIsPostcodeOpen(false)}>닫기</S.Button>
+                    <S.Button onClick={() => setIsPostcodeOpen(false)}>
+                      닫기
+                    </S.Button>
                   </S.PostcodeModalHeader>
                   <DaumPostcode
                     onComplete={handlePostcodeComplete}
@@ -374,7 +632,10 @@ const LocationAdminPage: React.FC = () => {
               type="text"
               value={locationData.addressDetail}
               onChange={(e) =>
-                setLocationData({ ...locationData, addressDetail: e.target.value })
+                setLocationData({
+                  ...locationData,
+                  addressDetail: e.target.value,
+                })
               }
               placeholder="건물명, 호수 등 상세 주소를 입력하세요"
             />
@@ -450,7 +711,10 @@ const LocationAdminPage: React.FC = () => {
               <S.TextArea
                 value={newTransport.description}
                 onChange={(e) =>
-                  setNewTransport({ ...newTransport, description: e.target.value })
+                  setNewTransport({
+                    ...newTransport,
+                    description: e.target.value,
+                  })
                 }
                 placeholder="안내 내용 (줄바꿈은 <br /> 태그 사용)"
                 rows={2}
@@ -476,13 +740,16 @@ const LocationAdminPage: React.FC = () => {
           <S.TransportListContainer>
             <S.TransportListHeader>
               <S.TransportListTitle>대중교통 안내 목록</S.TransportListTitle>
-              <S.TransportCount>{transportList.length}개</S.TransportCount>
+              <S.TransportCount>
+                {Array.isArray(transportList) ? transportList.length : 0}개
+              </S.TransportCount>
             </S.TransportListHeader>
             <S.TransportListScrollable>
-              {transportList.length > 0 ? (
+              {Array.isArray(transportList) && transportList.length > 0 ? (
                 transportList.map((transport) => (
                   <S.TransportItem key={transport.id}>
-                    {editingTransport === transport.id && editingTransportData ? (
+                    {editingTransport === transport.id &&
+                    editingTransportData ? (
                       <S.EditForm>
                         <S.Select
                           value={editingTransportData.type || ""}
@@ -524,7 +791,11 @@ const LocationAdminPage: React.FC = () => {
                           style={{ width: "100px" }}
                         />
                         <S.ButtonGroup>
-                          <S.Button onClick={() => handleUpdateTransport(transport.id)}>저장</S.Button>
+                          <S.Button
+                            onClick={() => handleUpdateTransport(transport.id)}
+                          >
+                            저장
+                          </S.Button>
                           <S.Button
                             onClick={() => {
                               setEditingTransport(null);
@@ -542,17 +813,25 @@ const LocationAdminPage: React.FC = () => {
                             {transport.type === "bus" && "🚌"}
                             {transport.type === "subway" && "🚇"}
                             {transport.type === "car" && "🚗"}
-                            {transport.type === "other" && "📍"}
-                            {" "}
+                            {transport.type === "other" && "📍"}{" "}
                             {transport.title}
                           </S.TransportTitle>
                           <S.TransportDesc
-                            dangerouslySetInnerHTML={{ __html: transport.description }}
+                            dangerouslySetInnerHTML={{
+                              __html: transport.description,
+                            }}
                           />
                         </S.TransportContent>
                         <S.ButtonGroup>
-                          <S.Button onClick={() => handleStartEditTransport(transport)}>수정</S.Button>
-                          <S.Button onClick={() => handleDeleteTransport(transport.id)} $danger>
+                          <S.Button
+                            onClick={() => handleStartEditTransport(transport)}
+                          >
+                            수정
+                          </S.Button>
+                          <S.Button
+                            onClick={() => handleDeleteTransport(transport.id)}
+                            $danger
+                          >
                             삭제
                           </S.Button>
                         </S.ButtonGroup>
@@ -561,7 +840,9 @@ const LocationAdminPage: React.FC = () => {
                   </S.TransportItem>
                 ))
               ) : (
-                <S.EmptyMessage>등록된 대중교통 안내가 없습니다.</S.EmptyMessage>
+                <S.EmptyMessage>
+                  등록된 대중교통 안내가 없습니다.
+                </S.EmptyMessage>
               )}
             </S.TransportListScrollable>
           </S.TransportListContainer>
@@ -572,4 +853,3 @@ const LocationAdminPage: React.FC = () => {
 };
 
 export default LocationAdminPage;
-

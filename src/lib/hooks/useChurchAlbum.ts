@@ -52,6 +52,9 @@ export const useChurchAlbumList = (
       });
       return result;
     },
+    staleTime: 5 * 60 * 1000, // 5분간 데이터를 fresh로 유지
+    gcTime: 10 * 60 * 1000, // 10분간 캐시 유지
+    refetchOnWindowFocus: false, // 윈도우 포커스 시 자동 refetch 방지
   });
 };
 
@@ -70,7 +73,9 @@ export const useChurchAlbum = (id: number, incrementViews: boolean = true) => {
       }
       const result = await request<ChurchAlbum>({
         method: "GET",
-        url: `/church-albums/${id}${params.toString() ? `?${params.toString()}` : ""}`,
+        url: `/church-albums/${id}${
+          params.toString() ? `?${params.toString()}` : ""
+        }`,
       });
       return result;
     },
@@ -140,15 +145,18 @@ export const useUpdateChurchAlbum = () => {
 };
 
 /**
- * 교회 앨범 삭제
+ * 교회 앨범 삭제 (소프트 딜리트)
  */
 export const useDeleteChurchAlbum = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async (id: number) => {
       await request({
-        method: "DELETE",
+        method: "PATCH",
         url: `/church-albums/${id}`,
+        data: {
+          deletedAt: new Date().toISOString(),
+        },
       });
     },
     onSuccess: (_, id) => {
@@ -193,15 +201,18 @@ export const useAddChurchAlbumImage = () => {
 };
 
 /**
- * 교회 앨범 이미지 삭제
+ * 교회 앨범 이미지 삭제 (소프트 딜리트)
  */
 export const useDeleteChurchAlbumImage = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async (id: number) => {
       const result = await request<{ albumId: number }>({
-        method: "DELETE",
+        method: "PATCH",
         url: `/church-albums/images/${id}`,
+        data: {
+          deletedAt: new Date().toISOString(),
+        },
       });
       return result;
     },
@@ -213,4 +224,3 @@ export const useDeleteChurchAlbumImage = () => {
     },
   });
 };
-

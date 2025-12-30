@@ -15,8 +15,8 @@ interface DownloadItem {
 const DownloadsPage: React.FC = () => {
   const subMenuItems = [
     { title: "교회 앨범", path: "/resources/church-albums" },
-    { title: "찬양 자료", path: "/resources/songs" },
-    { title: "다운로드", path: "/resources/downloads" },
+    // { title: "찬양 자료", path: "/resources/songs" },
+    // { title: "다운로드", path: "/resources/downloads" },
   ];
 
   const [downloads] = useState<DownloadItem[]>([

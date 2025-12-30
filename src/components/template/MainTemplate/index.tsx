@@ -47,9 +47,9 @@ const MainTemplate = ({
           DetailHeaderMobile과 함께 사용 */}
       {commonUi && (
         <>
-          <S.QuickButtonBox>
+          {/* <S.QuickButtonBox>
             <QuickButtons />
-          </S.QuickButtonBox>
+          </S.QuickButtonBox> */}
 
           <Footer />
         </>
