@@ -1,13 +1,123 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import * as S from "./AdminHeader.style";
 import { Link, useLocation } from "react-router-dom";
 import logo from "@/styles/assets/images/church_logo.png";
 
+interface SubMenuItem {
+  label: string;
+  path: string;
+}
+
+interface MenuGroup {
+  label: string;
+  path?: string;
+  subItems: SubMenuItem[];
+}
+
 const AdminHeader: React.FC = () => {
   const location = useLocation();
+  const [activeGroup, setActiveGroup] = useState<string | null>(null);
 
+  // 메뉴 그룹 정의
+  const menuGroups: MenuGroup[] = [
+    {
+      label: "교회소개 관리",
+      path: "/admin/church",
+      subItems: [
+        { label: "교회 정보 관리", path: "/admin/church" },
+        { label: "교회 조직 관리", path: "/admin/church/organization" },
+        { label: "오시는 길 관리", path: "/admin/church/location" },
+      ],
+    },
+    {
+      label: "안내/소식 관리",
+      path: "/admin/notice",
+      subItems: [
+        { label: "공지사항 관리", path: "/admin/notice" },
+        { label: "교회 소식 관리", path: "/admin/news" },
+        { label: "주보 관리", path: "/admin/bulletins" },
+      ],
+    },
+    {
+      label: "예배/찬양 관리",
+      path: "/admin/worship",
+      subItems: [
+        { label: "예배 일정 관리", path: "/admin/worship/schedules" },
+        { label: "설교 영상 관리", path: "/admin/worship/videos" },
+      ],
+    },
+    {
+      label: "다음세대 관리",
+      path: "/admin/nextgen",
+      subItems: [
+        { label: "부서 정보 관리", path: "/admin/nextgen/department" },
+        { label: "유초등부 앨범", path: "/admin/nextgen/elementary" },
+        { label: "중고등부 앨범", path: "/admin/nextgen/youth" },
+        { label: "청년부 앨범", path: "/admin/nextgen/youngadult" },
+        { label: "다음세대 소식 관리", path: "/admin/nextgen/news" },
+      ],
+    },
+    {
+      label: "자료실 관리",
+      path: "/admin/church-albums",
+      subItems: [{ label: "교회 앨범 관리", path: "/admin/church-albums" }],
+    },
+  ];
+
+  // 정확한 경로 매칭 함수
   const isActive = (path: string) => {
-    return location.pathname.startsWith(path);
+    // 정확히 일치하는 경우
+    if (location.pathname === path) {
+      return true;
+    }
+    // 하위 경로인 경우 (예: /admin/church/organization는 /admin/church의 하위)
+    // 단, 정확히 일치하는 다른 경로가 있으면 그것이 우선
+    const allSubItems = menuGroups.flatMap((g) => g.subItems);
+    const exactMatch = allSubItems.some(
+      (item) => item.path === location.pathname && item.path !== path
+    );
+    
+    if (exactMatch) {
+      return false;
+    }
+    
+    // 경로가 해당 경로로 시작하고, 다음 문자가 /이거나 끝인 경우만 활성화
+    return location.pathname.startsWith(path) && 
+           (location.pathname.length === path.length || location.pathname[path.length] === '/');
+  };
+
+  const isGroupActive = (group: MenuGroup) => {
+    return group.subItems.some((item) => {
+      // 정확한 경로 매칭
+      if (location.pathname === item.path) {
+        return true;
+      }
+      // 하위 경로인 경우
+      return location.pathname.startsWith(item.path + '/');
+    });
+  };
+
+  // 현재 경로에 따라 활성 그룹 설정
+  useEffect(() => {
+    const currentGroup = menuGroups.find((group) => isGroupActive(group));
+    // 하위 탭이 하나 이상 있으면 항상 드롭다운 표시
+    if (currentGroup && currentGroup.subItems.length >= 1) {
+      setActiveGroup(currentGroup.label);
+    } else {
+      setActiveGroup(null);
+    }
+  }, [location.pathname]);
+
+  const handleGroupClick = (group: MenuGroup) => {
+    if (activeGroup === group.label) {
+      setActiveGroup(null);
+    } else {
+      setActiveGroup(group.label);
+    }
+    // 하위 메뉴가 하나만 있으면 바로 이동
+    if (group.subItems.length === 1) {
+      // 링크는 자동으로 처리됨
+    }
   };
 
   return (
@@ -25,92 +135,49 @@ const AdminHeader: React.FC = () => {
           <S.MainNavInner>
             <S.NavMenu>
               <S.MenuList>
-                <S.MenuItem>
-                  <S.MenuLink
-                    as={Link}
-                    to="/admin/church"
-                    $isActive={isActive("/admin/church") && !isActive("/admin/church/organization") && !isActive("/admin/church/location")}
-                  >
-                    교회 정보 관리
-                  </S.MenuLink>
-                </S.MenuItem>
-                <S.MenuItem>
-                  <S.MenuLink
-                    as={Link}
-                    to="/admin/church/organization"
-                    $isActive={isActive("/admin/church/organization")}
-                  >
-                    교회 조직 관리
-                  </S.MenuLink>
-                </S.MenuItem>
-                <S.MenuItem>
-                  <S.MenuLink
-                    as={Link}
-                    to="/admin/church/location"
-                    $isActive={isActive("/admin/church/location")}
-                  >
-                    오시는 길 관리
-                  </S.MenuLink>
-                </S.MenuItem>
-                <S.MenuItem>
-                  <S.MenuLink
-                    as={Link}
-                    to="/admin/notice"
-                    $isActive={isActive("/admin/notice")}
-                  >
-                    공지사항 관리
-                  </S.MenuLink>
-                </S.MenuItem>
-                <S.MenuItem>
-                  <S.MenuLink
-                    as={Link}
-                    to="/admin/news"
-                    $isActive={isActive("/admin/news")}
-                  >
-                    교회 소식 관리
-                  </S.MenuLink>
-                </S.MenuItem>
-                <S.MenuItem>
-                  <S.MenuLink
-                    as={Link}
-                    to="/admin/bulletins"
-                    $isActive={isActive("/admin/bulletins")}
-                  >
-                    주보 관리
-                  </S.MenuLink>
-                </S.MenuItem>
-                <S.MenuItem>
-                  <S.MenuLink
-                    as={Link}
-                    to="/admin/worship"
-                    $isActive={isActive("/admin/worship")}
-                  >
-                    예배 관리
-                  </S.MenuLink>
-                </S.MenuItem>
-                <S.MenuItem>
-                  <S.MenuLink
-                    as={Link}
-                    to="/admin/nextgen"
-                    $isActive={isActive("/admin/nextgen")}
-                  >
-                    다음세대 관리
-                  </S.MenuLink>
-                </S.MenuItem>
-                <S.MenuItem>
-                  <S.MenuLink
-                    as={Link}
-                    to="/admin/church-albums"
-                    $isActive={isActive("/admin/church-albums")}
-                  >
-                    교회 앨범 관리
-                  </S.MenuLink>
-                </S.MenuItem>
+                {menuGroups.map((group, index) => {
+                  const groupActive = isGroupActive(group);
+                  const isOpen = activeGroup === group.label;
+
+                  return (
+                    <S.MenuItem key={index}>
+                      <S.MenuLink
+                        as="div"
+                        $isActive={groupActive}
+                        onClick={() => handleGroupClick(group)}
+                        $clickable={true}
+                      >
+                        {group.label}
+                        <S.ChevronIcon $isOpen={isOpen}>▼</S.ChevronIcon>
+                      </S.MenuLink>
+                    </S.MenuItem>
+                  );
+                })}
               </S.MenuList>
             </S.NavMenu>
           </S.MainNavInner>
         </S.MainNavBar>
       </S.AdminHeaderContainer>
+
+      {/* 하위 탭 영역 */}
+      {activeGroup && (
+        <S.SubTabBar data-subtab-bar="true">
+          <S.SubTabContainer>
+            {menuGroups
+              .find((g) => g.label === activeGroup)
+              ?.subItems.map((subItem, subIndex) => (
+                <S.SubTabButton
+                  key={subIndex}
+                  as={Link}
+                  to={subItem.path}
+                  $isActive={isActive(subItem.path)}
+                >
+                  {subItem.label}
+                </S.SubTabButton>
+              ))}
+          </S.SubTabContainer>
+        </S.SubTabBar>
+      )}
     </S.AdminHeader>
   );
 };

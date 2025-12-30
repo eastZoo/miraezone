@@ -1,4 +1,5 @@
 import React, { useState, useMemo, useRef, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import AdminMainTemplate from "@/components/template/AdminMainTemplate";
 import {
   useNextGenDepartment,
@@ -28,9 +29,16 @@ import * as S from "./NextGenAdminPage.style";
 import dayjs from "dayjs";
 
 const NextGenAdminPage: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<
-    "department" | "elementary" | "youth" | "youngadult" | "news"
-  >("department");
+  const location = useLocation();
+  // URL 기반으로 활성 탭 결정
+  const activeTab = useMemo(() => {
+    if (location.pathname.includes("/elementary")) return "elementary";
+    if (location.pathname.includes("/youth")) return "youth";
+    if (location.pathname.includes("/youngadult")) return "youngadult";
+    if (location.pathname.includes("/news")) return "news";
+    return "department";
+  }, [location.pathname]);
+  
   const [selectedDepartment, setSelectedDepartment] =
     useState<string>("유초등부");
 
@@ -483,40 +491,6 @@ const NextGenAdminPage: React.FC = () => {
   return (
     <AdminMainTemplate>
       <S.Container>
-        {/* 탭 메뉴 */}
-        <S.TabContainer>
-          <S.TabButton
-            $active={activeTab === "department"}
-            onClick={() => setActiveTab("department")}
-          >
-            부서 정보 관리
-          </S.TabButton>
-          <S.TabButton
-            $active={activeTab === "elementary"}
-            onClick={() => setActiveTab("elementary")}
-          >
-            유초등부 앨범
-          </S.TabButton>
-          <S.TabButton
-            $active={activeTab === "youth"}
-            onClick={() => setActiveTab("youth")}
-          >
-            중고등부 앨범
-          </S.TabButton>
-          <S.TabButton
-            $active={activeTab === "youngadult"}
-            onClick={() => setActiveTab("youngadult")}
-          >
-            청년부 앨범
-          </S.TabButton>
-          <S.TabButton
-            $active={activeTab === "news"}
-            onClick={() => setActiveTab("news")}
-          >
-            다음세대 소식 관리
-          </S.TabButton>
-        </S.TabContainer>
-
         {/* 부서 정보 관리 */}
         {activeTab === "department" && (
           <S.Section>

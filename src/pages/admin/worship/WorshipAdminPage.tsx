@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useLocation } from "react-router-dom";
 import AdminMainTemplate from "@/components/template/AdminMainTemplate";
 import {
   useWorshipSchedules,
@@ -17,7 +18,9 @@ import * as S from "./WorshipAdminPage.style";
 import dayjs from "dayjs";
 
 const WorshipAdminPage: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<"schedules" | "videos">("schedules");
+  const location = useLocation();
+  // URL 기반으로 활성 탭 결정
+  const activeTab = location.pathname.includes("/videos") ? "videos" : "schedules";
 
   // 예배 일정 조회
   const { data: schedules = [], isLoading: schedulesLoading } =
@@ -215,22 +218,6 @@ const WorshipAdminPage: React.FC = () => {
   return (
     <AdminMainTemplate>
       <S.Container>
-        {/* 탭 메뉴 */}
-        <S.TabContainer>
-          <S.TabButton
-            $active={activeTab === "schedules"}
-            onClick={() => setActiveTab("schedules")}
-          >
-            예배 일정 관리
-          </S.TabButton>
-          <S.TabButton
-            $active={activeTab === "videos"}
-            onClick={() => setActiveTab("videos")}
-          >
-            설교 영상 관리
-          </S.TabButton>
-        </S.TabContainer>
-
         {/* 예배 일정 관리 */}
         {activeTab === "schedules" && (
           <S.Section>

@@ -24,6 +24,7 @@ const AdminMainTemplate = ({
   breadcrumb,
 }: AdminMainTemplateProps) => {
   const location = useLocation();
+  const [hasSubTabs, setHasSubTabs] = React.useState(false);
 
   // 현재 경로에 따라 상단 네비게이션 바의 활성 메뉴( CSS ) 를 결정
   const getActiveMenu = () => {
@@ -37,13 +38,26 @@ const AdminMainTemplate = ({
   const hasSidebar =
     location.pathname.startsWith("/admin/") && location.pathname !== "/admin";
 
+  // 하위 탭 존재 여부 확인
+  React.useEffect(() => {
+    const checkSubTabs = () => {
+      const subTabBar = document.querySelector('[data-subtab-bar="true"]');
+      setHasSubTabs(!!subTabBar);
+    };
+    
+    checkSubTabs();
+    const interval = setInterval(checkSubTabs, 100);
+    
+    return () => clearInterval(interval);
+  }, [location.pathname]);
+
   return (
     <S.Wrapper>
       {/* 헤더 */}
       <AdminHeader />
-      <S.ContentLayout hasSidebar={hasSidebar}>
+      <S.ContentLayout hasSidebar={hasSidebar} hasSubTabs={hasSubTabs}>
         {/* 사이드바 */}
-        {hasSidebar && <AdminSidebar activeMenu={getActiveMenu()} />}
+        {hasSidebar && <AdminSidebar activeMenu={getActiveMenu()} hasSubTabs={hasSubTabs} />}
         {/* /pages 폴더의 페이지들이 위치할 컨테이너 */}
         {containerType === "wide" ? (
           <S.ContainerWrapperAdmin hasSidebar={hasSidebar}>

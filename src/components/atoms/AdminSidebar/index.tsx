@@ -6,9 +6,10 @@ import { HiMiniChevronUp } from "react-icons/hi2";
 
 interface AdminSidebarProps {
   activeMenu?: string;
+  hasSubTabs?: boolean;
 }
 
-const AdminSidebar: React.FC<AdminSidebarProps> = () => {
+const AdminSidebar: React.FC<AdminSidebarProps> = ({ hasSubTabs = false }) => {
   const menuGroups: any[] = [];
 
   // // 첫 번째 그룹을 제외한 모든 그룹을 초기 상태에서 접힌 상태로 설정
@@ -79,7 +80,7 @@ const AdminSidebar: React.FC<AdminSidebarProps> = () => {
   };
 
   return (
-    <S.Sidebar>
+    <S.Sidebar $hasSubTabs={hasSubTabs}>
       {menuGroups.map((group: any) => (
         <S.MenuGroup key={group.id}>
           {group.isCollapsible ? (

@@ -1,17 +1,20 @@
 import styled from "styled-components";
 import { NavLink } from "react-router-dom";
 
-export const Sidebar = styled.div`
+export const Sidebar = styled.div<{ $hasSubTabs?: boolean }>`
   position: fixed;
   left: 0;
-  top: 90px; /* 헤더 높이만큼 아래로 */
+  top: ${({ $hasSubTabs }) => ($hasSubTabs ? "128px" : "72px")}; /* 헤더(72px) + 하위 탭(56px) 또는 헤더만 */
   bottom: 0;
   width: 300px;
-  background: #f5f5f5;
-  border-right: 1px solid #e0e0e0;
-  padding: 20px 16px;
+  background: #ffffff;
+  border-right: 1px solid #e8e9ea;
+  padding: 24px 20px;
   overflow-y: auto;
-  z-index: 999;
+  overflow-x: hidden;
+  z-index: 998;
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.03);
+  transition: top 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 `;
 
 export const MenuGroup = styled.div`
