@@ -1,9 +1,14 @@
 import styled from "styled-components";
+import { device } from "@/styles/GlobalStyle";
 
 export const ContentWrapper = styled.div`
   padding: 16px;
   max-width: 1600px;
   margin: 0 auto;
+
+  @media ${device.mobile} {
+    padding: 12px;
+  }
 `;
 
 export const DetailContainer = styled.div`
@@ -18,6 +23,13 @@ export const DetailHeader = styled.div`
   padding-bottom: 16px;
   border-bottom: 2px solid #e0e0e0;
   padding: 0 0 16px 0;
+
+  @media ${device.mobile} {
+    flex-direction: column;
+    gap: 16px;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+  }
 `;
 
 export const TitleSection = styled.div`
@@ -30,6 +42,11 @@ export const Title = styled.h1`
   color: #333;
   margin-bottom: 16px;
   line-height: 1.4;
+
+  @media ${device.mobile} {
+    font-size: 20px;
+    margin-bottom: 12px;
+  }
 `;
 
 export const MetaInfo = styled.div`
@@ -38,6 +55,12 @@ export const MetaInfo = styled.div`
   gap: 16px;
   font-size: 14px;
   color: #666;
+
+  @media ${device.mobile} {
+    flex-wrap: wrap;
+    gap: 12px;
+    font-size: 12px;
+  }
 `;
 
 export const Speaker = styled.span``;
@@ -59,6 +82,12 @@ export const BackButton = styled.button`
 
   &:hover {
     background: #555;
+  }
+
+  @media ${device.mobile} {
+    padding: 8px 16px;
+    font-size: 12px;
+    width: 100%;
   }
 `;
 

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import SubMenuTemplate from "@/components/template/SubMenuTemplate";
 import { useBulletinList } from "@/lib/hooks/useBulletin";
+import LoadingSpinner from "@/components/atoms/LoadingSpinner";
 import * as S from "./BulletinsPage.style";
 import dayjs from "dayjs";
 
@@ -37,7 +38,9 @@ const BulletinsPage: React.FC = () => {
         pageTitle="주보"
         breadcrumb={["Home", "안내/소식", "주보"]}
       >
-        <S.ContentWrapper>로딩 중...</S.ContentWrapper>
+        <S.ContentWrapper>
+          <LoadingSpinner size="medium" />
+        </S.ContentWrapper>
       </SubMenuTemplate>
     );
   }

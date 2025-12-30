@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import SubMenuTemplate from "@/components/template/SubMenuTemplate";
 import { useWorshipVideos } from "@/lib/hooks/useWorship";
 import { extractYouTubeThumbnail } from "@/lib/utils/youtubeUtils";
+import LoadingSpinner from "@/components/atoms/LoadingSpinner";
 import * as S from "./WorshipPage.style";
 import dayjs from "dayjs";
 
@@ -54,7 +55,9 @@ const WorshipVideosPage: React.FC = () => {
         pageTitle="설교 영상"
         breadcrumb={["Home", "예배/찬양", "설교 영상"]}
       >
-        <S.ContentWrapper>로딩 중...</S.ContentWrapper>
+        <S.ContentWrapper>
+          <LoadingSpinner size="medium" />
+        </S.ContentWrapper>
       </SubMenuTemplate>
     );
   }
@@ -94,8 +97,9 @@ const WorshipVideosPage: React.FC = () => {
         </S.Toolbar>
 
         {/* 설교 영상 테이블 */}
-        <S.VideosTable>
-          <S.VideosTableHeader>
+        <S.VideosTableWrapper>
+          <S.VideosTable>
+            <S.VideosTableHeader>
             <S.VideosTableHeaderCell style={{ width: "80px" }}>
               No
             </S.VideosTableHeaderCell>
@@ -162,7 +166,8 @@ const WorshipVideosPage: React.FC = () => {
               </S.VideosTableRow>
             )}
           </S.VideosTableBody>
-        </S.VideosTable>
+          </S.VideosTable>
+        </S.VideosTableWrapper>
 
         {/* 페이지네이션 */}
         <S.Pagination>

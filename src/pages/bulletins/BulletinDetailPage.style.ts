@@ -1,9 +1,14 @@
 import styled from "styled-components";
+import { device } from "@/styles/GlobalStyle";
 
 export const ContentWrapper = styled.div`
   padding: 16px;
   max-width: 1600px;
   margin: 0 auto;
+
+  @media ${device.mobile} {
+    padding: 12px;
+  }
 `;
 
 export const DetailContainer = styled.div`
@@ -18,6 +23,13 @@ export const DetailHeader = styled.div`
   padding-bottom: 16px;
   border-bottom: 2px solid #e0e0e0;
   padding: 0 0 16px 0;
+
+  @media ${device.mobile} {
+    flex-direction: column;
+    gap: 16px;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+  }
 `;
 
 export const TitleSection = styled.div`
@@ -30,6 +42,11 @@ export const Title = styled.h1`
   color: #333;
   margin-bottom: 16px;
   line-height: 1.4;
+
+  @media ${device.mobile} {
+    font-size: 20px;
+    margin-bottom: 12px;
+  }
 `;
 
 export const MetaInfo = styled.div`
@@ -38,6 +55,12 @@ export const MetaInfo = styled.div`
   gap: 16px;
   font-size: 14px;
   color: #666;
+
+  @media ${device.mobile} {
+    flex-wrap: wrap;
+    gap: 12px;
+    font-size: 12px;
+  }
 `;
 
 export const Date = styled.span``;
@@ -58,6 +81,12 @@ export const BackButton = styled.button`
   &:hover {
     background: #555;
   }
+
+  @media ${device.mobile} {
+    padding: 8px 16px;
+    font-size: 12px;
+    width: 100%;
+  }
 `;
 
 export const AttachmentSection = styled.div`
@@ -71,6 +100,12 @@ export const AttachmentInfo = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+
+  @media ${device.mobile} {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
 `;
 
 export const AttachmentText = styled.span`
@@ -135,6 +170,10 @@ export const ImageViewerOverlay = styled.div`
   justify-content: center;
   padding: 40px;
   overflow: hidden; /* 스크롤 방지 */
+
+  @media ${device.mobile} {
+    padding: 20px;
+  }
 `;
 
 export const ImageViewerContainer = styled.div`
@@ -198,6 +237,13 @@ export const ImageViewerDownloadButton = styled.button`
     background: rgba(255, 255, 255, 0.3);
     border-color: rgba(255, 255, 255, 0.8);
   }
+
+  @media ${device.mobile} {
+    top: 10px;
+    right: 50px;
+    padding: 6px 12px;
+    font-size: 12px;
+  }
 `;
 
 export const ImageViewerNavButton = styled.button<{ $direction: "prev" | "next" }>`
@@ -228,6 +274,13 @@ export const ImageViewerNavButton = styled.button<{ $direction: "prev" | "next" 
     opacity: 0.3;
     cursor: not-allowed;
   }
+
+  @media ${device.mobile} {
+    ${(props) => (props.$direction === "prev" ? "left: 10px;" : "right: 10px;")}
+    width: 36px;
+    height: 36px;
+    font-size: 18px;
+  }
 `;
 
 export const ImageViewerCounter = styled.div`
@@ -241,6 +294,12 @@ export const ImageViewerCounter = styled.div`
   border-radius: 20px;
   font-size: 14px;
   z-index: 10001; /* 오버레이보다 위에 표시 */
+
+  @media ${device.mobile} {
+    bottom: 10px;
+    padding: 6px 12px;
+    font-size: 12px;
+  }
 `;
 
 export const NoImages = styled.div`

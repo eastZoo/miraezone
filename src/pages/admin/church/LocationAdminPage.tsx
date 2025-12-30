@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import AdminMainTemplate from "@/components/template/AdminMainTemplate";
+import LoadingSpinner from "@/components/atoms/LoadingSpinner";
 import DaumPostcode from "react-daum-postcode";
 import {
   useChurchLocation,
@@ -570,7 +571,9 @@ const LocationAdminPage: React.FC = () => {
         pageTitle="오시는 길 관리"
         breadcrumb={["교회 정보 관리", "오시는 길 관리"]}
       >
-        <S.Container>로딩 중...</S.Container>
+        <S.Container>
+          <LoadingSpinner size="medium" />
+        </S.Container>
       </AdminMainTemplate>
     );
   }

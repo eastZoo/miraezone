@@ -6,6 +6,7 @@ import { useChurchAlbum } from "@/lib/hooks/useChurchAlbum";
 import JSZip from "jszip";
 import * as S from "./ChurchAlbumDetailPage.style";
 import dayjs from "dayjs";
+import LoadingSpinner from "@/components/atoms/LoadingSpinner";
 
 const ChurchAlbumDetailPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -168,7 +169,9 @@ const ChurchAlbumDetailPage: React.FC = () => {
         pageTitle="교회 앨범"
         breadcrumb={["Home", "자료실", "교회 앨범", "상세보기"]}
       >
-        <S.ContentWrapper>로딩 중...</S.ContentWrapper>
+        <S.ContentWrapper>
+          <LoadingSpinner size="medium" />
+        </S.ContentWrapper>
       </SubMenuTemplate>
     );
   }
@@ -212,7 +215,9 @@ const ChurchAlbumDetailPage: React.FC = () => {
                   <S.Views>조회 {album.views}</S.Views>
                 </S.MetaInfo>
               </S.TitleSection>
-              <S.BackButton onClick={() => navigate("/resources/church-albums")}>
+              <S.BackButton
+                onClick={() => navigate("/resources/church-albums")}
+              >
                 목록으로
               </S.BackButton>
             </S.DetailHeader>
@@ -226,7 +231,9 @@ const ChurchAlbumDetailPage: React.FC = () => {
             {images.length > 0 && (
               <S.AttachmentSection>
                 <S.AttachmentInfo>
-                  <S.AttachmentText>첨부파일 {images.length}개</S.AttachmentText>
+                  <S.AttachmentText>
+                    첨부파일 {images.length}개
+                  </S.AttachmentText>
                   <S.BulkDownloadButton onClick={handleBulkDownload}>
                     [첨부파일 일괄 다운로드]
                   </S.BulkDownloadButton>
@@ -307,4 +314,3 @@ const ChurchAlbumDetailPage: React.FC = () => {
 };
 
 export default ChurchAlbumDetailPage;
-

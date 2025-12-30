@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { NavLink } from "react-router-dom";
+import { device } from "@/styles/GlobalStyle";
 
 export const Sidebar = styled.div<{ $hasSubTabs?: boolean }>`
   position: fixed;
@@ -15,6 +16,17 @@ export const Sidebar = styled.div<{ $hasSubTabs?: boolean }>`
   z-index: 998;
   box-shadow: 2px 0 8px rgba(0, 0, 0, 0.03);
   transition: top 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+  @media ${device.mobile} {
+    width: 100%;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+    z-index: 1000;
+
+    &.open {
+      transform: translateX(0);
+    }
+  }
 `;
 
 export const MenuGroup = styled.div`

@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import * as Common from "@/styles/adminCommonStyles";
+import { device } from "@/styles/GlobalStyle";
 
 export const Container = styled(Common.AdminContainer)``;
 
@@ -43,6 +44,12 @@ export const ScheduleInfo = styled.div`
   gap: ${({ theme }) => theme.spacing(6)};
   flex: 1;
   flex-wrap: wrap;
+
+  @media ${device.mobile} {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: ${({ theme }) => theme.spacing(3)};
+  }
 `;
 
 export const ScheduleType = styled(Common.Badge).attrs({ $variant: "primary" as const })``;
@@ -75,6 +82,12 @@ export const VideoList = styled.div`
 
 export const VideoItem = styled(Common.ListItem)`
   align-items: center;
+
+  @media ${device.mobile} {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: ${({ theme }) => theme.spacing(3)};
+  }
 `;
 
 export const VideoThumbnail = styled.div`
@@ -89,6 +102,11 @@ export const VideoThumbnail = styled.div`
     width: 100%;
     height: 100%;
     object-fit: cover;
+  }
+
+  @media ${device.mobile} {
+    width: 100px;
+    height: 56px;
   }
 `;
 

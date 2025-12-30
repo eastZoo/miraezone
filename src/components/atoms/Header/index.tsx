@@ -61,6 +61,7 @@ interface HeaderProps {
 const Header: React.FC<HeaderProps> = ({ isTransparent = false }) => {
   const [isFixed, setIsFixed] = useState(false);
   const [activeMenuIndex, setActiveMenuIndex] = useState<number | null>(null);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const headerRef = useRef<HTMLDivElement | null>(null);
   const gnbRef = useRef<HTMLDivElement | null>(null);
 
@@ -121,7 +122,7 @@ const Header: React.FC<HeaderProps> = ({ isTransparent = false }) => {
           {/* 네비게이션 메뉴 영역 */}
           <S.NavSection>
             {/* 메인 메뉴 */}
-            <S.MainMenu>
+            <S.MainMenu $isOpen={isMobileMenuOpen}>
               <S.MenuList>
                 {menuItems.map((item, index) => (
                   <S.MenuItem
@@ -143,6 +144,14 @@ const Header: React.FC<HeaderProps> = ({ isTransparent = false }) => {
                 ))}
               </S.MenuList>
             </S.MainMenu>
+
+            {/* 모바일 메뉴 토글 버튼 */}
+            <S.MobileMenuToggle
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              aria-label="메뉴"
+            >
+              {isMobileMenuOpen ? "✕" : "☰"}
+            </S.MobileMenuToggle>
           </S.NavSection>
         </S.HeaderInner>
       </S.MainHeader>

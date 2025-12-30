@@ -244,14 +244,29 @@ export const SearchButton = styled.button`
 `;
 
 // 설교 영상 테이블 스타일
+export const VideosTableWrapper = styled.div`
+  width: 100%;
+  margin-bottom: 40px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+
+  @media ${device.mobile} {
+    margin-bottom: 30px;
+  }
+`;
+
 export const VideosTable = styled.table`
   width: 100%;
+  min-width: 600px;
   border-collapse: collapse;
-  margin-bottom: 40px;
   background: #ffffff;
   border: 1px solid #e5e5e5;
   border-radius: 8px;
   overflow: hidden;
+
+  @media ${device.mobile} {
+    min-width: 500px;
+  }
 `;
 
 export const VideosTableHeader = styled.thead`
@@ -304,6 +319,11 @@ export const VideoThumbnailImg = styled.img`
   height: 68px;
   object-fit: cover;
   border-radius: 4px;
+
+  @media ${device.mobile} {
+    width: 80px;
+    height: 45px;
+  }
 `;
 
 export const ThumbnailPlaceholder = styled.div`
@@ -318,6 +338,11 @@ export const ThumbnailPlaceholder = styled.div`
   &.hidden {
     display: none;
   }
+
+  @media ${device.mobile} {
+    width: 80px;
+    height: 45px;
+  }
 `;
 
 export const PlayIcon = styled.div`
@@ -331,6 +356,12 @@ export const PlayIcon = styled.div`
   color: #1a1a2e;
   font-size: 1.8rem;
   padding-left: 3px;
+
+  @media ${device.mobile} {
+    width: 28px;
+    height: 28px;
+    font-size: 1.4rem;
+  }
 `;
 
 export const VideoTitleText = styled.div`

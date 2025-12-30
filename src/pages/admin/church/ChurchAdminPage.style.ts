@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import * as Common from "@/styles/adminCommonStyles";
+import { device } from "@/styles/GlobalStyle";
 
 export const Container = styled(Common.AdminContainer)``;
 
@@ -58,6 +59,12 @@ export const HistoryContent = styled.div`
   align-items: center;
   gap: ${({ theme }) => theme.spacing(6)};
   flex: 1;
+
+  @media ${device.mobile} {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: ${({ theme }) => theme.spacing(3)};
+  }
 `;
 
 export const HistoryYear = styled(Common.Badge).attrs({ $variant: "primary" as const })`

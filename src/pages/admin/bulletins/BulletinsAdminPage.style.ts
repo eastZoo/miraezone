@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import * as Common from "@/styles/adminCommonStyles";
+import { device } from "@/styles/GlobalStyle";
 
 export const Container = styled(Common.AdminContainer)``;
 
@@ -21,6 +22,14 @@ export const Toolbar = styled.div`
   border: 1px solid ${({ theme }) => theme.colors.gray100};
   border-radius: ${({ theme }) => theme.radius.sm};
   box-shadow: ${({ theme }) => theme.shadows.field};
+
+  @media ${device.mobile} {
+    flex-direction: column;
+    align-items: stretch;
+    gap: ${({ theme }) => theme.spacing(3)};
+    padding: ${({ theme }) => theme.spacing(3)};
+    margin-bottom: ${({ theme }) => theme.spacing(4)};
+  }
 `;
 
 export const ViewMode = styled.div`
@@ -44,6 +53,10 @@ export const SearchInput = styled(Common.FormInput)`
   width: 300px;
   padding: ${({ theme }) => theme.spacing(2)} ${({ theme }) => theme.spacing(3)};
   font-size: 1.4rem;
+
+  @media ${device.mobile} {
+    width: 100%;
+  }
 `;
 
 export const SearchButton = styled(Common.PrimaryButton)`

@@ -242,32 +242,6 @@ const ChurchAdminPage: React.FC = () => {
     }
   };
 
-  // MD 에디터 옵션 메모이제이션
-  const editorOptions = useMemo(
-    () => ({
-      placeholder: "Markdown 형식으로 입력하세요...",
-      spellChecker: false,
-      autofocus: false,
-      toolbar: [
-        "bold",
-        "italic",
-        "heading",
-        "|",
-        "quote",
-        "unordered-list",
-        "ordered-list",
-        "|",
-        "link",
-        "image",
-        "|",
-        "preview",
-        "side-by-side",
-        "fullscreen",
-      ] as const,
-    }),
-    []
-  );
-
   // vision 데이터가 로드되면 초기값 설정 (한 번만)
   useEffect(() => {
     if (vision?.content !== undefined && !visionInitialized.current) {

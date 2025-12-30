@@ -9,6 +9,12 @@ export const HeaderWrapper = styled.div<{ $transparent?: boolean }>`
   width: 100%;
   overflow: visible;
   z-index: 1001;
+
+  /* 모바일에서는 항상 relative로 변경 */
+  @media ${device.mobile} {
+    position: relative;
+    top: auto;
+  }
 `;
 
 /* ========== 상단 유틸리티 바 ========== */
@@ -81,6 +87,14 @@ export const MainHeader = styled.div<{ $transparent?: boolean }>`
   transition: all 0.3s ease;
   overflow: visible;
 
+  /* 모바일에서는 항상 배경색 적용 */
+  @media ${device.mobile} {
+    background: linear-gradient(to bottom, #1a1a2e 0%, #16213e 100%);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(229, 229, 229, 0.3);
+  }
+
   &.fixed {
     position: fixed;
     top: 0;
@@ -96,6 +110,14 @@ export const MainHeader = styled.div<{ $transparent?: boolean }>`
     -webkit-backdrop-filter: blur(20px);
     border-bottom: 1px solid rgba(229, 229, 229, 0.5);
     overflow: visible;
+
+    /* 모바일에서는 fixed 상태에서도 배경색 유지 */
+    @media ${device.mobile} {
+      background: linear-gradient(to bottom, #1a1a2e 0%, #16213e 100%);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(229, 229, 229, 0.5);
+    }
   }
 `;
 
@@ -154,6 +176,10 @@ export const NavSection = styled.div`
   gap: 20px;
   overflow: visible;
   position: relative;
+
+  @media ${device.mobile} {
+    gap: 0;
+  }
 `;
 
 /* 로고 섹션 */
@@ -324,6 +350,10 @@ export const CartBadge = styled.div`
 export const AllCategory = styled.div`
   position: relative;
   margin-right: 30px;
+
+  @media ${device.mobile} {
+    display: none; /* 모바일에서 전체카테고리 숨김 */
+  }
 `;
 
 export const AllCategoryBtn = styled.button`
@@ -414,11 +444,49 @@ export const CategoryList = styled.ul`
   }
 `;
 
+/* 모바일 메뉴 토글 버튼 */
+export const MobileMenuToggle = styled.button`
+  display: none;
+
+  @media ${device.mobile} {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background: transparent;
+    border: none;
+    color: white;
+    font-size: 24px;
+    cursor: pointer;
+    z-index: 1001;
+    flex-shrink: 0;
+    margin-left: auto;
+  }
+`;
+
 /* 메인 메뉴 */
-export const MainMenu = styled.div`
+export const MainMenu = styled.div<{ $isOpen?: boolean }>`
   flex-shrink: 0;
   overflow: visible;
   position: relative;
+
+  @media ${device.mobile} {
+    position: fixed;
+    top: 60px;
+    left: 0;
+    right: 0;
+    background: rgba(4, 9, 18, 0.98);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    display: ${({ $isOpen }) => ($isOpen ? "flex" : "none")};
+    flex-direction: column;
+    z-index: 1000;
+    max-height: calc(100vh - 60px);
+    overflow-y: auto;
+  }
 `;
 
 export const MenuList = styled.ul`
@@ -433,22 +501,20 @@ export const MenuList = styled.ul`
   position: relative;
 
   @media ${device.mobile} {
-    justify-content: space-between;
-    font-size: 1.4rem;
-    gap: 16px;
-    overflow-x: auto; /* 모바일에서만 가로 스크롤 허용 */
-    scrollbar-width: none; /* Firefox */
-    -ms-overflow-style: none; /* IE/Edge */
-
-    &::-webkit-scrollbar {
-      display: none; /* Chrome/Safari */
-    }
+    flex-direction: column;
+    width: 100%;
+    gap: 0;
   }
 `;
 
 export const MenuItem = styled.li`
   position: relative;
   flex-shrink: 0;
+
+  @media ${device.mobile} {
+    width: 100%;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  }
 
   a,
   a:visited {
@@ -485,10 +551,20 @@ export const MenuItem = styled.li`
     }
 
     @media ${device.mobile} {
-      height: 60px;
-      line-height: 60px;
-      padding: 0 12px;
-      font-size: 1.4rem;
+      height: auto;
+      line-height: 1.4;
+      padding: 18px 22px;
+      font-size: 1.6rem;
+      letter-spacing: 0.01em;
+
+      &::after {
+        display: none;
+      }
+
+      &:hover {
+        background: rgba(255, 255, 255, 0.08);
+        padding-left: 30px;
+      }
     }
   }
 `;
@@ -539,8 +615,22 @@ export const SubMenu = styled.ul`
   }
 
   @media ${device.mobile} {
-    min-width: 160px;
-    padding: 8px 0;
+    position: static;
+    transform: none;
+    background: rgba(255, 255, 255, 0.05);
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
+    padding: 0;
+    margin: 0;
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    display: none; /* 기본적으로 숨김, 필요시 JavaScript로 토글 */
+
+    ${MenuItem}:hover & {
+      display: block;
+    }
   }
 `;
 

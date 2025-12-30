@@ -6,6 +6,7 @@ import {
   type ChurchLocation,
 } from "@/lib/hooks/useLocation";
 import * as S from "./ChurchPage.style";
+import LoadingSpinner from "@/components/atoms/LoadingSpinner";
 
 // 네이버 지도 API 타입 선언
 declare global {
@@ -305,7 +306,9 @@ const LocationPage: React.FC = () => {
         pageTitle="오시는 길"
         breadcrumb={["Home", "교회소개", "오시는 길"]}
       >
-        <S.ContentWrapper>로딩 중...</S.ContentWrapper>
+        <S.ContentWrapper>
+          <LoadingSpinner size="medium" />
+        </S.ContentWrapper>
       </SubMenuTemplate>
     );
   }

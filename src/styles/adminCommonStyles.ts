@@ -1,10 +1,15 @@
 import styled from "styled-components";
+import { device } from "./GlobalStyle";
 
 /* ========== 공통 컨테이너 ========== */
 export const AdminContainer = styled.div`
   padding: ${({ theme }) => theme.spacing(8)} ${({ theme }) => theme.spacing(10)};
   max-width: 1400px;
   margin: 0 auto;
+
+  @media ${device.mobile} {
+    padding: ${({ theme }) => theme.spacing(4)} ${({ theme }) => theme.spacing(2)};
+  }
 `;
 
 /* ========== 공통 카드/섹션 ========== */
@@ -27,6 +32,11 @@ export const AdminSection = styled.div`
   padding: ${({ theme }) => theme.spacing(6)};
   box-shadow: ${({ theme }) => theme.shadows.field};
   margin-bottom: ${({ theme }) => theme.spacing(6)};
+
+  @media ${device.mobile} {
+    padding: ${({ theme }) => theme.spacing(4)};
+    margin-bottom: ${({ theme }) => theme.spacing(4)};
+  }
 `;
 
 export const SectionHeader = styled.div`
@@ -36,6 +46,14 @@ export const SectionHeader = styled.div`
   margin-bottom: ${({ theme }) => theme.spacing(6)};
   padding-bottom: ${({ theme }) => theme.spacing(4)};
   border-bottom: 2px solid ${({ theme }) => theme.colors.gray100};
+
+  @media ${device.mobile} {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: ${({ theme }) => theme.spacing(3)};
+    margin-bottom: ${({ theme }) => theme.spacing(4)};
+    padding-bottom: ${({ theme }) => theme.spacing(3)};
+  }
 `;
 
 export const SectionTitle = styled.h2`
@@ -44,6 +62,10 @@ export const SectionTitle = styled.h2`
   color: ${({ theme }) => theme.colors.text};
   margin: 0;
   letter-spacing: -0.02em;
+
+  @media ${device.mobile} {
+    font-size: 1.6rem;
+  }
 `;
 
 /* ========== 공통 버튼 ========== */
@@ -259,6 +281,17 @@ export const FormActions = styled.div`
   margin-top: ${({ theme }) => theme.spacing(6)};
   padding-top: ${({ theme }) => theme.spacing(6)};
   border-top: 1px solid ${({ theme }) => theme.colors.gray100};
+
+  @media ${device.mobile} {
+    flex-direction: column;
+    gap: ${({ theme }) => theme.spacing(2)};
+    margin-top: ${({ theme }) => theme.spacing(4)};
+    padding-top: ${({ theme }) => theme.spacing(4)};
+
+    button {
+      width: 100%;
+    }
+  }
 `;
 
 export const HelpText = styled.p`
@@ -295,6 +328,16 @@ export const ListItem = styled.div`
 export const ItemActions = styled.div`
   display: flex;
   gap: ${({ theme }) => theme.spacing(2)};
+
+  @media ${device.mobile} {
+    flex-direction: column;
+    gap: ${({ theme }) => theme.spacing(1)};
+
+    button {
+      font-size: 1.2rem;
+      padding: ${({ theme }) => theme.spacing(1.5)} ${({ theme }) => theme.spacing(3)};
+    }
+  }
 `;
 
 /* ========== 공통 헤더 ========== */

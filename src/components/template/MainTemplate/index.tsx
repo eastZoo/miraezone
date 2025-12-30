@@ -2,14 +2,10 @@ import React from "react";
 
 import * as S from "./MainTemplate.style";
 import Header from "@/components/atoms/Header";
-import HeaderMobile from "@/components/atoms/HeaderMobile";
-import QuickButtons from "@/components/containers/QuickButton";
 import { Footer } from "@/components/atoms/Footer";
-import { useMediaQuery } from "react-responsive";
 
 interface MainTemplateProps {
   children: React.ReactNode;
-  mobileHeader?: React.ReactNode;
   webHeader?: React.ReactNode;
   commonUi?: React.ReactNode;
   transparentHeader?: boolean;
@@ -17,29 +13,14 @@ interface MainTemplateProps {
 
 const MainTemplate = ({
   children,
-  mobileHeader,
   webHeader,
   commonUi = true,
   transparentHeader = false,
 }: MainTemplateProps) => {
-  const isMobile = useMediaQuery({ maxWidth: 768 });
-
-  const renderHeader = () => {
-    if (isMobile) {
-      return mobileHeader ?? <HeaderMobile />;
-    }
-
-    if (webHeader) {
-      return webHeader;
-    }
-
-    return <Header isTransparent={transparentHeader} />;
-  };
-
   return (
     <S.Wrapper>
-      {/* 헤더 */}
-      {renderHeader()}
+      {/* 헤더 - CSS 반응형으로 모바일/데스크톱 처리 */}
+      {webHeader || <Header isTransparent={transparentHeader} />}
       {/* /pages 폴더의 페이지들이 위치할 컨테이너 */}
       <S.ContainerWrapper>{children}</S.ContainerWrapper>
 

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import SubMenuTemplate from "@/components/template/SubMenuTemplate";
 import { useNoticeList } from "@/lib/hooks/useNotice";
+import LoadingSpinner from "@/components/atoms/LoadingSpinner";
 import * as S from "./NoticePage.style";
 import dayjs from "dayjs";
 
@@ -38,7 +39,9 @@ const NoticePage: React.FC = () => {
         pageTitle="공지사항"
         breadcrumb={["Home", "안내/소식", "공지사항"]}
       >
-        <S.ContentWrapper>로딩 중...</S.ContentWrapper>
+        <S.ContentWrapper>
+          <LoadingSpinner size="medium" />
+        </S.ContentWrapper>
       </SubMenuTemplate>
     );
   }

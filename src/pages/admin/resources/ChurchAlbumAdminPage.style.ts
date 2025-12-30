@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import * as Common from "@/styles/adminCommonStyles";
+import { device } from "@/styles/GlobalStyle";
 
 export const Container = styled(Common.AdminContainer)``;
 
@@ -60,6 +61,12 @@ export const AlbumsList = styled.div`
 
 export const AlbumItem = styled(Common.ListItem)`
   align-items: center;
+
+  @media ${device.mobile} {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: ${({ theme }) => theme.spacing(3)};
+  }
 `;
 
 export const AlbumThumbnail = styled.div`
@@ -74,6 +81,11 @@ export const AlbumThumbnail = styled.div`
     width: 100%;
     height: 100%;
     object-fit: cover;
+  }
+
+  @media ${device.mobile} {
+    width: 100px;
+    height: 75px;
   }
 `;
 
@@ -91,6 +103,10 @@ export const ThumbnailPlaceholder = styled.div`
 export const AlbumInfo = styled.div`
   flex: 1;
   margin-left: ${({ theme }) => theme.spacing(5)};
+
+  @media ${device.mobile} {
+    margin-left: ${({ theme }) => theme.spacing(2)};
+  }
 `;
 
 export const AlbumTitle = styled.div`
@@ -152,6 +168,11 @@ export const ImagesGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   gap: ${({ theme }) => theme.spacing(5)};
+
+  @media ${device.mobile} {
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: ${({ theme }) => theme.spacing(3)};
+  }
 `;
 
 export const ImageItem = styled.div`
@@ -229,6 +250,11 @@ export const AlbumImagesList = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   gap: ${({ theme }) => theme.spacing(4)};
+
+  @media ${device.mobile} {
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: ${({ theme }) => theme.spacing(2)};
+  }
 `;
 
 export const AlbumImageItem = styled.div`

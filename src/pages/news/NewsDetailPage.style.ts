@@ -1,9 +1,14 @@
 import styled from "styled-components";
+import { device } from "@/styles/GlobalStyle";
 
 export const ContentWrapper = styled.div`
   padding: 24px;
   max-width: 1400px;
   margin: 0 auto;
+
+  @media ${device.mobile} {
+    padding: 16px;
+  }
 `;
 
 export const DetailContainer = styled.div`
@@ -18,6 +23,13 @@ export const DetailHeader = styled.div`
   padding-bottom: 24px;
   border-bottom: 2px solid #e0e0e0;
   padding: 0 0 24px 0;
+
+  @media ${device.mobile} {
+    flex-direction: column;
+    gap: 16px;
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+  }
 `;
 
 export const TitleSection = styled.div`
@@ -43,6 +55,12 @@ export const Title = styled.h1`
   align-items: center;
   gap: 12px;
   line-height: 1.4;
+
+  @media ${device.mobile} {
+    font-size: 20px;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+  }
 `;
 
 export const NewBadge = styled.span`
@@ -61,6 +79,12 @@ export const MetaInfo = styled.div`
   gap: 16px;
   font-size: 14px;
   color: #666;
+
+  @media ${device.mobile} {
+    flex-wrap: wrap;
+    gap: 12px;
+    font-size: 12px;
+  }
 `;
 
 export const Author = styled.span``;
@@ -83,6 +107,12 @@ export const BackButton = styled.button`
   &:hover {
     background: #555;
   }
+
+  @media ${device.mobile} {
+    padding: 8px 16px;
+    font-size: 12px;
+    width: 100%;
+  }
 `;
 
 export const ThumbnailSection = styled.div`
@@ -100,6 +130,11 @@ export const ContentSection = styled.div`
   line-height: 1.8;
   color: #333;
   font-size: 16px;
+
+  @media ${device.mobile} {
+    font-size: 14px;
+    line-height: 1.7;
+  }
 
   h1,
   h2,

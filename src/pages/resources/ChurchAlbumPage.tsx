@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import SubMenuTemplate from "@/components/template/SubMenuTemplate";
 import { useChurchAlbumList } from "@/lib/hooks/useChurchAlbum";
+import LoadingSpinner from "@/components/atoms/LoadingSpinner";
 import * as S from "./ChurchAlbumPage.style";
 import dayjs from "dayjs";
 
@@ -41,7 +42,9 @@ const ChurchAlbumPage: React.FC = () => {
         pageTitle="교회 앨범"
         breadcrumb={["Home", "자료실", "교회 앨범"]}
       >
-        <S.ContentWrapper>로딩 중...</S.ContentWrapper>
+        <S.ContentWrapper>
+          <LoadingSpinner size="medium" />
+        </S.ContentWrapper>
       </SubMenuTemplate>
     );
   }
@@ -145,4 +148,3 @@ const ChurchAlbumPage: React.FC = () => {
 };
 
 export default ChurchAlbumPage;
-

@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { device } from "@/styles/GlobalStyle";
 
 export const PaginationWrapper = styled.div`
   display: flex;
@@ -6,6 +7,10 @@ export const PaginationWrapper = styled.div`
   align-items: center;
   padding: 16px 0;
   /* border-top: 1px solid #eee; */
+
+  @media ${device.mobile} {
+    padding: 12px 0;
+  }
 `;
 
 export const PageSizeSelector = styled.div`
@@ -28,6 +33,11 @@ export const PaginationInfo = styled.div`
   font-size: 14px;
   color: #666;
   margin: 0 20px;
+
+  @media ${device.mobile} {
+    font-size: 12px;
+    margin: 0 12px;
+  }
 `;
 
 export const PaginationControls = styled.div`
@@ -72,5 +82,12 @@ export const PageButton = styled.button<{ active?: boolean }>`
   &:focus {
     outline: none;
     box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+  }
+
+  @media ${device.mobile} {
+    min-width: 32px;
+    height: 32px;
+    padding: 6px 10px;
+    font-size: 14px;
   }
 `;

@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import * as Common from "@/styles/adminCommonStyles";
+import { device } from "@/styles/GlobalStyle";
 
 export const Container = styled(Common.AdminContainer)``;
 
@@ -40,6 +41,11 @@ export const PreviewImage = styled.img`
   max-height: 300px;
   border-radius: ${({ theme }) => theme.radius.md};
   border: 1px solid ${({ theme }) => theme.colors.gray100};
+
+  @media ${device.mobile} {
+    max-width: 100%;
+    max-height: 200px;
+  }
 `;
 
 export const PreviewPlaceholder = styled.div`
@@ -53,6 +59,11 @@ export const PreviewPlaceholder = styled.div`
   justify-content: center;
   color: ${({ theme }) => theme.colors.muted};
   font-size: 1.4rem;
+
+  @media ${device.mobile} {
+    width: 100%;
+    height: 200px;
+  }
 `;
 
 export const UploadButton = styled(Common.PrimaryButton)`
@@ -83,6 +94,11 @@ export const AlbumImagesList = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   gap: ${({ theme }) => theme.spacing(4)};
+
+  @media ${device.mobile} {
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: ${({ theme }) => theme.spacing(2)};
+  }
 `;
 
 export const AlbumImageItem = styled.div`
@@ -137,6 +153,12 @@ export const AlbumsList = styled.div`
 
 export const AlbumItem = styled(Common.ListItem)`
   align-items: center;
+
+  @media ${device.mobile} {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: ${({ theme }) => theme.spacing(3)};
+  }
 `;
 
 export const AlbumThumbnail = styled.div`
@@ -151,6 +173,11 @@ export const AlbumThumbnail = styled.div`
     width: 100%;
     height: 100%;
     object-fit: cover;
+  }
+
+  @media ${device.mobile} {
+    width: 100px;
+    height: 75px;
   }
 `;
 
@@ -168,6 +195,10 @@ export const ThumbnailPlaceholder = styled.div`
 export const AlbumInfo = styled.div`
   flex: 1;
   margin-left: ${({ theme }) => theme.spacing(5)};
+
+  @media ${device.mobile} {
+    margin-left: ${({ theme }) => theme.spacing(2)};
+  }
 `;
 
 export const AlbumTitle = styled.div`

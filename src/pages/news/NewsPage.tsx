@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import SubMenuTemplate from "@/components/template/SubMenuTemplate";
 import { useNewsList } from "@/lib/hooks/useNews";
+import LoadingSpinner from "@/components/atoms/LoadingSpinner";
 import * as S from "./NewsPage.style";
 import dayjs from "dayjs";
 
@@ -39,7 +40,9 @@ const NewsPage: React.FC = () => {
         pageTitle="교회 소식"
         breadcrumb={["Home", "안내/소식", "교회 소식"]}
       >
-        <S.ContentWrapper>로딩 중...</S.ContentWrapper>
+        <S.ContentWrapper>
+          <LoadingSpinner size="medium" />
+        </S.ContentWrapper>
       </SubMenuTemplate>
     );
   }

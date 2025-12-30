@@ -1,3 +1,4 @@
+import LoadingSpinner from "@/components/atoms/LoadingSpinner";
 import { lazy, Suspense } from "react";
 import { useRoutes, Navigate } from "react-router-dom";
 
@@ -131,10 +132,16 @@ export default function AppRoutes() {
     { path: "/admin/notice", element: <NoticeAdminPage /> },
     { path: "/admin/news", element: <NewsAdminPage /> },
     { path: "/admin/bulletins", element: <BulletinsAdminPage /> },
-    { path: "/admin/worship", element: <Navigate to="/admin/worship/schedules" replace /> },
+    {
+      path: "/admin/worship",
+      element: <Navigate to="/admin/worship/schedules" replace />,
+    },
     { path: "/admin/worship/schedules", element: <WorshipAdminPage /> },
     { path: "/admin/worship/videos", element: <WorshipAdminPage /> },
-    { path: "/admin/nextgen", element: <Navigate to="/admin/nextgen/department" replace /> },
+    {
+      path: "/admin/nextgen",
+      element: <Navigate to="/admin/nextgen/department" replace />,
+    },
     { path: "/admin/nextgen/department", element: <NextGenAdminPage /> },
     { path: "/admin/nextgen/elementary", element: <NextGenAdminPage /> },
     { path: "/admin/nextgen/youth", element: <NextGenAdminPage /> },
@@ -147,9 +154,5 @@ export default function AppRoutes() {
 
   const element = useRoutes(routes);
 
-  return (
-    <Suspense fallback={<div style={{ padding: 24 }}>로딩중…</div>}>
-      {element}
-    </Suspense>
-  );
+  return <Suspense fallback={<LoadingSpinner />}>{element}</Suspense>;
 }

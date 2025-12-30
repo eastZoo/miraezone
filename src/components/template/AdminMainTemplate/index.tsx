@@ -2,7 +2,6 @@ import React from "react";
 import { useLocation } from "react-router-dom";
 import * as S from "./AdminMainTemplate.style";
 import AdminHeader from "@/components/atoms/AdminHeader";
-import AdminSidebar from "@/components/atoms/AdminSidebar";
 import * as G from "@/styles/GlobalStyle";
 
 export type ContainerType = "wide" | "standard";
@@ -25,14 +24,6 @@ const AdminMainTemplate = ({
 }: AdminMainTemplateProps) => {
   const location = useLocation();
   const [hasSubTabs, setHasSubTabs] = React.useState(false);
-
-  // 현재 경로에 따라 상단 네비게이션 바의 활성 메뉴( CSS ) 를 결정
-  const getActiveMenu = () => {
-    const path = location.pathname;
-
-    if (path.startsWith("/admin/church")) return "church";
-    return "members"; // 기본값
-  };
 
   // 사이드바가 있는지 확인
   const hasSidebar =

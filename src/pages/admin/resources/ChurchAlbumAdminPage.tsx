@@ -1,5 +1,6 @@
 import React, { useState, useRef } from "react";
 import AdminMainTemplate from "@/components/template/AdminMainTemplate";
+import LoadingSpinner from "@/components/atoms/LoadingSpinner";
 import {
   useChurchAlbumList,
   useChurchAlbum,
@@ -279,7 +280,9 @@ const ChurchAlbumAdminPage: React.FC = () => {
 
           {/* 앨범 목록 */}
           {albumsLoading ? (
-            <S.LoadingText>로딩 중...</S.LoadingText>
+            <S.LoadingText>
+              <LoadingSpinner size="small" text="" />
+            </S.LoadingText>
           ) : albums.length === 0 ? (
             <S.EmptyText>등록된 앨범이 없습니다.</S.EmptyText>
           ) : (

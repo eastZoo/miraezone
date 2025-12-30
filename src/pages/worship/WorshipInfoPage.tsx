@@ -1,6 +1,7 @@
 import React from "react";
 import SubMenuTemplate from "@/components/template/SubMenuTemplate";
 import { useWorshipSchedules, useWorshipNotices } from "@/lib/hooks/useWorship";
+import LoadingSpinner from "@/components/atoms/LoadingSpinner";
 import * as S from "./WorshipPage.style";
 
 const WorshipInfoPage: React.FC = () => {
@@ -27,7 +28,9 @@ const WorshipInfoPage: React.FC = () => {
         pageTitle="예배 안내"
         breadcrumb={["Home", "예배/찬양", "예배 안내"]}
       >
-        <S.ContentWrapper>로딩 중...</S.ContentWrapper>
+        <S.ContentWrapper>
+          <LoadingSpinner size="medium" />
+        </S.ContentWrapper>
       </SubMenuTemplate>
     );
   }

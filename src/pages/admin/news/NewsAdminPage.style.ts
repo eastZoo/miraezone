@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import * as Common from "@/styles/adminCommonStyles";
+import { device } from "@/styles/GlobalStyle";
 
 export const Container = styled(Common.AdminContainer)``;
 
@@ -21,6 +22,14 @@ export const Toolbar = styled.div`
   border: 1px solid ${({ theme }) => theme.colors.gray100};
   border-radius: ${({ theme }) => theme.radius.sm};
   box-shadow: ${({ theme }) => theme.shadows.field};
+
+  @media ${device.mobile} {
+    flex-direction: column;
+    align-items: stretch;
+    gap: ${({ theme }) => theme.spacing(3)};
+    padding: ${({ theme }) => theme.spacing(3)};
+    margin-bottom: ${({ theme }) => theme.spacing(4)};
+  }
 `;
 
 export const ViewMode = styled.div`
@@ -49,6 +58,10 @@ export const SearchInput = styled(Common.FormInput)`
   width: 300px;
   padding: ${({ theme }) => theme.spacing(2)} ${({ theme }) => theme.spacing(3)};
   font-size: 1.4rem;
+
+  @media ${device.mobile} {
+    width: 100%;
+  }
 `;
 
 export const SearchButton = styled(Common.PrimaryButton)`
@@ -140,6 +153,13 @@ export const NewsItem = styled(Common.ListItem)`
     border-bottom-right-radius: ${({ theme }) => theme.radius.sm};
     border-bottom: none;
   }
+
+  @media ${device.mobile} {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: ${({ theme }) => theme.spacing(3)};
+    padding: ${({ theme }) => theme.spacing(3)};
+  }
 `;
 
 export const NewsCategory = styled(Common.Badge).attrs({
@@ -157,6 +177,12 @@ export const NewsTitle = styled.div`
   font-weight: 500;
   color: ${({ theme }) => theme.colors.text};
   margin-left: ${({ theme }) => theme.spacing(4)};
+
+  @media ${device.mobile} {
+    margin-left: 0;
+    font-size: 1.4rem;
+    width: 100%;
+  }
 `;
 
 export const NewBadge = styled(Common.Badge).attrs({
@@ -168,6 +194,12 @@ export const NewsMeta = styled.div`
   align-items: center;
   gap: ${({ theme }) => theme.spacing(4)};
   margin-right: ${({ theme }) => theme.spacing(4)};
+
+  @media ${device.mobile} {
+    margin-right: 0;
+    gap: ${({ theme }) => theme.spacing(2)};
+    flex-wrap: wrap;
+  }
 `;
 
 export const NewsDate = styled.span`
@@ -198,6 +230,12 @@ export const Pagination = styled.div`
   align-items: center;
   gap: ${({ theme }) => theme.spacing(2)};
   margin-top: ${({ theme }) => theme.spacing(6)};
+
+  @media ${device.mobile} {
+    flex-wrap: wrap;
+    gap: ${({ theme }) => theme.spacing(1)};
+    margin-top: ${({ theme }) => theme.spacing(4)};
+  }
 `;
 
 export const PaginationButton = styled(Common.SecondaryButton)`

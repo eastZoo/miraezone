@@ -1,5 +1,6 @@
 import React, { useState, useMemo, useRef, useEffect } from "react";
 import AdminMainTemplate from "@/components/template/AdminMainTemplate";
+import LoadingSpinner from "@/components/atoms/LoadingSpinner";
 import {
   useNoticeList,
   useCreateNotice,
@@ -232,7 +233,9 @@ const NoticeAdminPage: React.FC = () => {
   if (isLoading) {
     return (
       <AdminMainTemplate>
-        <S.Container>로딩 중...</S.Container>
+        <S.Container>
+          <LoadingSpinner size="medium" />
+        </S.Container>
       </AdminMainTemplate>
     );
   }
@@ -297,9 +300,7 @@ const NoticeAdminPage: React.FC = () => {
 
                     if (imageFiles.length === 0) return;
 
-                    const editor = document.querySelector(
-                      ".CodeMirror" ? ".CodeMirror" : ".editor-toolbar"
-                    ) as HTMLElement;
+                    const editor = document.querySelector(".CodeMirror");
                     if (!editor) return;
 
                     for (const file of imageFiles) {
