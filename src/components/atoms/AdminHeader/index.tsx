@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from "react";
 import * as S from "./AdminHeader.style";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useCurrentMember, useLogout } from "@/lib/hooks/useAuth";
 import logo from "@/styles/assets/images/church_logo.png";
 
@@ -17,7 +17,7 @@ interface MenuGroup {
 
 const AdminHeader: React.FC = () => {
   const location = useLocation();
-  const navigate = useNavigate();
+
   const [activeGroup, setActiveGroup] = useState<string | null>(null);
   const { member } = useCurrentMember();
   const logout = useLogout();
@@ -197,15 +197,13 @@ const AdminHeader: React.FC = () => {
               </S.MenuList>
             </S.NavMenu>
           </S.MainNavInner>
-          
+
           {/* 사용자 정보 및 로그아웃 */}
           <S.UserSection>
             {member && (
               <>
                 <S.UserName>{member.name}님</S.UserName>
-                <S.LogoutButton onClick={handleLogout}>
-                  로그아웃
-                </S.LogoutButton>
+                <S.LogoutButton onClick={handleLogout}>로그아웃</S.LogoutButton>
               </>
             )}
           </S.UserSection>

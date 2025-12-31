@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useLogin, useCurrentMember } from "@/lib/hooks/useAuth";
-import { readAccessToken } from "@/lib/functions/authFunctions";
 import * as S from "./LoginPage.style";
 
 const LoginPage: React.FC = () => {
@@ -69,9 +68,7 @@ const LoginPage: React.FC = () => {
         </S.Form>
         <S.RegisterLink>
           계정이 없으신가요?{" "}
-          <S.Link onClick={() => navigate("/admin/register")}>
-            회원가입
-          </S.Link>
+          <S.Link onClick={() => navigate("/admin/register")}>회원가입</S.Link>
         </S.RegisterLink>
       </S.LoginCard>
     </S.Container>
