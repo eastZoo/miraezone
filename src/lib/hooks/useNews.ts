@@ -89,6 +89,31 @@ export const useNews = (id: number) => {
 };
 
 /**
+ * 이전/다음 글 정보 타입
+ */
+export interface NewsNavigation {
+  prev: { id: number; title: string } | null;
+  next: { id: number; title: string } | null;
+}
+
+/**
+ * 교회 소식 이전/다음 글 조회
+ */
+export const useNewsNavigation = (id: number) => {
+  return useQuery<NewsNavigation>({
+    queryKey: ["news", id, "navigation"],
+    queryFn: async () => {
+      const result = await request<NewsNavigation>({
+        method: "GET",
+        url: `/news/${id}/navigation`,
+      });
+      return result;
+    },
+    enabled: !!id,
+  });
+};
+
+/**
  * 교회 소식 생성
  */
 export const useCreateNews = () => {

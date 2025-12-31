@@ -224,3 +224,28 @@ export const useDeleteChurchAlbumImage = () => {
     },
   });
 };
+
+/**
+ * 이전/다음 글 정보 타입
+ */
+export interface ChurchAlbumNavigation {
+  prev: { id: number; title: string } | null;
+  next: { id: number; title: string } | null;
+}
+
+/**
+ * 교회 앨범 이전/다음 글 조회
+ */
+export const useChurchAlbumNavigation = (id: number) => {
+  return useQuery<ChurchAlbumNavigation>({
+    queryKey: ["church-albums", id, "navigation"],
+    queryFn: async () => {
+      const result = await request<ChurchAlbumNavigation>({
+        method: "GET",
+        url: `/church-albums/${id}/navigation`,
+      });
+      return result;
+    },
+    enabled: !!id,
+  });
+};

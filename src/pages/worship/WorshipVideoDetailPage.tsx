@@ -1,7 +1,10 @@
 import React from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import SubMenuTemplate from "@/components/template/SubMenuTemplate";
-import { useWorshipVideo } from "@/lib/hooks/useWorship";
+import {
+  useWorshipVideo,
+  useWorshipVideoNavigation,
+} from "@/lib/hooks/useWorship";
 import { convertToEmbedUrl } from "@/lib/utils/youtubeUtils";
 import * as S from "./WorshipVideoDetailPage.style";
 import dayjs from "dayjs";
@@ -17,6 +20,7 @@ const WorshipVideoDetailPage: React.FC = () => {
   ];
 
   const { data: video, isLoading } = useWorshipVideo(videoId);
+  const { data: navigation } = useWorshipVideoNavigation(videoId);
 
   if (isLoading) {
     return (
@@ -88,6 +92,64 @@ const WorshipVideoDetailPage: React.FC = () => {
           ) : (
             <S.NoVideo>영상 URL이 없습니다.</S.NoVideo>
           )}
+
+          {/* 이전/다음 글 */}
+          <S.NavigationSection>
+            {navigation?.prev ? (
+              <S.NavigationItem
+                onClick={() =>
+                  navigate(`/worship/videos/${navigation.prev!.id}`)
+                }
+              >
+                <S.NavigationLeft>
+                  <S.NavigationArrow>^</S.NavigationArrow>
+                  <S.NavigationLabel>이전</S.NavigationLabel>
+                </S.NavigationLeft>
+                <S.NavigationRight>
+                  <S.NavigationTitle>{navigation.prev.title}</S.NavigationTitle>
+                  <S.NavigationAuthor>{video.speaker}</S.NavigationAuthor>
+                  <S.NavigationDate>
+                    {dayjs(video.date).format("YYYY-MM-DD")}
+                  </S.NavigationDate>
+                </S.NavigationRight>
+              </S.NavigationItem>
+            ) : (
+              <S.NavigationEmpty>
+                <S.NavigationLeft>
+                  <S.NavigationArrow>^</S.NavigationArrow>
+                  <S.NavigationLabel>이전</S.NavigationLabel>
+                </S.NavigationLeft>
+                <S.NavigationEmptyText>이전글이 없습니다.</S.NavigationEmptyText>
+              </S.NavigationEmpty>
+            )}
+            {navigation?.next ? (
+              <S.NavigationItem
+                onClick={() =>
+                  navigate(`/worship/videos/${navigation.next!.id}`)
+                }
+              >
+                <S.NavigationLeft>
+                  <S.NavigationArrow>v</S.NavigationArrow>
+                  <S.NavigationLabel>다음</S.NavigationLabel>
+                </S.NavigationLeft>
+                <S.NavigationRight>
+                  <S.NavigationTitle>{navigation.next.title}</S.NavigationTitle>
+                  <S.NavigationAuthor>{video.speaker}</S.NavigationAuthor>
+                  <S.NavigationDate>
+                    {dayjs(video.date).format("YYYY-MM-DD")}
+                  </S.NavigationDate>
+                </S.NavigationRight>
+              </S.NavigationItem>
+            ) : (
+              <S.NavigationEmpty>
+                <S.NavigationLeft>
+                  <S.NavigationArrow>v</S.NavigationArrow>
+                  <S.NavigationLabel>다음</S.NavigationLabel>
+                </S.NavigationLeft>
+                <S.NavigationEmptyText>다음글이 없습니다.</S.NavigationEmptyText>
+              </S.NavigationEmpty>
+            )}
+          </S.NavigationSection>
         </S.DetailContainer>
       </S.ContentWrapper>
     </SubMenuTemplate>

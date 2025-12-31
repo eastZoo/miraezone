@@ -33,6 +33,19 @@ const LocationPage: React.FC = () => {
   const markerRef = useRef<any>(null);
   const infoWindowRef = useRef<any>(null);
 
+  // 페이지 진입 시 자동 새로고침 (매번)
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const hasReloaded = urlParams.get("reloaded");
+
+    if (!hasReloaded) {
+      // URL에 reloaded 파라미터 추가 후 새로고침
+      urlParams.set("reloaded", "true");
+      window.location.search = urlParams.toString();
+      return;
+    }
+  }, []);
+
   // location 데이터가 로드되면 지도 초기화
   useEffect(() => {
     // 로딩 중이면 실행하지 않음

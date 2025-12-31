@@ -126,3 +126,140 @@ export const NotFound = styled.div`
   color: #666;
 `;
 
+export const NavigationSection = styled.div`
+  margin-top: 48px;
+  padding-top: 24px;
+  border-top: 1px solid #e0e0e0;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+
+  @media ${device.mobile} {
+    margin-top: 32px;
+    padding-top: 16px;
+  }
+`;
+
+export const NavigationItem = styled.div`
+  display: flex;
+  align-items: center;
+  padding: 16px 0;
+  border-bottom: 1px solid #e0e0e0;
+  cursor: pointer;
+  transition: opacity 0.2s;
+
+  &:hover {
+    opacity: 0.7;
+  }
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  @media ${device.mobile} {
+    padding: 12px 0;
+  }
+`;
+
+export const NavigationLeft = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 80px;
+
+  @media ${device.mobile} {
+    min-width: 60px;
+    gap: 6px;
+  }
+`;
+
+export const NavigationArrow = styled.span`
+  font-size: 16px;
+  color: #666;
+  font-weight: 500;
+
+  @media ${device.mobile} {
+    font-size: 14px;
+  }
+`;
+
+export const NavigationLabel = styled.span`
+  font-size: 14px;
+  color: #333;
+  font-weight: 500;
+
+  @media ${device.mobile} {
+    font-size: 12px;
+  }
+`;
+
+export const NavigationRight = styled.div`
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  justify-content: flex-end;
+
+  @media ${device.mobile} {
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 4px;
+  }
+`;
+
+export const NavigationTitle = styled.span`
+  color: #333;
+  font-size: 14px;
+  flex: 1;
+  text-align: left;
+
+  @media ${device.mobile} {
+    font-size: 12px;
+    text-align: left;
+  }
+`;
+
+export const NavigationAuthor = styled.span`
+  color: #666;
+  font-size: 14px;
+
+  @media ${device.mobile} {
+    font-size: 12px;
+  }
+`;
+
+export const NavigationDate = styled.span`
+  color: #666;
+  font-size: 14px;
+
+  @media ${device.mobile} {
+    font-size: 12px;
+  }
+`;
+
+export const NavigationEmpty = styled.div`
+  display: flex;
+  align-items: center;
+  padding: 16px 0;
+  border-bottom: 1px solid #e0e0e0;
+  color: #999;
+  font-size: 14px;
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  @media ${device.mobile} {
+    padding: 12px 0;
+    font-size: 12px;
+  }
+`;
+
+export const NavigationEmptyText = styled.span`
+  margin-left: 24px;
+
+  @media ${device.mobile} {
+    margin-left: 20px;
+  }
+`;
+

@@ -228,3 +228,36 @@ export const useDeleteNextGenAlbumImage = () => {
     },
   });
 };
+
+/**
+ * 이전/다음 글 정보 타입
+ */
+export interface NextGenAlbumNavigation {
+  prev: { id: number; title: string } | null;
+  next: { id: number; title: string } | null;
+}
+
+/**
+ * 다음세대 앨범 이전/다음 글 조회
+ */
+export const useNextGenAlbumNavigation = (
+  id: number,
+  department?: string
+) => {
+  return useQuery<NextGenAlbumNavigation>({
+    queryKey: ["nextgen", "albums", id, "navigation", department],
+    queryFn: async () => {
+      const params = new URLSearchParams();
+      if (department) params.append("department", department);
+
+      const result = await request<NextGenAlbumNavigation>({
+        method: "GET",
+        url: `/nextgen/albums/${id}/navigation${
+          params.toString() ? `?${params.toString()}` : ""
+        }`,
+      });
+      return result;
+    },
+    enabled: !!id,
+  });
+};

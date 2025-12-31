@@ -95,6 +95,31 @@ export const useBulletin = (id: number) => {
 };
 
 /**
+ * 이전/다음 글 정보 타입
+ */
+export interface BulletinNavigation {
+  prev: { id: number; title: string } | null;
+  next: { id: number; title: string } | null;
+}
+
+/**
+ * 주보 이전/다음 글 조회
+ */
+export const useBulletinNavigation = (id: number) => {
+  return useQuery<BulletinNavigation>({
+    queryKey: ["bulletins", id, "navigation"],
+    queryFn: async () => {
+      const result = await request<BulletinNavigation>({
+        method: "GET",
+        url: `/bulletins/${id}/navigation`,
+      });
+      return result;
+    },
+    enabled: !!id,
+  });
+};
+
+/**
  * 주보 생성
  */
 export const useCreateBulletin = () => {

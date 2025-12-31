@@ -8,10 +8,12 @@ import { GlobalStyle } from "@/styles/GlobalStyle";
 import { queryClient } from "@/lib/queryClient";
 import AppRoutes from "@/lib/core/routes/Routes";
 import ScrollToTop from "@/components/common/ScrollToTop";
+// import NaverMapLoader from "./components/atoms/NaverMapLoader/index.tsx";
 
 export default function AppProviders() {
   return (
     <QueryClientProvider client={queryClient}>
+      {/* <NaverMapLoader /> */}
       <ThemeProvider theme={theme}>
         <BrowserRouter>
           <ScrollToTop />

@@ -1,7 +1,7 @@
 import React from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import SubMenuTemplate from "@/components/template/SubMenuTemplate";
-import { useNotice } from "@/lib/hooks/useNotice";
+import { useNotice, useNoticeNavigation } from "@/lib/hooks/useNotice";
 import ReactMarkdown from "react-markdown";
 import remarkBreaks from "remark-breaks";
 import * as S from "./NoticeDetailPage.style";
@@ -19,6 +19,7 @@ const NoticeDetailPage: React.FC = () => {
   ];
 
   const { data: notice, isLoading } = useNotice(noticeId);
+  const { data: navigation } = useNoticeNavigation(noticeId);
 
   if (isLoading) {
     return (
@@ -85,6 +86,64 @@ const NoticeDetailPage: React.FC = () => {
               {notice.content}
             </ReactMarkdown>
           </S.ContentSection>
+
+          {/* 이전/다음 글 */}
+          <S.NavigationSection>
+            {navigation?.prev ? (
+              <S.NavigationItem
+                onClick={() => navigate(`/notice/${navigation.prev!.id}`)}
+              >
+                <S.NavigationLeft>
+                  <S.NavigationArrow>^</S.NavigationArrow>
+                  <S.NavigationLabel>이전</S.NavigationLabel>
+                </S.NavigationLeft>
+                <S.NavigationRight>
+                  <S.NavigationTitle>{navigation.prev.title}</S.NavigationTitle>
+                  {notice.author && (
+                    <S.NavigationAuthor>{notice.author}</S.NavigationAuthor>
+                  )}
+                  <S.NavigationDate>
+                    {dayjs(notice.createdAt).format("YYYY-MM-DD")}
+                  </S.NavigationDate>
+                </S.NavigationRight>
+              </S.NavigationItem>
+            ) : (
+              <S.NavigationEmpty>
+                <S.NavigationLeft>
+                  <S.NavigationArrow>^</S.NavigationArrow>
+                  <S.NavigationLabel>이전</S.NavigationLabel>
+                </S.NavigationLeft>
+                <S.NavigationEmptyText>이전글이 없습니다.</S.NavigationEmptyText>
+              </S.NavigationEmpty>
+            )}
+            {navigation?.next ? (
+              <S.NavigationItem
+                onClick={() => navigate(`/notice/${navigation.next!.id}`)}
+              >
+                <S.NavigationLeft>
+                  <S.NavigationArrow>v</S.NavigationArrow>
+                  <S.NavigationLabel>다음</S.NavigationLabel>
+                </S.NavigationLeft>
+                <S.NavigationRight>
+                  <S.NavigationTitle>{navigation.next.title}</S.NavigationTitle>
+                  {notice.author && (
+                    <S.NavigationAuthor>{notice.author}</S.NavigationAuthor>
+                  )}
+                  <S.NavigationDate>
+                    {dayjs(notice.createdAt).format("YYYY-MM-DD")}
+                  </S.NavigationDate>
+                </S.NavigationRight>
+              </S.NavigationItem>
+            ) : (
+              <S.NavigationEmpty>
+                <S.NavigationLeft>
+                  <S.NavigationArrow>v</S.NavigationArrow>
+                  <S.NavigationLabel>다음</S.NavigationLabel>
+                </S.NavigationLeft>
+                <S.NavigationEmptyText>다음글이 없습니다.</S.NavigationEmptyText>
+              </S.NavigationEmpty>
+            )}
+          </S.NavigationSection>
         </S.DetailContainer>
       </S.ContentWrapper>
     </SubMenuTemplate>

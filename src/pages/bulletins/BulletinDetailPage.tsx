@@ -2,7 +2,11 @@ import React, { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
 import { useParams, useNavigate } from "react-router-dom";
 import SubMenuTemplate from "@/components/template/SubMenuTemplate";
-import { useBulletin, useBulletinFiles } from "@/lib/hooks/useBulletin";
+import {
+  useBulletin,
+  useBulletinFiles,
+  useBulletinNavigation,
+} from "@/lib/hooks/useBulletin";
 import JSZip from "jszip";
 import * as S from "./BulletinDetailPage.style";
 import dayjs from "dayjs";
@@ -20,6 +24,7 @@ const BulletinDetailPage: React.FC = () => {
 
   const { data: bulletin, isLoading } = useBulletin(bulletinId);
   const { data: files = [] } = useBulletinFiles(bulletinId);
+  const { data: navigation } = useBulletinNavigation(bulletinId);
 
   // 이미지 뷰어 상태
   const [viewerOpen, setViewerOpen] = useState(false);
@@ -251,6 +256,58 @@ const BulletinDetailPage: React.FC = () => {
           ) : (
             <S.NoImages>등록된 주보 이미지가 없습니다.</S.NoImages>
           )}
+
+          {/* 이전/다음 글 */}
+          <S.NavigationSection>
+            {navigation?.prev ? (
+              <S.NavigationItem
+                onClick={() => navigate(`/bulletins/${navigation.prev!.id}`)}
+              >
+                <S.NavigationLeft>
+                  <S.NavigationArrow>^</S.NavigationArrow>
+                  <S.NavigationLabel>이전</S.NavigationLabel>
+                </S.NavigationLeft>
+                <S.NavigationRight>
+                  <S.NavigationTitle>{navigation.prev.title}</S.NavigationTitle>
+                  <S.NavigationDate>
+                    {dayjs(bulletin.date).format("YYYY-MM-DD")}
+                  </S.NavigationDate>
+                </S.NavigationRight>
+              </S.NavigationItem>
+            ) : (
+              <S.NavigationEmpty>
+                <S.NavigationLeft>
+                  <S.NavigationArrow>^</S.NavigationArrow>
+                  <S.NavigationLabel>이전</S.NavigationLabel>
+                </S.NavigationLeft>
+                <S.NavigationEmptyText>이전글이 없습니다.</S.NavigationEmptyText>
+              </S.NavigationEmpty>
+            )}
+            {navigation?.next ? (
+              <S.NavigationItem
+                onClick={() => navigate(`/bulletins/${navigation.next!.id}`)}
+              >
+                <S.NavigationLeft>
+                  <S.NavigationArrow>v</S.NavigationArrow>
+                  <S.NavigationLabel>다음</S.NavigationLabel>
+                </S.NavigationLeft>
+                <S.NavigationRight>
+                  <S.NavigationTitle>{navigation.next.title}</S.NavigationTitle>
+                  <S.NavigationDate>
+                    {dayjs(bulletin.date).format("YYYY-MM-DD")}
+                  </S.NavigationDate>
+                </S.NavigationRight>
+              </S.NavigationItem>
+            ) : (
+              <S.NavigationEmpty>
+                <S.NavigationLeft>
+                  <S.NavigationArrow>v</S.NavigationArrow>
+                  <S.NavigationLabel>다음</S.NavigationLabel>
+                </S.NavigationLeft>
+                <S.NavigationEmptyText>다음글이 없습니다.</S.NavigationEmptyText>
+              </S.NavigationEmpty>
+            )}
+          </S.NavigationSection>
         </S.DetailContainer>
       </S.ContentWrapper>
 

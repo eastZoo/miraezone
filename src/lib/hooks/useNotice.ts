@@ -84,6 +84,31 @@ export const useNotice = (id: number) => {
 };
 
 /**
+ * 이전/다음 글 정보 타입
+ */
+export interface NoticeNavigation {
+  prev: { id: number; title: string } | null;
+  next: { id: number; title: string } | null;
+}
+
+/**
+ * 공지사항 이전/다음 글 조회
+ */
+export const useNoticeNavigation = (id: number) => {
+  return useQuery<NoticeNavigation>({
+    queryKey: ["notice", id, "navigation"],
+    queryFn: async () => {
+      const result = await request<NoticeNavigation>({
+        method: "GET",
+        url: `/notice/${id}/navigation`,
+      });
+      return result;
+    },
+    enabled: !!id,
+  });
+};
+
+/**
  * 공지사항 생성
  */
 export const useCreateNotice = () => {

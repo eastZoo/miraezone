@@ -1,7 +1,7 @@
 import React from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import SubMenuTemplate from "@/components/template/SubMenuTemplate";
-import { useNextGen } from "@/lib/hooks/useNextGen";
+import { useNextGen, useNextGenNavigation } from "@/lib/hooks/useNextGen";
 import ReactMarkdown from "react-markdown";
 import remarkBreaks from "remark-breaks";
 import * as S from "./NextGenNewsDetailPage.style";
@@ -20,6 +20,7 @@ const NextGenNewsDetailPage: React.FC = () => {
   ];
 
   const { data: news, isLoading } = useNextGen(newsId);
+  const { data: navigation } = useNextGenNavigation(newsId);
 
   if (isLoading) {
     return (
@@ -89,6 +90,64 @@ const NextGenNewsDetailPage: React.FC = () => {
               </ReactMarkdown>
             </S.ContentSection>
           )}
+
+          {/* 이전/다음 글 */}
+          <S.NavigationSection>
+            {navigation?.prev ? (
+              <S.NavigationItem
+                onClick={() => navigate(`/nextgen/news/${navigation.prev!.id}`)}
+              >
+                <S.NavigationLeft>
+                  <S.NavigationArrow>^</S.NavigationArrow>
+                  <S.NavigationLabel>이전</S.NavigationLabel>
+                </S.NavigationLeft>
+                <S.NavigationRight>
+                  <S.NavigationTitle>{navigation.prev.title}</S.NavigationTitle>
+                  {news.author && (
+                    <S.NavigationAuthor>{news.author}</S.NavigationAuthor>
+                  )}
+                  <S.NavigationDate>
+                    {dayjs(news.createdAt).format("YYYY-MM-DD")}
+                  </S.NavigationDate>
+                </S.NavigationRight>
+              </S.NavigationItem>
+            ) : (
+              <S.NavigationEmpty>
+                <S.NavigationLeft>
+                  <S.NavigationArrow>^</S.NavigationArrow>
+                  <S.NavigationLabel>이전</S.NavigationLabel>
+                </S.NavigationLeft>
+                <S.NavigationEmptyText>이전글이 없습니다.</S.NavigationEmptyText>
+              </S.NavigationEmpty>
+            )}
+            {navigation?.next ? (
+              <S.NavigationItem
+                onClick={() => navigate(`/nextgen/news/${navigation.next!.id}`)}
+              >
+                <S.NavigationLeft>
+                  <S.NavigationArrow>v</S.NavigationArrow>
+                  <S.NavigationLabel>다음</S.NavigationLabel>
+                </S.NavigationLeft>
+                <S.NavigationRight>
+                  <S.NavigationTitle>{navigation.next.title}</S.NavigationTitle>
+                  {news.author && (
+                    <S.NavigationAuthor>{news.author}</S.NavigationAuthor>
+                  )}
+                  <S.NavigationDate>
+                    {dayjs(news.createdAt).format("YYYY-MM-DD")}
+                  </S.NavigationDate>
+                </S.NavigationRight>
+              </S.NavigationItem>
+            ) : (
+              <S.NavigationEmpty>
+                <S.NavigationLeft>
+                  <S.NavigationArrow>v</S.NavigationArrow>
+                  <S.NavigationLabel>다음</S.NavigationLabel>
+                </S.NavigationLeft>
+                <S.NavigationEmptyText>다음글이 없습니다.</S.NavigationEmptyText>
+              </S.NavigationEmpty>
+            )}
+          </S.NavigationSection>
         </S.DetailContainer>
       </S.ContentWrapper>
     </SubMenuTemplate>

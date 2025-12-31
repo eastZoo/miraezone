@@ -82,6 +82,19 @@ const LocationAdminPage: React.FC = () => {
   const markerRef = useRef<any>(null);
   const infoWindowRef = useRef<any>(null);
 
+  // 페이지 진입 시 자동 새로고침 (매번)
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const hasReloaded = urlParams.get("reloaded");
+
+    if (!hasReloaded) {
+      // URL에 reloaded 파라미터 추가 후 새로고침
+      urlParams.set("reloaded", "true");
+      window.location.search = urlParams.toString();
+      return;
+    }
+  }, []);
+
   // location 데이터가 로드되면 폼에 설정하고 지도 초기화
   useEffect(() => {
     // 로딩 중이면 실행하지 않음
@@ -122,10 +135,10 @@ const LocationAdminPage: React.FC = () => {
 
         // 지도가 이미 초기화되어 있으면 업데이트
         if (mapInstanceRef.current) {
-          updateMap(lat, lng);
+          updateMap(lat, lng, currentLocation.address || DEFAULT_ADDRESS);
         } else if (mapRef.current && window.naver?.maps) {
           // 지도가 초기화되지 않았으면 새로 초기화
-          initMap(lat, lng);
+          initMap(lat, lng, currentLocation.address || DEFAULT_ADDRESS);
         }
       };
 
@@ -153,8 +166,10 @@ const LocationAdminPage: React.FC = () => {
   /**
    * 지도 초기화
    */
-  const initMap = (lat: number, lng: number) => {
+  const initMap = (lat: number, lng: number, address?: string) => {
     if (!mapRef.current || !window.naver?.maps) return;
+
+    const displayAddress = address || locationData.address || DEFAULT_ADDRESS;
 
     const mapOptions = {
       center: new window.naver.maps.LatLng(lat, lng),
@@ -225,7 +240,7 @@ const LocationAdminPage: React.FC = () => {
             font-size: 12px;
             color: #6b7280;
             margin-top: 4px;
-          ">${locationData.address || DEFAULT_ADDRESS}</div>
+          ">${displayAddress}</div>
         </div>
       `,
       borderWidth: 0,
@@ -250,8 +265,10 @@ const LocationAdminPage: React.FC = () => {
   /**
    * 지도 업데이트 (좌표 변경 시)
    */
-  const updateMap = (lat: number, lng: number) => {
+  const updateMap = (lat: number, lng: number, address?: string) => {
     if (!mapInstanceRef.current || !window.naver?.maps) return;
+
+    const displayAddress = address || locationData.address || DEFAULT_ADDRESS;
 
     const moveLatLon = new window.naver.maps.LatLng(lat, lng);
     mapInstanceRef.current.setCenter(moveLatLon);
@@ -316,7 +333,7 @@ const LocationAdminPage: React.FC = () => {
             font-size: 12px;
             color: #6b7280;
             margin-top: 4px;
-          ">${locationData.address || DEFAULT_ADDRESS}</div>
+          ">${displayAddress}</div>
         </div>
       `);
       infoWindowRef.current.open(mapInstanceRef.current, markerRef.current);
@@ -439,11 +456,11 @@ const LocationAdminPage: React.FC = () => {
             longitude: lng,
           }));
 
-          // 지도 업데이트
+          // 지도 업데이트 (최신 주소를 직접 전달)
           if (mapInstanceRef.current) {
-            updateMap(lat, lng);
+            updateMap(lat, lng, fullAddress);
           } else if (mapRef.current && window.naver?.maps) {
-            initMap(lat, lng);
+            initMap(lat, lng, fullAddress);
           }
         }
       );

@@ -106,6 +106,31 @@ export const useWorshipVideo = (id: number) => {
 };
 
 /**
+ * 이전/다음 글 정보 타입
+ */
+export interface WorshipVideoNavigation {
+  prev: { id: number; title: string } | null;
+  next: { id: number; title: string } | null;
+}
+
+/**
+ * 설교 영상 이전/다음 글 조회
+ */
+export const useWorshipVideoNavigation = (id: number) => {
+  return useQuery<WorshipVideoNavigation>({
+    queryKey: ["worship", "videos", id, "navigation"],
+    queryFn: async () => {
+      const result = await request<WorshipVideoNavigation>({
+        method: "GET",
+        url: `/worship/videos/${id}/navigation`,
+      });
+      return result;
+    },
+    enabled: !!id,
+  });
+};
+
+/**
  * 예배 안내 목록 조회
  */
 export const useWorshipNotices = () => {

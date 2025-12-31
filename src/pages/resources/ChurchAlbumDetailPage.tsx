@@ -2,7 +2,10 @@ import React, { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
 import { useParams, useNavigate } from "react-router-dom";
 import SubMenuTemplate from "@/components/template/SubMenuTemplate";
-import { useChurchAlbum } from "@/lib/hooks/useChurchAlbum";
+import {
+  useChurchAlbum,
+  useChurchAlbumNavigation,
+} from "@/lib/hooks/useChurchAlbum";
 import JSZip from "jszip";
 import * as S from "./ChurchAlbumDetailPage.style";
 import dayjs from "dayjs";
@@ -20,6 +23,7 @@ const ChurchAlbumDetailPage: React.FC = () => {
   ];
 
   const { data: album, isLoading } = useChurchAlbum(albumId);
+  const { data: navigation } = useChurchAlbumNavigation(albumId);
 
   // 이미지 뷰어 상태
   const [viewerOpen, setViewerOpen] = useState(false);
@@ -259,6 +263,66 @@ const ChurchAlbumDetailPage: React.FC = () => {
             ) : (
               <S.NoImages>등록된 이미지가 없습니다.</S.NoImages>
             )}
+
+            {/* 이전/다음 글 */}
+            <S.NavigationSection>
+              {navigation?.prev ? (
+                <S.NavigationItem
+                  onClick={() =>
+                    navigate(`/resources/church-albums/${navigation.prev!.id}`)
+                  }
+                >
+                  <S.NavigationLeft>
+                    <S.NavigationArrow>^</S.NavigationArrow>
+                    <S.NavigationLabel>이전</S.NavigationLabel>
+                  </S.NavigationLeft>
+                  <S.NavigationRight>
+                    <S.NavigationTitle>{navigation.prev.title}</S.NavigationTitle>
+                    {album && (
+                      <S.NavigationDate>
+                        {dayjs(album.createdAt).format("YYYY-MM-DD")}
+                      </S.NavigationDate>
+                    )}
+                  </S.NavigationRight>
+                </S.NavigationItem>
+              ) : (
+                <S.NavigationEmpty>
+                  <S.NavigationLeft>
+                    <S.NavigationArrow>^</S.NavigationArrow>
+                    <S.NavigationLabel>이전</S.NavigationLabel>
+                  </S.NavigationLeft>
+                  <S.NavigationEmptyText>이전글이 없습니다.</S.NavigationEmptyText>
+                </S.NavigationEmpty>
+              )}
+              {navigation?.next ? (
+                <S.NavigationItem
+                  onClick={() =>
+                    navigate(`/resources/church-albums/${navigation.next!.id}`)
+                  }
+                >
+                  <S.NavigationLeft>
+                    <S.NavigationArrow>v</S.NavigationArrow>
+                    <S.NavigationLabel>다음</S.NavigationLabel>
+                  </S.NavigationLeft>
+                  <S.NavigationRight>
+                    <S.NavigationTitle>{navigation.next.title}</S.NavigationTitle>
+                    {album && (
+                      <S.NavigationDate>
+                        {dayjs(album.createdAt).format("YYYY-MM-DD")}
+                      </S.NavigationDate>
+                    )}
+                  </S.NavigationRight>
+                </S.NavigationItem>
+              ) : (
+                <S.NavigationEmpty>
+                  <S.NavigationLeft>
+                    <S.NavigationArrow>v</S.NavigationArrow>
+                    <S.NavigationLabel>다음</S.NavigationLabel>
+                  </S.NavigationLeft>
+                  <S.NavigationEmptyText>다음글이 없습니다.</S.NavigationEmptyText>
+                </S.NavigationEmpty>
+              )}
+            </S.NavigationSection>
           </S.DetailContainer>
         </S.ContentWrapper>
       </SubMenuTemplate>

@@ -93,6 +93,31 @@ export const useNextGen = (id: number) => {
 };
 
 /**
+ * 이전/다음 글 정보 타입
+ */
+export interface NextGenNavigation {
+  prev: { id: number; title: string } | null;
+  next: { id: number; title: string } | null;
+}
+
+/**
+ * 다음세대 이전/다음 글 조회
+ */
+export const useNextGenNavigation = (id: number) => {
+  return useQuery<NextGenNavigation>({
+    queryKey: ["nextgen", id, "navigation"],
+    queryFn: async () => {
+      const result = await request<NextGenNavigation>({
+        method: "GET",
+        url: `/nextgen/${id}/navigation`,
+      });
+      return result;
+    },
+    enabled: !!id,
+  });
+};
+
+/**
  * 다음세대 목록 조회 (관리자용)
  */
 export const useNextGenListAdmin = (
