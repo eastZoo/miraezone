@@ -7,6 +7,7 @@ import {
   useDeleteNews,
   type News,
 } from "@/lib/hooks/useNews";
+import { useCurrentMember } from "@/lib/hooks/useAuth";
 import SimpleMDE from "react-simplemde-editor";
 import "easymde/dist/easymde.min.css";
 import { uploadImage } from "@/lib/utils/uploadImage";
@@ -14,6 +15,7 @@ import * as S from "./NewsAdminPage.style";
 import dayjs from "dayjs";
 
 const NewsAdminPage: React.FC = () => {
+  const { member } = useCurrentMember();
   const [page, setPage] = useState(1);
   const [category, setCategory] = useState<string>("");
   const [search, setSearch] = useState<string>("");
@@ -61,7 +63,7 @@ const NewsAdminPage: React.FC = () => {
       title: "",
       content: "",
       category: "소식",
-      author: "",
+      author: member?.name || "",
       isNew: false,
     });
   };

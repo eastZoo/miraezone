@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useMemo } from "react";
 import * as S from "./AdminHeader.style";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useCurrentMember, useLogout } from "@/lib/hooks/useAuth";
 import logo from "@/styles/assets/images/church_logo.png";
 
 interface SubMenuItem {
@@ -16,7 +17,16 @@ interface MenuGroup {
 
 const AdminHeader: React.FC = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const [activeGroup, setActiveGroup] = useState<string | null>(null);
+  const { member } = useCurrentMember();
+  const logout = useLogout();
+
+  const handleLogout = async () => {
+    if (confirm("로그아웃 하시겠습니까?")) {
+      logout.mutate();
+    }
+  };
 
   // 메뉴 그룹 정의
   const menuGroups: MenuGroup[] = [
@@ -61,6 +71,11 @@ const AdminHeader: React.FC = () => {
       label: "자료실 관리",
       path: "/admin/church-albums",
       subItems: [{ label: "교회 앨범 관리", path: "/admin/church-albums" }],
+    },
+    {
+      label: "회원 관리",
+      path: "/admin/members",
+      subItems: [{ label: "회원 관리", path: "/admin/members" }],
     },
   ];
 
@@ -182,6 +197,18 @@ const AdminHeader: React.FC = () => {
               </S.MenuList>
             </S.NavMenu>
           </S.MainNavInner>
+          
+          {/* 사용자 정보 및 로그아웃 */}
+          <S.UserSection>
+            {member && (
+              <>
+                <S.UserName>{member.name}님</S.UserName>
+                <S.LogoutButton onClick={handleLogout}>
+                  로그아웃
+                </S.LogoutButton>
+              </>
+            )}
+          </S.UserSection>
         </S.MainNavBar>
       </S.AdminHeaderContainer>
 

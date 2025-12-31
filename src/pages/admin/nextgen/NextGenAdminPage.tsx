@@ -2,6 +2,7 @@ import React, { useState, useMemo, useRef, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import AdminMainTemplate from "@/components/template/AdminMainTemplate";
 import LoadingSpinner from "@/components/atoms/LoadingSpinner";
+import { useCurrentMember } from "@/lib/hooks/useAuth";
 import {
   useNextGenDepartment,
   useUpsertNextGenDepartment,
@@ -31,6 +32,7 @@ import dayjs from "dayjs";
 
 const NextGenAdminPage: React.FC = () => {
   const location = useLocation();
+  const { member } = useCurrentMember();
   // URL 기반으로 활성 탭 결정
   const activeTab = useMemo(() => {
     if (location.pathname.includes("/elementary")) return "elementary";
@@ -404,7 +406,7 @@ const NextGenAdminPage: React.FC = () => {
       department: "유초등부",
       title: "",
       content: "",
-      author: "",
+      author: member?.name || "",
       type: "",
       isNew: false,
       isNotice: false,

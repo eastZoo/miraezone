@@ -114,8 +114,42 @@ export const MainNavInner = styled.div`
   display: flex;
   align-items: center;
   height: 100%;
-  width: 100%;
+  flex: 1;
   padding: 0 32px;
+`;
+
+export const UserSection = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 0 32px;
+`;
+
+export const UserName = styled.span`
+  font-size: 1.4rem;
+  color: ${({ theme }) => theme.colors.adminTextColor};
+  font-weight: 500;
+`;
+
+export const LogoutButton = styled.button`
+  padding: 8px 16px;
+  background: transparent;
+  color: ${({ theme }) => theme.colors.primary};
+  border: 1px solid ${({ theme }) => theme.colors.primary};
+  border-radius: ${({ theme }) => theme.radius.sm};
+  font-size: 1.3rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+
+  &:hover {
+    background: ${({ theme }) => theme.colors.primary};
+    color: ${({ theme }) => theme.colors.white100};
+  }
+
+  &:active {
+    transform: translateY(1px);
+  }
 `;
 
 export const LogoSection = styled.div`

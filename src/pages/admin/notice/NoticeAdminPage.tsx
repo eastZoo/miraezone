@@ -8,6 +8,7 @@ import {
   useDeleteNotice,
   type Notice,
 } from "@/lib/hooks/useNotice";
+import { useCurrentMember } from "@/lib/hooks/useAuth";
 import SimpleMDE from "react-simplemde-editor";
 import "easymde/dist/easymde.min.css";
 import { uploadImage } from "@/lib/utils/uploadImage";
@@ -15,6 +16,7 @@ import * as S from "./NoticeAdminPage.style";
 import dayjs from "dayjs";
 
 const NoticeAdminPage: React.FC = () => {
+  const { member } = useCurrentMember();
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState<string>("");
   const [isCreating, setIsCreating] = useState(false);
@@ -60,7 +62,7 @@ const NoticeAdminPage: React.FC = () => {
     setFormData({
       title: "",
       content: "",
-      author: "",
+      author: member?.name || "",
       isNew: false,
       isImportant: false,
     });

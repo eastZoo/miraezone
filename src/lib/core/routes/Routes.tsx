@@ -77,6 +77,11 @@ const NextGenAdminPage = lazy(
 const ChurchAlbumAdminPage = lazy(
   () => import("@/pages/admin/resources/ChurchAlbumAdminPage")
 );
+const LoginPage = lazy(() => import("@/pages/auth/LoginPage"));
+const RegisterPage = lazy(() => import("@/pages/auth/RegisterPage"));
+const MemberAdminPage = lazy(
+  () => import("@/pages/admin/member/MemberAdminPage")
+);
 
 export default function AppRoutes() {
   const routes = [
@@ -126,6 +131,9 @@ export default function AppRoutes() {
     { path: "/resources/songs", element: <SongsPage /> },
     { path: "/resources/downloads", element: <DownloadsPage /> },
     // 관리자
+    { path: "/admin", element: <LoginPage /> },
+    { path: "/admin/login", element: <Navigate to="/admin" replace /> },
+    { path: "/admin/register", element: <RegisterPage /> },
     { path: "/admin/church", element: <ChurchAdminPage /> },
     { path: "/admin/church/organization", element: <OrganizationAdminPage /> },
     { path: "/admin/church/location", element: <LocationAdminPage /> },
@@ -148,6 +156,7 @@ export default function AppRoutes() {
     { path: "/admin/nextgen/youngadult", element: <NextGenAdminPage /> },
     { path: "/admin/nextgen/news", element: <NextGenAdminPage /> },
     { path: "/admin/church-albums", element: <ChurchAlbumAdminPage /> },
+    { path: "/admin/members", element: <MemberAdminPage /> },
     { path: "/404", element: <NotFoundPage /> },
     { path: "*", element: <Navigate to="/404" replace /> },
   ];

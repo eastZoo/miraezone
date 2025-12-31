@@ -29,8 +29,8 @@ export const getUserInfo = () => {
 export const logout = () => {
   localStorage.removeItem(ACCESS_TOKEN);
   localStorage.removeItem(REFRESH_TOKEN);
-  window.location.href = "/";
   localStorage.removeItem(RECOIL_PERSIST_KEY);
+  window.location.href = "/admin";
 };
 
 export const validateToken = async () => {};

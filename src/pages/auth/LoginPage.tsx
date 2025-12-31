@@ -1,32 +1,81 @@
-import { ACCESS_TOKEN } from "@/lib/constants/sharedStrings";
-import { writeAccessToken } from "@/lib/functions/authFunctions";
-import { useNavigate, useLocation } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { useLogin, useCurrentMember } from "@/lib/hooks/useAuth";
+import { readAccessToken } from "@/lib/functions/authFunctions";
+import * as S from "./LoginPage.style";
 
-/**
- * 로그인 페이지
- * - 버튼 클릭 시 임시 토큰을 localStorage에 저장
- * - 로그인 후 원래 가려던 경로로 redirect
- */
-export default function LoginPage() {
+const LoginPage: React.FC = () => {
   const navigate = useNavigate();
-  const location = useLocation() as { state?: { from?: Location } };
+  const login = useLogin();
+  const { isAuthenticated } = useCurrentMember();
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
+  const [error, setError] = useState<string>("");
 
-  const handleLogin = () => {
-    // ⚠️ 실제에선 서버로 로그인 요청 후 토큰 저장
-    writeAccessToken(ACCESS_TOKEN);
+  // 이미 로그인된 경우 리다이렉트
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate("/admin/church");
+    }
+  }, [isAuthenticated, navigate]);
 
-    // 로그인 전에 가려던 페이지 (없으면 /)
-    const redirectTo = location.state?.from?.pathname || "/";
-    navigate(redirectTo, { replace: true });
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError("");
+
+    try {
+      await login.mutateAsync(formData);
+      navigate("/admin/church");
+    } catch (err: any) {
+      setError(err?.response?.data?.message || "로그인에 실패했습니다.");
+    }
   };
 
   return (
-    <>
-      <title>로그인</title>
-      <div style={{ padding: "24px" }}>
-        <h2>로그인 페이지</h2>
-        <button onClick={handleLogin}>임시 로그인</button>
-      </div>
-    </>
+    <S.Container>
+      <S.LoginCard>
+        <S.Title>관리자 로그인</S.Title>
+        <S.Form onSubmit={handleSubmit}>
+          {error && <S.ErrorMessage>{error}</S.ErrorMessage>}
+          <S.FormGroup>
+            <S.Label>이메일</S.Label>
+            <S.Input
+              type="email"
+              value={formData.email}
+              onChange={(e) =>
+                setFormData({ ...formData, email: e.target.value })
+              }
+              required
+              placeholder="이메일을 입력하세요"
+            />
+          </S.FormGroup>
+          <S.FormGroup>
+            <S.Label>비밀번호</S.Label>
+            <S.Input
+              type="password"
+              value={formData.password}
+              onChange={(e) =>
+                setFormData({ ...formData, password: e.target.value })
+              }
+              required
+              placeholder="비밀번호를 입력하세요"
+            />
+          </S.FormGroup>
+          <S.SubmitButton type="submit" disabled={login.isPending}>
+            {login.isPending ? "로그인 중..." : "로그인"}
+          </S.SubmitButton>
+        </S.Form>
+        <S.RegisterLink>
+          계정이 없으신가요?{" "}
+          <S.Link onClick={() => navigate("/admin/register")}>
+            회원가입
+          </S.Link>
+        </S.RegisterLink>
+      </S.LoginCard>
+    </S.Container>
   );
-}
+};
+
+export default LoginPage;
