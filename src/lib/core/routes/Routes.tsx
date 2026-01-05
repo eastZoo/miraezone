@@ -82,6 +82,9 @@ const RegisterPage = lazy(() => import("@/pages/auth/RegisterPage"));
 const MemberAdminPage = lazy(
   () => import("@/pages/admin/member/MemberAdminPage")
 );
+// SEO
+const RSSPage = lazy(() => import("@/pages/seo/RSSPage"));
+const SitemapPage = lazy(() => import("@/pages/seo/SitemapPage"));
 
 export default function AppRoutes() {
   const routes = [
@@ -157,6 +160,9 @@ export default function AppRoutes() {
     { path: "/admin/nextgen/news", element: <NextGenAdminPage /> },
     { path: "/admin/church-albums", element: <ChurchAlbumAdminPage /> },
     { path: "/admin/members", element: <MemberAdminPage /> },
+    // SEO
+    { path: "/rss.xml", element: <RSSPage /> },
+    { path: "/sitemap.xml", element: <SitemapPage /> },
     { path: "/404", element: <NotFoundPage /> },
     { path: "*", element: <Navigate to="/404" replace /> },
   ];
